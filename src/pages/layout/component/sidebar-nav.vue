@@ -1,13 +1,10 @@
 <template>
-    <el-menu
-        :collapse="isSidebarNavCollapse"
-        background-color="#304156"
-        text-color="#eee"
-        active-text-color="#4dbcff"
-        :default-active="currentMenu"
-    >
-        <DynamicMenu :menuList="sidebarMenu"></DynamicMenu>
-    </el-menu>
+   <div id="tab">
+       <router-link to=""></router-link>
+       <router-link to=""></router-link>
+       <router-link to=""></router-link>
+       <router-link to=""></router-link>
+   </div>
 </template>
 
 <script>

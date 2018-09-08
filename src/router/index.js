@@ -1,11 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Login from 'pages/login/login'
-import NotFound from 'pages/errorPage/404'
-import Forbidden from 'pages/errorPage/403'
-import Layout from 'pages/layout/index'
-import Home from 'pages/home/index'
+import Layout from '@/pages/layout'
 
 Vue.use(Router)
 
@@ -14,7 +10,7 @@ export default new Router({
     routes: [
         {
             path: '/login',
-            component: Login
+            component: () => import('@/pages/login')
         }
     ]
 })
@@ -25,29 +21,56 @@ export const DynamicRoutes = [
         path: '',
         component: Layout,
         name: 'container',
-        redirect: 'home',
+        redirect: '/home',
         meta: {
             requiresAuth: true,
             name: '首页'
         },
         children: [
             {
-                path: 'home',
-                component: Home,
+                path: '/home',
+                component: () => import('@/pages/home'),
                 name: 'home',
                 meta: {
                     name: '首页',
                     icon: 'icon-home'
+                }
+            },
+            {
+                path: '',
+                component: () => import(''),
+                name: '',
+                meta: {
+                    name: '居民列表',
+                    icon: ''
+                }
+            },
+            {
+                path: '',
+                component: () => import(''),
+                name: '',
+                meta: {
+                    name: '统计分析',
+                    icon: ''
+                }
+            },
+            {
+                path: '',
+                component: () => import(''),
+                name: '',
+                meta: {
+                    name: '系统管理',
+                    icon: ''
                 }
             }
         ]
     },
     {
         path: '/403',
-        component: Forbidden
+        component: () => import('@/pages/error/403')
     },
     {
         path: '*',
-        component: NotFound
+        component: () => import('@/pages/error/404')
     }
 ]
