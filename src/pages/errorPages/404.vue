@@ -4,7 +4,7 @@
             <div class="pic-404"></div>
             <div class="bullshit">
                 <div class="bullshit__headline">{{ message }}</div>
-                <div class="bullshit__info">对不起，你没有权限</div>
+                <div class="bullshit__info">请检查您输入的网址是否正确</div>
                 <a @click="backToHome" class="bullshit__return-home">返回首页</a>
             </div>
         </div>
@@ -13,20 +13,20 @@
 
 <script>
 export default {
-    name: 'page401',
-    data() {
-        return {}
-    },
-    methods: {
-        backToHome() {
-            this.$router.push('/')
-        }
-    },
-    computed: {
-        message() {
-            return '对不起，你没有权限没有权限没有权限没有权限没有权限没有权限没有权限没有权限没有权限没有权限没有权限没有权限没有权限没有权限'
-        }
+  name: 'page404',
+  data() {
+    return {}
+  },
+  methods: {
+    backToHome() {
+      this.$router.push('/')
     }
+  },
+  computed: {
+    message() {
+      return '找不到页面找不到页面找不到页面找不到页面找不到页面找不到页面找不到页面找不到页面找不到页面找不到页面找不到页面找不到页面找不到页面找不到页面找不到页面'
+    }
+  }
 }
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>

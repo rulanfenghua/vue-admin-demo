@@ -1,12 +1,12 @@
 <template>
-  <div class="residents">
-    居民
+  <div class="manager">
+    站点
   </div>
 </template>
 
 <script>
 export default {
-  name: 'residents'
+  name: 'manager'
 }
 </script>
 

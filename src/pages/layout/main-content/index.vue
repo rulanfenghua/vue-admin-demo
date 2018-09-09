@@ -1,21 +1,21 @@
 <template>
     <div class="main-container">
         <top-aside/>
-        <content/>
+        <main-content/>
     </div>
 </template>
 
 <script>
 import topAside from './topAside'
-import content from './content'
+import mainContent from './mainContent'
 
 export default {
-    data() {
-        return {}
-    },
-    components: {
-        topAside,
-        content
-    }
+  data() {
+    return {}
+  },
+  components: {
+    topAside,
+    mainContent
+  }
 }
 </script>

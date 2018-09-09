@@ -1,11 +1,12 @@
 <template>
   <div class="logging">
+    日志
   </div>
 </template>
 
 <script>
 export default {
-    name: 'logging'
+  name: 'logging'
 }
 </script>
 

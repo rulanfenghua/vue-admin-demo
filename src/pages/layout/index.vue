@@ -5,14 +5,14 @@
 </template>
 
 <script>
-import mainContent from './main-content/index'
+import mainContent from './main-content'
 export default {
-    data() {
-        return {}
-    },
-    components: {
-        mainContent
-    }
+  data() {
+    return {}
+  },
+  components: {
+    mainContent
+  }
 }
 </script>
 

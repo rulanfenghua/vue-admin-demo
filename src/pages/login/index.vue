@@ -20,24 +20,24 @@
 <script>
 import { login } from '@/api/permission'
 export default {
-    data() {
-        return {
-            account: '',
-            password: ''
-        }
-    },
-    methods: {
-        async login() {
-            try {
-                let data = await login()
-                let token = data.token
-                this.$store.commit('LOGIN_IN', token)
-                this.$router.replace('/')
-            } catch (e) {
-                console.log(e)
-            }
-        }
+  data() {
+    return {
+      account: '',
+      password: ''
     }
+  },
+  methods: {
+    async login() {
+      try {
+        let data = await login()
+        let token = data.token
+        this.$store.commit('LOGIN_IN', token)
+        this.$router.replace('/')
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  }
 }
 </script>
 

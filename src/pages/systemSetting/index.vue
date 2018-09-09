@@ -5,7 +5,7 @@
 
 <script>
 export default {
-    name: 'systemSetting'
+  name: 'systemSetting'
 }
 </script>
 

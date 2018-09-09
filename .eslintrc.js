@@ -21,7 +21,7 @@ module.exports = {
     ],
     // add your custom rules here
     rules: {
-        "indent": ["error", 4],
+        "indent": ["error", 2],
         // allow async-await
         'generator-star-spacing': 'off',
         'space-before-function-paren': 'off',

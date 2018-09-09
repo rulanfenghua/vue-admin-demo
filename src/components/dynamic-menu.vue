@@ -20,23 +20,22 @@
 
 <script>
 export default {
-    name: 'my-nav',
-    props: {
-        menuList: {
-            type: Array,
-            default: function() {
-                return []
-            }
-        }
-    },
-    methods: {
-        gotoRoute(name) {
-            this.$router.push({ name })
-        }
+  name: 'my-nav',
+  props: {
+    menuList: {
+      type: Array,
+      default: function() {
+        return []
+      }
     }
+  },
+  methods: {
+    gotoRoute(name) {
+      this.$router.push({ name })
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.menu-container {}
 </style>
