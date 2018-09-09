@@ -1,23 +1,16 @@
 <template>
-    <div :class="{navCollapsed:isSidebarNavCollapse}">
-        <sidebarNav  class="sidebar"/>
-        <mainContent/>
+    <div class="index">
+        <main-content/>
     </div>
 </template>
 
 <script>
-import sidebarNav from './component/sidebar-nav'
-import mainContent from './component/main-content/index'
-import { mapState } from 'vuex'
+import mainContent from './main-content/index'
 export default {
     data() {
         return {}
     },
-    computed: {
-        ...mapState(['isSidebarNavCollapse'])
-    },
     components: {
-        sidebarNav,
         mainContent
     }
 }

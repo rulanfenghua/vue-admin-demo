@@ -37,27 +37,27 @@ export const DynamicRoutes = [
                 }
             },
             {
-                path: '',
-                component: () => import(''),
-                name: '',
+                path: '/residents',
+                component: () => import('@/pages/residents'),
+                name: 'residents',
                 meta: {
                     name: '居民列表',
                     icon: ''
                 }
             },
             {
-                path: '',
-                component: () => import(''),
-                name: '',
+                path: '/logging',
+                component: () => import('@/pages/logging'),
+                name: 'logging',
                 meta: {
-                    name: '统计分析',
+                    name: '日志管理',
                     icon: ''
                 }
             },
             {
-                path: '',
-                component: () => import(''),
-                name: '',
+                path: '/systemSetting',
+                component: () => import('@/pages/systemSetting'),
+                name: 'systemSetting',
                 meta: {
                     name: '系统管理',
                     icon: ''
