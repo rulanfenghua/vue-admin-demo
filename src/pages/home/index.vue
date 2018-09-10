@@ -1,8 +1,6 @@
 <template>
   <div class="home">
-    <!-- <component :is="currentRole"/> -->
-    <admin></admin>
-    <!-- <manager></manager> -->
+    <component :is="currentRole"/>
   </div>
 </template>
 
@@ -15,17 +13,17 @@ export default {
   components: {
     admin,
     manager
+  },
+  data() {
+    return {
+      currentRole: 'admin'
+    }
+  },
+  created() {
+    if (sessionStorage.getItem('stationId')) {
+      this.currentRole = 'manager'
+    }
   }
-  // data() {
-  //   return {
-  //     currentRole: 'admin'
-  //   }
-  // },
-  // created() {
-  //   if (sessionStorage.getItem('stationId')) {
-  //     this.currentRole = 'manager'
-  //   }
-  // }
 }
 </script>
 

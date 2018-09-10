@@ -1,11 +1,11 @@
 <template>
-    <div class="index">
-        <main-content/>
-    </div>
+  <div class="index">
+    <main-content />
+  </div>
 </template>
 
 <script>
-import mainContent from './main-content'
+import mainContent from './mainContent'
 export default {
   data() {
     return {}

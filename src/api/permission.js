@@ -1,5 +1,8 @@
-import axios from '@/config/httpConfig'
+import request from '@/config/httpConfig'
 
 export function login() {
-  return axios.get('/login')
+  return request({
+    url: '/login',
+    method: 'post'
+  })
 }

@@ -92,8 +92,8 @@ export default {
     width: 100%;
 
     .top-aside {
-      padding-top: 13px;
-      height: 80px;
+      padding-top: 23px;
+      height: 100px;
       background-color: greenyellow;
       .title {
         display: inline-block;

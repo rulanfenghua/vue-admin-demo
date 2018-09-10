@@ -40,7 +40,7 @@
         <el-table
           :data="res_getDay"
           style="width: 100%"
-          max-height="100%">
+          max-height="200">
           <el-table-column
             fixed
             prop="checkDate"
@@ -105,64 +105,12 @@ export default {
   },
   computed: {
     clientHeight() {
-      return (document.documentElement.clientHeight || document.body.clientHeight) - 146
+      return (document.documentElement.clientHeight || document.body.clientHeight) - 182
     }
   },
   mounted() {
     this.init()
-    this.initChart(this.$refs.week, {
-      title: {
-        text: '一周检查量变化趋势'
-      },
-      tooltip: {},
-      legend: {
-        data: ['检查量']
-      },
-      xAxis: {
-        data: this._toArray_key(this.res_getWeek)
-      },
-      yAxis: {},
-      series: [{
-        name: '检查量',
-        type: 'line',
-        data: this._toArray_value(this.res_getWeek)
-      }]
-    })
-    this.initChart(this.$refs.last, {
-      title: {
-        text: '各站点末次上传统计'
-      },
-      tooltip: {},
-      legend: {
-        data: ['上传数量']
-      },
-      xAxis: {
-        data: ['站点1', '站点2', '站点3', '站点4', '站点5', '站点6', '站点7', '站点8', '站点9']
-      },
-      yAxis: {},
-      series: [{
-        name: '上传数量',
-        type: 'bar',
-        data: this._toArray_value(this.res_getLast)
-      }]
-    })
-    this.initChart(this.$refs.gender, {
-      title: {
-        text: '居民男女比例'
-      },
-      tooltip: {},
-      legend: {
-        data: ['男性居民', '女性居民']
-      },
-      series: [{
-        name: '居民男女比例',
-        type: 'pie',
-        data: [
-          {value: this.res_getGender.Woman, name: '女性居民'},
-          {value: this.res_getGender.Man, name: '男性居民'}
-        ]
-      }]
-    })
+    this.initChart()
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -172,15 +120,76 @@ export default {
     this.chart = null
   },
   methods: {
-    async init() {
-      this.res_index = await index()
-      this.res_getWeek = await getWeek()
-      this.res_getDay = await getDay()
-      this.res_getGender = await getGender()
-      this.res_getLast = await getLast()
-      console.log(this.res_getWeek)
+    init() {
+      index().then(response => {
+        this.res_index = response.data
+      })
+      getDay().then(response => {
+        this.res_getDay = response.data
+      })
     },
-    initChart(element, expectedData) {
+    initChart() {
+      getWeek().then(response => {
+        this._initChart(this.$refs.week, {
+          title: {
+            text: '一周检查量变化趋势'
+          },
+          tooltip: {},
+          legend: {
+            data: ['检查量']
+          },
+          xAxis: {
+            data: this._toArray_key(response.data)
+          },
+          yAxis: {},
+          series: [{
+            name: '检查量',
+            type: 'line',
+            data: this._toArray_value(response.data)
+          }]
+        })
+      })
+      getLast().then(response => {
+        this._initChart(this.$refs.last, {
+          title: {
+            text: '各站点末次上传统计'
+          },
+          tooltip: {},
+          legend: {
+            data: ['上传数量']
+          },
+          xAxis: {
+            data: ['站点1', '站点2', '站点3', '站点4', '站点5', '站点6', '站点7', '站点8', '站点9']
+          },
+          yAxis: {},
+          series: [{
+            name: '上传数量',
+            type: 'bar',
+            data: this._toArray_value(response.data)
+          }]
+        })
+      })
+      getGender().then(response => {
+        this._initChart(this.$refs.gender, {
+          title: {
+            text: '居民男女比例'
+          },
+          tooltip: {},
+          legend: {
+            data: ['男性居民', '女性居民']
+          },
+          series: [{
+            name: '居民男女比例',
+            type: 'pie',
+            data: [
+              {value: response.data.Woman, name: '女性居民'},
+              {value: response.data.Man, name: '男性居民'}
+            ]
+          }]
+        })
+      })
+    },
+    _initChart(element, expectedData) {
       this.chart = echarts.init(element)
       this.chart.setOption(expectedData)
     },
@@ -188,7 +197,6 @@ export default {
       let expectedArray = []
       for (var key in obj) {
         expectedArray.push(key)
-        console.log(key)
       }
       return expectedArray
     },
@@ -205,25 +213,43 @@ export default {
 
 <style scoped lang="scss">
 .admin{
+  background-color: #e6e1e1;
   .panel-container {
     width: 100%;
     display: flex;
     .panel-item {
+      margin-right: 7px;
+      margin-top: 7px;
+      background-color: #fff;
       flex: 1;
+      border-radius: 1px;
+      box-shadow: 0 0 5px #b59f9f;
+      &:first-child {
+        margin-left: 7px;
+      }
     }
   }
   .table-container {
     width: 100%;
     display: flex;
     flex-flow: column;
+    .container-line-week,.container-bar-last,.container-table-day,.container-pie-gender {
+      margin-top: 7px;
+      margin-right: 7px;
+      border-radius: 1px;
+      box-shadow: 0 0 1px #b59f9f;
+    }
     .table-top {
       flex: 1;
       display: flex;
       width: 100%;
       .container-line-week {
+        background-color: #fff;
         flex: 1;
+        margin-left: 7px;
       }
       .container-bar-last {
+        background-color: #fff;
         flex: 1;
       }
     }
@@ -232,10 +258,15 @@ export default {
       display: flex;
       width: 100%;
       .container-table-day {
-        flex: 1;
+        background-color: #fff;
+        flex: 2;
+        margin-left: 7px;
+        margin-bottom: 7px;
       }
       .container-pie-gender {
+        background-color: #fff;
         flex: 1;
+        margin-bottom: 7px;
       }
     }
   }
