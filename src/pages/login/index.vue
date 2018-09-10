@@ -61,14 +61,12 @@
                     <input type="text" class="login-idcard-input" placeholder="身份证号" v-model.trim="idcard" autocomplete="on">
                   </li>
                   <li class="button">
-                    <div class="seach" @click="seach">查询</div>
+                    <el-button class="seach" @click="seach">查询</el-button>
                   </li>
                 </ul>
               </div>
             </div>
-            <div class="resident-details" v-show="residentToggle">
-
-            </div>
+            <resident-details :personalMess="personalMess" v-show="residentToggle"></resident-details>
           </div>
         </div>
     </div>
@@ -76,6 +74,9 @@
 
 <script>
 import { login } from '@/api/permission'
+import {loginResident, getPersonalMess} from '@/api/resident'
+import residentDetails from './residentDetails'
+
 export default {
   data() {
     return {
@@ -87,8 +88,12 @@ export default {
 
       name: '',
       idcard: '',
+      personalMess: [],
       residentToggle: false
     }
+  },
+  components: {
+    residentDetails
   },
   methods: {
     userLogin() {
@@ -120,7 +125,21 @@ export default {
       this.changeToggle = !this.changeToggle
     },
     seach() {
-      this.residentToggle = !this.residentToggle
+      loginResident().then(response => {
+        if (response.code === 0) {
+          this.residentToggle = !this.residentToggle
+          this._initMess()
+        } else {
+          this.$message.error({
+            message: response.msg
+          })
+        }
+      })
+    },
+    _initMess() {
+      getPersonalMess().then(response => {
+        this.personalMess = response.data
+      })
     }
   }
 }
