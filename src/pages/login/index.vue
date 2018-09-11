@@ -22,11 +22,12 @@
                   </li>
                   <li class="button">
                     <div class="enter" @click="userLogin">登陆</div>
-                    <div class="change" @click="toggle">修改密码</div>
+                    <div class="change" @click="_toggle">修改密码</div>
                   </li>
                 </ul>
                 </form>
                 <form>
+                <transition name="slide">
                 <ul class="login-input-change" v-show="changeToggle">
                   <li class="name">
                     <span class="login-name-text">登陆名称</span>
@@ -42,13 +43,17 @@
                   </li>
                   <li class="button">
                     <div class="enter" @click="change">确定</div>
-                    <div class="change" @click="toggle">取消</div>
+                    <div class="change" @click="_toggle">取消</div>
                   </li>
                 </ul>
+                </transition>
                 </form>
               </div>
             </div>
-            <div class="login-main-resident" v-else>
+            <div class="login-main-resident" v-else v-loading="loading"
+              element-loading-text="正在加载居民数据"
+              element-loading-spinner="el-icon-loading"
+            >
               <div class="login-photo"></div>
               <div class="login-input">
                 <ul class="login-input-enter">
@@ -66,14 +71,14 @@
                 </ul>
               </div>
             </div>
-            <resident-details :personalMess="personalMess" v-show="residentToggle"></resident-details>
+            <resident-details :personalMess="personalMess" ref="resident"></resident-details>
           </div>
         </div>
     </div>
 </template>
 
 <script>
-import { login } from '@/api/permission'
+import {login, changePass} from '@/api/permission'
 import {loginResident, getPersonalMess} from '@/api/resident'
 import residentDetails from './residentDetails'
 
@@ -89,7 +94,9 @@ export default {
       name: '',
       idcard: '',
       personalMess: [],
-      residentToggle: false
+      residentToggle: false,
+
+      loading: false
     }
   },
   components: {
@@ -97,23 +104,51 @@ export default {
   },
   methods: {
     userLogin() {
+      const loading = this.$loading({
+        lock: true,
+        text: '登陆中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
       login().then(response => {
         if (response.code === 0) {
           this.$message({
-            message: '登陆成功，欢迎username',
+            message: '登陆成功，欢迎 ' + response.data.name,
             type: 'success'
           })
+          sessionStorage.setItem('name', response.data.name)
           this.$store.commit('LOGIN_IN', response.code)
           this.$router.replace('/')
+          if (response.data.stationId) {
+            sessionStorage.setItem('id', response.data.stationId)
+          }
+        } else {
+          loading.close()
+          this.$message.error({
+            message: response.msg
+          })
+        }
+      }).catch(error => {
+        loading.close()
+        console.log(error)
+      }).then(() => {
+        loading.close()
+      })
+    },
+    change() {
+      changePass().then(response => {
+        if (response.code === 0) {
+          this.$message({
+            message: '密码修改成功',
+            type: 'success'
+          })
+          this._toggle()
         } else {
           this.$message.error({
             message: response.msg
           })
         }
       })
-    },
-    change() {
-
     },
     transResident() {
       this.userToggle = 'resident'
@@ -121,20 +156,27 @@ export default {
     transManager() {
       this.userToggle = 'manager'
     },
-    toggle() {
-      this.changeToggle = !this.changeToggle
-    },
     seach() {
+      this.loading = true
       loginResident().then(response => {
         if (response.code === 0) {
-          this.residentToggle = !this.residentToggle
+          this.$refs.resident._toggleResident()
           this._initMess()
         } else {
+          this.loading = false
           this.$message.error({
             message: response.msg
           })
         }
+      }).catch(error => {
+        this.loading = false
+        console.log(error)
+      }).then(() => {
+        this.loading = false
       })
+    },
+    _toggle() {
+      this.changeToggle = !this.changeToggle
     },
     _initMess() {
       getPersonalMess().then(response => {
@@ -147,7 +189,11 @@ export default {
 
 <style scoped lang="scss">
   .login {
+    position: relative;
     width: 600px;
+    // height: 400px;
+    top: calc(50% - 200px);
+    left: calc(50% - 300px);
     .title {
       display: block;
       font-weight: bolder;
@@ -212,6 +258,47 @@ export default {
                 width: 90px;
                 cursor: pointer;
               }
+            }
+          }
+          .login-input-change {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            height: 200px;
+            width: 330px;
+            z-index: 10;
+            background-color: blue;
+            &.slide-enter-active, &.slide-leave-active {
+              transition: all .3s ease;
+            }
+            &.slide-enter, &.slide-leave-to {
+              transform: translate3d(50%,0,0);
+              opacity: 0;
+            }
+          }
+        }
+      }
+      .login-main-resident {
+        width: 100%;
+        height: 200px;
+        .login-photo {
+          display: inline-block;
+          width: 30%;
+          height: 100%;
+          vertical-align: top;
+        }
+        .login-input {
+          display: inline-block;
+          height: 100%;
+          .login-input-enter {
+            .name {
+
+            }
+            .idcard {
+
+            }
+            .button {
+
             }
           }
         }

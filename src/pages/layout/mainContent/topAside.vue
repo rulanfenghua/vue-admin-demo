@@ -40,12 +40,11 @@
               <span>系统管理</span>
             </router-link>
           </li>
-
         </ul>
       </div>
       <div class="top-right">
-        <span class="user-name">早上好：usrname</span>
-        <div class="quit" @click="loginOut">
+        <span class="user-name">{{currentDate}}：{{name}}</span>
+        <div class="quit" @click="loginOut" title="点击退出登陆">
           <i class="icon-switch"></i>
         </div>
       </div>
@@ -74,8 +73,30 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'topAside',
+  data() {
+    return {
+      name: ''
+    }
+  },
   computed: {
-    ...mapState(['crumbList'])
+    ...mapState(['crumbList']),
+    currentDate() {
+      const date = new Date()
+      if (date.getHours() < 6) {
+        return '凌晨了'
+      } else if (date.getHours() >= 6 && date.getHours() < 12) {
+        return '上午好'
+      } else if (date.getHours() >= 12 && date.getHours() < 14) {
+        return '中午好'
+      } else if (date.getHours() >= 14 && date.getHours() < 20) {
+        return '下午好'
+      } else {
+        return '晚上好'
+      }
+    }
+  },
+  created() {
+    this.name = sessionStorage.getItem('name')
   },
   methods: {
     loginOut() {
@@ -90,7 +111,6 @@ export default {
 <style scoped lang="scss">
   .container {
     width: 100%;
-
     .top-aside {
       padding-top: 23px;
       height: 100px;
@@ -140,28 +160,27 @@ export default {
         float: right;
         padding-right: 7px;
         .user-name {
-          margin-right: 30px;
           display: inline-block;
           vertical-align: top;
-          padding-top: 19px;
+          padding-top: 21px;
           position: relative;
           font-size: 16px;
           font-weight: bold;
           &::after {
             display: block;
             position: absolute;
-            top: 16px;
+            top: 14px;
             right: -22px;
             content: '';
             border-right: 1px solid #000;
-            height: 29px;
+            height: 34px;
           }
         }
         .quit {
           display: inline-block;
-          width: 50px;
-          height: 50px;
           padding-top: 20px;
+          padding-left: 30px;
+          padding-right: 12px;
           cursor: pointer;
           i {
             font-size: 24px;

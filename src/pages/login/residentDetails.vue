@@ -1,5 +1,6 @@
 <template>
-<div class="resident-details-wrapper">
+<transition name="pull">
+<div class="resident-details-wrapper" v-show="residentToggle">
   <div class="resident-details">
     <ul class="mess">
       <li class="mess-item" v-for="(data,index) in personalMess" :key="index">
@@ -8,7 +9,9 @@
         <el-button @click="getPrinting"></el-button>
       </li>
     </ul>
+    <el-button @click="_toggleResident"></el-button>
   </div>
+  <transition name="print">
   <div class="printing" v-if="printingToggle">
     <div id="printing">
     <img :src="printingData.B_Addr1" alt="" style="width:100px;height:100px;margin-left:0">
@@ -16,11 +19,14 @@
     {{printingData.stationCode}}
     </div>
     <el-button @click="print"></el-button>
+    <el-button @click="_toggle"></el-button>
   </div>
+  </transition>
   <transition name="fade">
     <div class="mask" v-show="printingToggle" @click="_toggle"></div>
   </transition>
 </div>
+</transition>
 </template>
 
 <script>
@@ -32,6 +38,7 @@ export default {
   data() {
     return {
       printingData: {},
+      residentToggle: false,
       printingToggle: false
     }
   },
@@ -56,6 +63,9 @@ export default {
         targetStyles: ['*']
       })
     },
+    _toggleResident() {
+      this.residentToggle = !this.residentToggle
+    },
     _toggle() {
       this.printingToggle = !this.printingToggle
     }
@@ -65,6 +75,20 @@ export default {
 
 <style scoped lang="scss">
 .resident-details-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  height: 230px;
+  width: 600px;
+  background-color: blue;
+  &.pull-enter-active, &.pull-leave-active {
+    transition: all .3s ease;
+  }
+  &.pull-enter, &.pull-leave-to {
+    transform: translate3d(0,50%,0);
+    opacity: 0;
+  }
   .resident-details{
 
   }
@@ -77,6 +101,13 @@ export default {
     z-index: 100;
     overflow: auto;
     background-color: red;
+     &.print-enter-active, &.print-leave-active {
+      transition: all .3s ease;
+    }
+    &.print-enter, &.print-leave-to {
+      opacity: 0;
+      transform: translate3d(0,10px,0);
+    }
   }
   .mask {
     position: fixed;
@@ -89,7 +120,7 @@ export default {
     background: rgba(7, 17, 27, 0.6);
     &.fade-enter-active,
     &.fade-leave-active {
-      transition: all .5s ease;
+      transition: all .3s ease;
     }
     &.fade-enter,
     &.fade-leave-to {

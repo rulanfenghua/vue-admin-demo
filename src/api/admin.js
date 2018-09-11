@@ -34,3 +34,10 @@ export function getLast() {
     method: 'post'
   })
 }
+
+export function getPersonList() {
+  return request({
+    url: '/manager/getPersonList',
+    method: 'post'
+  })
+}

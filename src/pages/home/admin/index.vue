@@ -39,48 +39,86 @@
       <div class="container-table-day">
         <el-table
           :data="res_getDay"
-          style="width: 100%"
-          max-height="200">
+          border
+          fit
+          highlight-current-row
+          :style="{width: tableWidth+'px'}"
+          :max-height="tableHeight">
           <el-table-column
             fixed
-            prop="checkDate"
             label="诊断时间"
-            width="">
+            width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.checkDate }}</span>
+            </template>
           </el-table-column>
           <el-table-column
-            prop="name"
             label="姓名"
-            width="">
+            align="center"
+            width="75">
+            <template slot-scope="scope">
+              <span>{{ scope.row.name }}</span>
+            </template>
           </el-table-column>
           <el-table-column
-            prop="idcard"
             label="身份证号"
-            width="">
+            align="center"
+            width="175">
+            <template slot-scope="scope">
+              <span>{{ scope.row.idcard }}</span>
+            </template>
           </el-table-column>
           <el-table-column
-            prop="gender"
             label="性别"
-            width="">
+            align="center"
+            width="75">
+            <template slot-scope="scope">
+              <span>{{ scope.row.gender }}</span>
+            </template>
           </el-table-column>
           <el-table-column
-            prop="age"
             label="年龄"
-            width="">
+            align="center"
+            width="75">
+            <template slot-scope="scope">
+              <span>{{ scope.row.age }}</span>
+            </template>
           </el-table-column>
           <el-table-column
-            prop="idType"
             label="卡类型"
-            width="">
+            align="center"
+            width="75">
+            <template slot-scope="scope">
+              <span>{{ scope.row.idType }}</span>
+            </template>
           </el-table-column>
           <el-table-column
-            prop="tel"
             label="电话"
-            width="">
+            width="140">
+            <template slot-scope="scope">
+              <span>{{ scope.row.tel }}</span>
+            </template>
           </el-table-column>
           <el-table-column
-            prop="homeAddr"
             label="家庭住址"
-            width="">
+            width="240">
+            <template slot-scope="scope">
+              <span>{{ scope.row.homeAddr }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="操作"
+            align="center"
+            width="120">
+            <template slot-scope="scope">
+              <el-button
+                @click.native.prevent="seach(scope.$index, scope.row.checkDate)"
+                type="text"
+                size="small">
+                移除
+              </el-button>
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -105,7 +143,13 @@ export default {
   },
   computed: {
     clientHeight() {
-      return (document.documentElement.clientHeight || document.body.clientHeight) - 182
+      return (document.documentElement.clientHeight || document.body.clientHeight) - 175
+    },
+    tableHeight() {
+      return ((document.documentElement.clientHeight || document.body.clientHeight) - 175) / 2 - 14
+    },
+    tableWidth() {
+      return (document.documentElement.clientWidth || document.body.clientWidth) / 3 * 2
     }
   },
   mounted() {
@@ -188,6 +232,9 @@ export default {
           }]
         })
       })
+    },
+    seach(index, checkDate) {
+      console.log(index + checkDate)
     },
     _initChart(element, expectedData) {
       this.chart = echarts.init(element)

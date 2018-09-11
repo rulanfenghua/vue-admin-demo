@@ -1,5 +1,7 @@
 <template>
-    <router-view class="main-content"></router-view>
+<!-- <keep-alive> -->
+  <router-view class="main-content"></router-view>
+<!-- </keep-alive> -->
 </template>
 
 <script>
