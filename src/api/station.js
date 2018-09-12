@@ -37,7 +37,7 @@ export function getMouth() {
 
 export function getPersonList() {
   return request({
-    url: '/station/getPersonList',
+    url: '/station/getAllResidentList',
     method: 'post'
   })
 }

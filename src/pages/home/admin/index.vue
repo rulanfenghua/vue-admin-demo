@@ -125,25 +125,14 @@
       <div class="container-pie-gender" ref="gender"></div>
     </div>
     </div>
-    <transition name="print">
-      <div class="printing" v-if="printingToggle">
-        <div id="printing">
-          <img :src="printingData.B_Addr1" alt="" style="width:100px;height:100px;margin-left:0">
-          <img :src="printingData.B_Addr2" alt="" style="width:100px;height:100px">
-          {{printingData.stationCode}}
-        </div>
-        <el-button @click="print"></el-button>
-        <el-button @click="_toggle"></el-button>
-      </div>
-    </transition>
-    <transition name="fade">
-      <div class="mask" v-show="printingToggle" @click="_toggle"></div>
-    </transition>
+    <!-- 引入打印组件 -->
+    <print ref="print"></print>
   </div>
 </template>
 
 <script>
 import {index, getWeek, getDay, getGender, getLast} from '@/api/admin'
+import print from '@/components/residentDetails/print'
 import echarts from 'echarts'
 
 export default {
@@ -154,6 +143,9 @@ export default {
       res_index: {},
       res_getDay: []
     }
+  },
+  components: {
+    print
   },
   computed: {
     clientHeight() {
@@ -247,8 +239,12 @@ export default {
         })
       })
     },
-    seach(index, checkDate) {
-      console.log(index + checkDate)
+    // 打印 调用子组件的方法
+    seach(id, checkDate) {
+      this.$nextTick(() => {
+        this.$refs.print.getPrinting(id, checkDate)
+        this.$refs.print._toggle()
+      })
     },
     _initChart(element, expectedData) {
       this.chart = echarts.init(element)
@@ -329,48 +325,6 @@ export default {
         flex: 1;
         margin-bottom: 7px;
       }
-    }
-  }
-  .printing {
-    position: fixed;
-    top: 0;
-    height: 100%;
-    width: 560px;
-    left: calc(50% - 280px);
-    z-index: 100;
-    overflow: auto;
-    background-color: red;
-
-    &.print-enter-active,
-    &.print-leave-active {
-      transition: all .3s ease;
-    }
-
-    &.print-enter,
-    &.print-leave-to {
-      opacity: 0;
-      transform: translate3d(0, 10px, 0);
-    }
-  }
-
-  .mask {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 40;
-    -webkit-backdrop-filter: blur(10px);
-    background: rgba(7, 17, 27, 0.6);
-
-    &.fade-enter-active,
-    &.fade-leave-active {
-      transition: all .3s ease;
-    }
-
-    &.fade-enter,
-    &.fade-leave-to {
-      opacity: 0;
     }
   }
 }

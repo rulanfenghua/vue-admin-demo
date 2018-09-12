@@ -35,9 +35,18 @@ export function getLast() {
   })
 }
 
-export function getPersonList() {
+export function getPersonList(page, limit, name, idcard, station, date) {
+  const data = {
+    page: page,
+    limit: limit,
+    name: name,
+    idcard: idcard,
+    station: station,
+    date: date
+  }
   return request({
     url: '/station/getAllResidentList',
-    method: 'post'
+    method: 'post',
+    data
   })
 }

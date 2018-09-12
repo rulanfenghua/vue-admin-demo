@@ -83,15 +83,16 @@
       <el-pagination :current-page="page" :page-sizes="[10,20,30]" :page-size="limit" :total="total" background layout="total, sizes, prev, pager, next, jumper"
         @size-change="handleSizeChange" @current-change="handleCurrentChange" />
     </div>
-    <resident-details :personalMess="personalMess" ref="resident"></resident-details>
+    <!-- 引入residentDetails组件 -->
+    <resident-details :personalMess="personalMess" :id="id" ref="resident"></resident-details>
   </div>
 </template>
 
 <script>
 import {getPersonList} from '@/api/station'
-import {
-  getPersonalMess
-} from '@/api/resident'
+// import {
+//   getPersonalMess
+// } from '@/api/resident' // getPersonalDateList原有的api地址
 import residentDetails from './residentDetails'
 
 export default {
@@ -111,6 +112,8 @@ export default {
       page: 1,
       limit: 20,
       total: 0,
+
+      id: '',
 
       pickerOptions: {
         shortcuts: [{
@@ -148,17 +151,21 @@ export default {
   },
   methods: {
     init() {
-      // let data = {
+      // 全部居民列表请求的数据格式
+      // {
       //   'pageNum': this.page,
       //   'pageSize': this.limit,
       //   'condition': {
       //     'name': this.name,
       //     'idcard': this.idcard,
+      //     'stationId': this.station,
       //     'date': this.date
       //   }
       // }
       this.loading = true
-      getPersonList().then(response => {
+      console.log('起止日期——————station')
+      console.log(this.date)
+      getPersonList(this.page, this.limit, this.name, this.idcard, this.station, this.date).then(response => {
         this.res_getPersonList = response.data
       }).catch(error => {
         this.loading = false
@@ -167,11 +174,18 @@ export default {
         this.loading = false
       })
     },
-    initMess(idcard) {
-      console.log(idcard)
-      getPersonalMess().then(response => {
-        this.$refs.resident._toggleResident()
+    initMess(id) {
+      // getPersonalDateList原有的api封装
+      // getPersonalMess().then(response => {
+      //   this.$refs.resident._toggleResident()
+      //   this.personalMess = response.data
+      // })
+      this.$http.get('/resident/getPersonalDateList' + '/' + id).then(response => {
         this.personalMess = response.data
+        this.id = id
+        this.$refs.resident._toggleResident()
+        console.log('居民列表数据——————station')
+        console.log(response.data)
       })
     }
   }

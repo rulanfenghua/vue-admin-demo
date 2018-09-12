@@ -21,6 +21,13 @@ export function getPersonalMess() {
 
 export function printing() {
   return request({
+    url: '/resident/printing',
+    method: 'get'
+  })
+}
+
+export function getPersonalDate() {
+  return request({
     url: '/resident/getPersonalDate',
     method: 'get'
   })

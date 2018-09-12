@@ -6,7 +6,18 @@
 
 <script>
 export default {
-  name: 'logging'
+  name: 'logging',
+  mounted() {
+    this.init()
+  },
+  methods: {
+    init() {
+      this.$http.post().then(response => {
+        console.log('数据————————log')
+        console.log(response)
+      })
+    }
+  }
 }
 </script>
 

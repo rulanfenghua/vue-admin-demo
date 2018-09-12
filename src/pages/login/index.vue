@@ -8,9 +8,7 @@
               <div class="tab-manager" @click="transManager">管理登陆入口</div>
             </div>
             <div class="login-main-manager" v-if="userToggle === 'manager'">
-              <div class="login-photo"></div>
-              <div class="login-input">
-                <form>
+                <!-- <form>
                 <ul class="login-input-enter">
                   <li class="name">
                     <span class="login-name-text">登陆名称</span>
@@ -25,22 +23,36 @@
                     <div class="change" @click="_toggle">修改密码</div>
                   </li>
                 </ul>
-                </form>
-                <!-- <el-form :model="loginForm" :rules="loginRules" class="login-input-enter" auto-complete="on" label-position="left">
-                  <el-form-item prop="account">
-                    <span class="svg-container svg-container_login">
-                      <svg-icon icon-class="user" />
+                </form> -->
+                <el-form :model="loginForm" :rules="loginRules" auto-complete="on" label-position="left" class="login-input-enter" label-width="80px">
+                  <el-form-item prop="name" label="用户名">
+                    <span class="">
+
                     </span>
                     <el-input
                       v-model="loginForm.username"
-                      :placeholder="$t('login.username')"
+                      placeholder="请填写您的用户名"
                       name="username"
                       type="text"
                       auto-complete="on"
                     />
                   </el-form-item>
-                </el-form> -->
-                <form>
+                  <el-form-item prop="password" label="密码">
+                    <span class="">
+
+                    </span>
+                    <el-input
+                      type="password"
+                      v-model="loginForm.password"
+                      placeholder="请填写您的密码"
+                      name="password"
+                      auto-complete="on"
+                      @keyup.enter.native="userLogin" />
+                  </el-form-item>
+                  <el-button type="primary" style="margin-bottom:30px;" @click.native.prevent="userLogin">点击登陆</el-button>
+                  <el-button type="primary" style="margin-bottom:30px;" @click.native.prevent="_toggle">修改密码</el-button>
+                </el-form>
+                <!-- <form>
                 <transition name="slide">
                 <ul class="login-input-change" v-show="changeToggle">
                   <li class="name">
@@ -61,15 +73,56 @@
                   </li>
                 </ul>
                 </transition>
-                </form>
-              </div>
+                </form> -->
+                <transition name="slide">
+                <el-form :model="loginForm" :rules="changeRules" auto-complete="on" label-position="left" class="login-input-change" v-show="changeToggle" label-width="80px">
+                  <el-form-item prop="name" label="用户名">
+                    <span class="">
+
+                    </span>
+                    <el-input
+                      v-model="loginForm.username"
+                      placeholder="请填写您的用户名"
+                      name="username"
+                      type="text"
+                      auto-complete="on"
+                    />
+                  </el-form-item>
+                  <el-form-item prop="password" label="密码">
+                    <span class="">
+
+                    </span>
+                    <el-input
+                      type="password"
+                      v-model="loginForm.password"
+                      placeholder="请填写您的密码"
+                      name="password"
+                      auto-complete="on"
+                    />
+                  </el-form-item>
+                  <el-form-item prop="newPassword" label="新密码">
+                    <span class="">
+
+                    </span>
+                    <el-input
+                      type="password"
+                      v-model="loginForm.newPassword"
+                      placeholder="请填写您新的密码"
+                      name="newPassword"
+                      auto-complete="on"
+                      @keyup.enter.native="change" />
+                  </el-form-item>
+                  <el-button :loading="changeLoading" type="primary" style="margin-bottom:30px;" @click.native.prevent="change">修改密码</el-button>
+                  <el-button type="primary" style="margin-bottom:30px;" @click.native.prevent="_toggle">取消</el-button>
+                </el-form>
+                </transition>
             </div>
-            <div class="login-main-resident" v-else v-loading="loading"
+            <!-- <div class="login-main-resident" v-else v-loading="loading"
               element-loading-text="正在加载居民数据"
               element-loading-spinner="el-icon-loading"
-            >
-              <div class="login-photo"></div>
-              <div class="login-input">
+            > -->
+            <div class="login-main-resident" v-else>
+              <!-- <div class="login-input">
                 <ul class="login-input-enter">
                   <li class="name">
                     <span class="login-name-text">姓名</span>
@@ -83,8 +136,36 @@
                     <el-button class="seach" @click="seach">查询</el-button>
                   </li>
                 </ul>
-              </div>
+              </div> -->
+              <el-form :model="residentLoginForm" :rules="seachRules" label-position="left" class="login-input-enter" label-width="80px">
+                  <el-form-item prop="name" label="名字">
+                    <span class="">
+
+                    </span>
+                    <el-input
+                      v-model="residentLoginForm.name"
+                      placeholder="请填写您的名字"
+                      name="name"
+                      type="text"
+                      auto-complete="on"
+                    />
+                  </el-form-item>
+                  <el-form-item prop="idcard" label="身份证号">
+                    <span class="">
+
+                    </span>
+                    <el-input
+                      type="text"
+                      v-model="residentLoginForm.idcard"
+                      placeholder="请填写您的身份证号"
+                      name="idcard"
+                      auto-complete="on"
+                      @keyup.enter.native="seach" />
+                  </el-form-item>
+                  <el-button type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="seach">查询诊断列表</el-button>
+                </el-form>
             </div>
+            <!-- 引入组件 -->
             <resident-details :personalMess="personalMess" :id="id" ref="resident"></resident-details>
           </div>
         </div>
@@ -95,24 +176,47 @@
 import {login, changePass} from '@/api/permission'
 // import {loginResident, getPersonalMess} from '@/api/resident'
 import {loginResident} from '@/api/resident'
-import residentDetails from './residentDetails'
+import residentDetails from '@/components/residentDetails'
 
 export default {
   data() {
     return {
-      account: '',
-      password: '',
-      newPassword: '',
+      // loginForm.userName: '',
+      // password: '',
+      // newPassword: '',
       userToggle: 'resident',
       changeToggle: false,
+      loginForm: {
+        userName: '',
+        password: '',
+        newPassword: ''
+      },
 
-      name: '',
-      idCard: '',
+      // name: '',
+      // idCard: '',
       id: '',
       personalMess: [],
       residentToggle: false,
+      residentLoginForm: {
+        name: '',
+        idCard: ''
+      },
 
-      loading: false
+      changeLoading: false,
+
+      loginRules: {
+        username: [{ trigger: 'blur' }],
+        password: [{ trigger: 'blur' }]
+      },
+      changeRules: {
+        username: [{ trigger: 'blur' }],
+        password: [{ trigger: 'blur' }],
+        newPassword: [{ trigger: 'blur' }]
+      },
+      seachRules: {
+        name: [{ trigger: 'blur' }],
+        idcard: [{ trigger: 'blur' }]
+      }
     }
   },
   components: {
@@ -126,7 +230,7 @@ export default {
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
-      login(this.account, this.password).then(response => {
+      login(this.loginForm.userName, this.loginForm.password).then(response => {
         if (response.code === 0) {
           this.$message({
             message: '登陆成功，欢迎 ' + response.data.userName,
@@ -155,7 +259,8 @@ export default {
       })
     },
     change() {
-      changePass(this.account, this.password, this.newPassword).then(response => {
+      this.changeLoading = true
+      changePass(this.loginForm.userName, this.loginForm.password, this.loginForm.newPassword).then(response => {
         if (response.code === 0) {
           this.$message({
             message: '密码修改成功',
@@ -163,10 +268,16 @@ export default {
           })
           this._toggle()
         } else {
+          this.changeLoading = false
           this.$message.error({
             message: response.msg
           })
         }
+      }).catch(error => {
+        this.changeLoading = false
+        console.log(error)
+      }).then(() => {
+        this.changeLoading = false
       })
     },
     transResident() {
@@ -175,9 +286,16 @@ export default {
     transManager() {
       this.userToggle = 'manager'
     },
+    // 居民查询方法
     seach() {
-      this.loading = true
-      loginResident(this.name, this.idCard).then(response => {
+      // this.loading = true // 废弃的element加载层
+      const loading = this.$loading({
+        lock: true,
+        text: '正在加载居民数据',
+        spinner: 'el-icon-loading',
+        background: 'rgba(125, 125, 125, 0.2)'
+      })
+      loginResident(this.residentLoginForm.name, this.residentLoginForm.idCard).then(response => {
         if (response.code === 0) {
           this.$refs.resident._toggleResident()
           this.id = response.data.id
@@ -189,10 +307,12 @@ export default {
           })
         }
       }).catch(error => {
-        this.loading = false
+        // this.loading = false
+        loading.close()
         console.log(error)
       }).then(() => {
-        this.loading = false
+        // this.loading = false
+        loading.close()
       })
     },
     _toggle() {
@@ -201,7 +321,7 @@ export default {
     _initMess() {
       this.$http.get('/resident/getPersonalDateList' + '/' + this.id).then(response => {
         this.personalMess = response.data
-        console.log('居民列表数据——————login')
+        console.log('居民列表数据————————login')
         console.log(response.data)
       })
     }
@@ -236,6 +356,7 @@ export default {
         display: flex;
         width: 100%;
         height: 35px;
+        margin-bottom: 30px;
         .tab-manager {
           flex: 1;
           font-weight: bold;
@@ -256,16 +377,7 @@ export default {
       .login-main-manager {
         width: 100%;
         height: 200px;
-        .login-photo {
-          display: inline-block;
-          width: 45%;
-          height: 100%;
-          vertical-align: top;
-          background-color: red;
-        }
-        .login-input {
-          display: inline-block;
-          height: 100%;
+        // background-color: #fff;
           .login-input-enter {
             .name {
 
@@ -275,14 +387,12 @@ export default {
             }
             .button {
               .enter {
-                display: inline-block;
                 background-color: yellow;
                 height: 30px;
                 width: 90px;
                 cursor: pointer;
               }
               .change {
-                display: inline-block;
                 background-color: green;
                 height: 30px;
                 width: 90px;
@@ -297,7 +407,7 @@ export default {
             height: 200px;
             width: 330px;
             z-index: 10;
-            background-color: blue;
+            background-color: #fff;
             &.slide-enter-active, &.slide-leave-active {
               transition: all .3s ease;
             }
@@ -306,20 +416,11 @@ export default {
               opacity: 0;
             }
           }
-        }
       }
       .login-main-resident {
         width: 100%;
         height: 200px;
-        .login-photo {
-          display: inline-block;
-          width: 30%;
-          height: 100%;
-          vertical-align: top;
-        }
-        .login-input {
-          display: inline-block;
-          height: 100%;
+        // background-color: #fff;
           .login-input-enter {
             .name {
 
@@ -331,7 +432,6 @@ export default {
 
             }
           }
-        }
       }
     }
   }

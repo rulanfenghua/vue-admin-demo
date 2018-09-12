@@ -20,7 +20,7 @@ export default {
     }
   },
   created() {
-    if (sessionStorage.getItem('stationId')) {
+    if (sessionStorage.getItem('id')) {
       this.currentRole = 'manager'
     }
   }
