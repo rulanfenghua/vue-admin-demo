@@ -1,22 +1,27 @@
 import request from '@/config/httpConfig'
 
-export function loginResident() {
+export function loginResident(name, idCard) {
+  const data = {
+    name: name,
+    idCard: idCard
+  }
   return request({
     url: '/resident/login',
-    method: 'post'
+    method: 'post',
+    data
   })
 }
 
 export function getPersonalMess() {
   return request({
-    url: '/resident/getPersonalMess',
-    method: 'post'
+    url: '/resident/getPersonalDateList',
+    method: 'get'
   })
 }
 
 export function printing() {
   return request({
-    url: '/resident/printing',
-    method: 'post'
+    url: '/resident/getPersonalDate',
+    method: 'get'
   })
 }

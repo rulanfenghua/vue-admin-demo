@@ -5,8 +5,8 @@
     <ul class="mess">
       <li class="mess-item" v-for="(data,index) in personalMess" :key="index">
         <span class="text">诊断时间</span>
-        <span class="date">{{data.checkDate}}</span>
-        <el-button @click="getPrinting"></el-button>
+        <span class="date">{{data.checkDate | formatTime}}</span>
+        <el-button @click="getPrinting(data.id,data.checkDate)"></el-button>
       </li>
     </ul>
     <el-button @click="_toggleResident"></el-button>
@@ -14,9 +14,27 @@
   <transition name="print">
   <div class="printing" v-if="printingToggle">
     <div id="printing">
-    <img :src="printingData.B_Addr1" alt="" style="width:100px;height:100px;margin-left:0">
+      <h1 class="title">{{printingData.title}}</h1>
+      <ul class="header">
+        <li>
+          姓名：{{printingData.name}}
+        </li>
+        <li>
+          性别：{{printingData.gender}}
+        </li>
+        <li>
+          年龄：{{printingData.age}}
+        </li>
+        <li>
+          档案编号：{{printingData.stationCode}}
+        </li>
+      </ul>
+      <div class="photo">
+        <img :src="printingData.B_Addr1" alt="" style="width:100px;height:100px">
     <img :src="printingData.B_Addr2" alt="" style="width:100px;height:100px">
-    {{printingData.stationCode}}
+    </div>
+      <p class="text" ref="text">
+      </p>
     </div>
     <el-button @click="print"></el-button>
     <el-button @click="_toggle"></el-button>
@@ -30,7 +48,7 @@
 </template>
 
 <script>
-import { printing } from '@/api/resident'
+// import { printing } from '@/api/resident'
 import 'print-js'
 
 export default {
@@ -46,12 +64,22 @@ export default {
     personalMess: {
       type: Array
     }
+    // id: {
+    //   type: Number
+    // }
   },
   methods: {
-    getPrinting() {
-      printing().then(response => {
+    getPrinting(id, checkDate) {
+      this.$http.get('/resident/getPersonalDate' + '/' + id + '/' + checkDate).then(response => {
         this.printingData = response.data
         this._toggle()
+        this.$nextTick(() => {
+          this.$refs.text.innerHTML = this._format(response.data.text)
+        })
+      }).catch((error) => {
+        console.log(error)
+      }).then(() => {
+
       })
     },
     print() {
@@ -68,6 +96,12 @@ export default {
     },
     _toggle() {
       this.printingToggle = !this.printingToggle
+    },
+    _format(data) {
+      data = data.replace(/(。)([\u4E00-\u9FA5]+：)/g, '$1<br><br>$2')
+      data = data.replace(/：(?=[\u4E00-\u9FA5])/g, '：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
+      data = data.replace(/。(?=[\u4E00-\u9FA5])/g, '。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
+      return data
     }
   }
 }
@@ -100,7 +134,7 @@ export default {
     left: calc(50% - 280px);
     z-index: 100;
     overflow: auto;
-    background-color: red;
+    background-color: #fff;
      &.print-enter-active, &.print-leave-active {
       transition: all .3s ease;
     }

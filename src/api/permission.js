@@ -1,15 +1,26 @@
 import request from '@/config/httpConfig'
 
-export function login() {
+export function login(account, password) {
+  const data = {
+    userName: account,
+    password: password
+  }
   return request({
-    url: '/manager/login',
-    method: 'post'
+    url: '/login',
+    method: 'post',
+    data
   })
 }
 
-export function changePass() {
+export function changePass(account, password, newPassword) {
+  const data = {
+    loginName: account,
+    password: password,
+    newPassword: newPassword
+  }
   return request({
-    url: '/manager/changePass',
-    method: 'post'
+    url: '/changePass',
+    method: 'post',
+    data
   })
 }

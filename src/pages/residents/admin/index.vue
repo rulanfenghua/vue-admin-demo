@@ -98,7 +98,7 @@
           width="120">
           <template slot-scope="scope">
             <el-button
-              @click.native.prevent="initMess(scope.row.idcard)"
+              @click.native.prevent="initMess(scope.row.id)"
               type="text"
               size="small">
               查看检查记录清单
@@ -116,7 +116,7 @@
 
 <script>
 import {getPersonList} from '@/api/admin'
-import {getPersonalMess} from '@/api/resident'
+// import {getPersonalMess} from '@/api/resident'
 import residentDetails from './residentDetails'
 
 export default {
@@ -194,11 +194,16 @@ export default {
         this.loading = false
       })
     },
-    initMess(idcard) {
-      console.log(idcard)
-      getPersonalMess().then(response => {
+    initMess(id) {
+      // getPersonalMess().then(response => {
+      //   this.$refs.resident._toggleResident()
+      //   this.personalMess = response.data
+      // })
+      this.$http.get('/resident/getPersonalDateList' + '/' + id).then(response => {
         this.$refs.resident._toggleResident()
         this.personalMess = response.data
+        console.log('居民列表数据——————admin')
+        console.log(response.data)
       })
     }
   }

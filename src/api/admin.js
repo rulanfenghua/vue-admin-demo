@@ -2,42 +2,42 @@ import request from '@/config/httpConfig'
 
 export function index() {
   return request({
-    url: '/manager/index',
+    url: '/station/index',
     method: 'post'
   })
 }
 
 export function getWeek() {
   return request({
-    url: '/manager/getWeek',
+    url: '/station/getWeek',
     method: 'post'
   })
 }
 
 export function getGender() {
   return request({
-    url: 'manager/getGender',
+    url: '/station/getGender',
     method: 'post'
   })
 }
 
 export function getDay() {
   return request({
-    url: '/manager/getDay',
+    url: '/station/getDayData',
     method: 'post'
   })
 }
 
 export function getLast() {
   return request({
-    url: '/manager/getLast',
+    url: '/station/getLast',
     method: 'post'
   })
 }
 
 export function getPersonList() {
   return request({
-    url: '/manager/getPersonList',
+    url: '/station/getAllResidentList',
     method: 'post'
   })
 }

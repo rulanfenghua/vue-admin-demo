@@ -26,6 +26,20 @@
                   </li>
                 </ul>
                 </form>
+                <!-- <el-form :model="loginForm" :rules="loginRules" class="login-input-enter" auto-complete="on" label-position="left">
+                  <el-form-item prop="account">
+                    <span class="svg-container svg-container_login">
+                      <svg-icon icon-class="user" />
+                    </span>
+                    <el-input
+                      v-model="loginForm.username"
+                      :placeholder="$t('login.username')"
+                      name="username"
+                      type="text"
+                      auto-complete="on"
+                    />
+                  </el-form-item>
+                </el-form> -->
                 <form>
                 <transition name="slide">
                 <ul class="login-input-change" v-show="changeToggle">
@@ -63,7 +77,7 @@
                   </li>
                   <li class="idcard">
                     <span class="login-idcard-text">身份证号</span>
-                    <input type="text" class="login-idcard-input" placeholder="身份证号" v-model.trim="idcard" autocomplete="on">
+                    <input type="text" class="login-idcard-input" placeholder="身份证号" v-model.trim="idCard" autocomplete="on">
                   </li>
                   <li class="button">
                     <el-button class="seach" @click="seach">查询</el-button>
@@ -71,7 +85,7 @@
                 </ul>
               </div>
             </div>
-            <resident-details :personalMess="personalMess" ref="resident"></resident-details>
+            <resident-details :personalMess="personalMess" :id="id" ref="resident"></resident-details>
           </div>
         </div>
     </div>
@@ -79,7 +93,8 @@
 
 <script>
 import {login, changePass} from '@/api/permission'
-import {loginResident, getPersonalMess} from '@/api/resident'
+// import {loginResident, getPersonalMess} from '@/api/resident'
+import {loginResident} from '@/api/resident'
 import residentDetails from './residentDetails'
 
 export default {
@@ -92,7 +107,8 @@ export default {
       changeToggle: false,
 
       name: '',
-      idcard: '',
+      idCard: '',
+      id: '',
       personalMess: [],
       residentToggle: false,
 
@@ -110,15 +126,18 @@ export default {
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
-      login().then(response => {
+      login(this.account, this.password).then(response => {
         if (response.code === 0) {
           this.$message({
-            message: '登陆成功，欢迎 ' + response.data.name,
+            message: '登陆成功，欢迎 ' + response.data.userName,
             type: 'success'
           })
-          sessionStorage.setItem('name', response.data.name)
+          sessionStorage.setItem('name', response.data.userName)
           this.$store.commit('LOGIN_IN', response.code)
           this.$router.replace('/')
+          console.log('权限相关————————')
+          console.log(response.data)
+          console.log(response.data.stationId)
           if (response.data.stationId) {
             sessionStorage.setItem('id', response.data.stationId)
           }
@@ -136,7 +155,7 @@ export default {
       })
     },
     change() {
-      changePass().then(response => {
+      changePass(this.account, this.password, this.newPassword).then(response => {
         if (response.code === 0) {
           this.$message({
             message: '密码修改成功',
@@ -158,9 +177,10 @@ export default {
     },
     seach() {
       this.loading = true
-      loginResident().then(response => {
+      loginResident(this.name, this.idCard).then(response => {
         if (response.code === 0) {
           this.$refs.resident._toggleResident()
+          this.id = response.data.id
           this._initMess()
         } else {
           this.loading = false
@@ -179,8 +199,10 @@ export default {
       this.changeToggle = !this.changeToggle
     },
     _initMess() {
-      getPersonalMess().then(response => {
+      this.$http.get('/resident/getPersonalDateList' + '/' + this.id).then(response => {
         this.personalMess = response.data
+        console.log('居民列表数据——————login')
+        console.log(response.data)
       })
     }
   }
@@ -188,18 +210,26 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.login-wrapper{
+  width: 100%;
+  height: 100%;
+  background-color: #0f54a1;
+
   .login {
     position: relative;
     width: 600px;
-    // height: 400px;
     top: calc(50% - 200px);
     left: calc(50% - 300px);
     .title {
       display: block;
-      font-weight: bolder;
+      font-weight: 900;
       text-align: center;
-      font-size: 27px;
+      font-size: 35px;
       line-height: 54px;
+      color: #fff;
+      font-family: Helvetica,Arial,"Hiragino Sans GB","Microsoft Yahei","黑体",sans-serif!important;
+      letter-spacing: 5px;
+      margin-bottom: 50px;
     }
     .login-content {
       .login-tab {
@@ -305,4 +335,5 @@ export default {
       }
     }
   }
+}
 </style>
