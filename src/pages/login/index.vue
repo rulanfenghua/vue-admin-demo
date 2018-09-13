@@ -113,8 +113,8 @@
                       @keyup.enter.native="change" />
                   </el-form-item>
                   <div class="button">
-                  <el-button :loading="changeLoading" type="primary" @click.native.prevent="change">修改密码</el-button>
-                  <el-button type="primary" @click.native.prevent="_toggle">取消</el-button>
+                  <el-button :loading="changeLoading" type="primary" @click.native.prevent="change" size="medium">修改密码</el-button>
+                  <el-button type="info" @click.native.prevent="_toggle" size="medium">取消</el-button>
                   </div>
                 </el-form>
                 </transition>
@@ -168,7 +168,7 @@
                 </el-form>
             </div>
             <!-- 引入组件 -->
-            <resident-details :personalMess="personalMess" :id="id" ref="resident"></resident-details>
+            <resident-details :personalMess="personalMess" :id="id" :personalData="personalData" ref="resident"></resident-details>
           </div>
         </div>
     </div>
@@ -301,7 +301,7 @@ export default {
         lock: true,
         text: '正在加载居民数据',
         spinner: 'el-icon-loading',
-        background: 'rgba(125, 125, 125, 0.2)'
+        background: 'rgba(0, 0, 0, 0.7)'
       })
       loginResident(this.residentLoginForm.name, this.residentLoginForm.idcard).then(response => {
         if (response.code === 0) {

@@ -11,6 +11,7 @@ import axios from './config/httpConfig'
 import * as globalFilter from './filters/filters'
 
 Vue.prototype.$http = axios
+axios.defaults.withCredentials = true
 
 Object.keys(globalFilter).forEach(key => {
   Vue.filter(key, globalFilter[key])
@@ -19,7 +20,6 @@ Object.keys(globalFilter).forEach(key => {
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
-axios.defaults.withCredentials = true
 
 router.beforeEach((to, from, next) => {
   if (!store.state.UserToken) {
