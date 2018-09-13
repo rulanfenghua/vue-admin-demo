@@ -19,10 +19,15 @@ export function getPersonalMess() {
   })
 }
 
-export function printing() {
+export function printing(id, checkDate) {
+  const data = {
+    id: id,
+    checkDate: checkDate
+  }
   return request({
     url: '/resident/printing',
-    method: 'get'
+    method: 'post',
+    data
   })
 }
 

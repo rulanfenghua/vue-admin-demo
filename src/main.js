@@ -19,6 +19,7 @@ Object.keys(globalFilter).forEach(key => {
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
+axios.defaults.withCredentials = true
 
 router.beforeEach((to, from, next) => {
   if (!store.state.UserToken) {

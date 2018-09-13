@@ -1,5 +1,7 @@
 <template>
+<!-- 顶部layout结构 -->
   <div class="container">
+    <!-- 顶部tab栏 -->
     <div class="top-aside">
       <h1 class="title">桥西区医学影像信息管理系统</h1>
       <div class="tab-container">
@@ -42,13 +44,17 @@
           </li>
         </ul>
       </div>
+      <!-- 退出登陆部分 -->
       <div class="top-right">
         <span class="user-name">{{currentDate}}：{{name}}</span>
         <div class="quit" @click="loginOut" title="点击退出登陆">
           <i class="icon-switch"></i>
         </div>
       </div>
+      <!-- 退出登陆部分结束 -->
     </div>
+    <!-- 顶部tab栏结束 -->
+    <!-- 面包屑导航 -->
     <div class="breadcrumd-wrapper">
       <span class="intro">您所在的位置是：</span>
       <el-breadcrumb separator="/">
@@ -65,10 +71,12 @@
         </transition-group>
       </el-breadcrumb>
     </div>
+    <!-- 面包屑导航结束 -->
   </div>
 </template>
 
 <script>
+import { logout } from '@/api/permission'
 import { mapState } from 'vuex'
 
 export default {
@@ -80,6 +88,7 @@ export default {
   },
   computed: {
     ...mapState(['crumbList']),
+    // 时间检查方法的计算属性
     currentDate() {
       const date = new Date()
       if (date.getHours() < 6) {
@@ -100,9 +109,11 @@ export default {
   },
   methods: {
     loginOut() {
-      this.$store.commit('LOGIN_OUT')
-      /* 防止切换角色时addRoutes重复添加路由导致出现警告 */
-      window.location.reload()
+      logout().then(response => {
+        this.$store.commit('LOGIN_OUT')
+        /* 防止切换角色时addRoutes重复添加路由导致出现警告 */
+        window.location.reload()
+      })
     }
   }
 }
@@ -197,6 +208,7 @@ export default {
       }
     }
   }
+  // 面包屑导航的动画
   .breadcrumb-enter,
   .breadcrumb-leave-active {
     opacity: 0;

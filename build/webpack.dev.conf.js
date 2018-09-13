@@ -36,8 +36,11 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       ? { warnings: false, errors: true }
       : false,
     publicPath: config.dev.assetsPublicPath,
+    // proxy: {
+    //   '/': 'http://172.16.18.66:8081'
+    // },
     proxy: {
-      '/': 'http://172.16.18.66:8081'
+      '/': 'https://easy-mock.com/mock/5b912893028a6217e24ec091/fun'
     },
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {

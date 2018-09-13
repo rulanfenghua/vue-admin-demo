@@ -18,7 +18,7 @@
     <transition name="print">
       <div class="printing" v-if="printingToggle">
         <div id="printing">
-          <h1 class="title">{{printingData.title}}</h1>
+          <h1 class="title">中华社区卫生服务中心B超报告单</h1>
           <ul class="header">
             <li>
               姓名：{{printingData.name}}
@@ -30,19 +30,24 @@
               年龄：{{printingData.age}}
             </li>
             <li>
-              档案编号：{{printingData.stationCode}}
+              档案编号：{{printingData.fileNumber}}
+            </li>
+            <li>
+              检验时间：{{printingData.provingTime | formatTime}}
             </li>
           </ul>
           <div class="photo">
-            <img :src="printingData.B_Addr1" alt="" style="width:100px;height:100px">
-            <img :src="printingData.B_Addr2" alt="" style="width:100px;height:100px">
+            <img :src="printingData.bAddr1" alt="" style="width:100px;height:100px">
+            <img :src="printingData.bAddr2" alt="" style="width:100px;height:100px">
           </div>
           <p class="text" ref="text">
           </p>
         </div>
+        <div class="footer">
         <el-button @click="print">立即打印</el-button>
         <el-button @click="print">保存为PDF</el-button>
         <el-button @click="_toggle();_toggleResident()">确定</el-button>
+        </div>
       </div>
     </transition>
     <!-- 打印结束 -->
@@ -55,7 +60,7 @@
 </template>
 
 <script>
-// import { printing } from '@/api/resident' // printing原有api地址
+import { printing } from '@/api/resident' // printing原有api地址
 import 'print-js'
 
 export default {
@@ -77,12 +82,18 @@ export default {
   },
   methods: {
     getPrinting(id, checkDate) {
-      this.$http.get('/resident/printing' + '/' + id + '/' + checkDate).then(response => {
+      console.log('传入参数————————print')
+      console.log('id: ' + id)
+      console.log('checkDate: ' + checkDate)
+      // this.$http.get('/resident/printing' + '/' + id + '/' + checkDate).then(response => {
+      printing(id, checkDate).then(response => {
+        console.log('打印数据————————print')
+        console.log(response)
         this.printingData = response.data
         this._toggleResident()
         this._toggle()
         this.$nextTick(() => {
-          this.$refs.text.innerHTML = this._format(response.data.text)
+          this.$refs.text.innerHTML = this._format(response.data.remark)
         })
       }).catch((error) => {
         console.log(error)
@@ -133,10 +144,12 @@ export default {
     .printing {
       position: fixed;
       top: 0;
-      height: 100%;
+      height: calc(100% - 4px);
       width: 600px;
+      margin: 2px 0;
       left: calc(50% - 300px);
-      border-radius: 2px;
+      border-radius: 4px;
+      box-shadow: 0 0 10px #ddd;
       z-index: 3000;
       overflow: auto;
       background-color: #fff;
@@ -150,6 +163,31 @@ export default {
       &.print-leave-to {
         opacity: 0;
         transform: translate3d(0, 10px, 0);
+      }
+      #printing {
+        .title {
+          text-align: center;
+
+        }
+        .header {
+          text-align: center;
+          li {
+            display: inline-block;
+            margin-right: 7px;
+
+          }
+        }
+        .photo {
+          text-align: center;
+          img {
+            display: inline-block;
+            margin-right: 20px;
+          }
+        }
+        .text {
+          margin: 0 auto;
+          line-height: 17px;
+        }
       }
     }
 

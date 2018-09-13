@@ -4,7 +4,7 @@
     <transition name="print">
       <div class="printing" v-if="printingToggle">
         <div id="printing">
-          <h1 class="title">{{printingData.title}}</h1>
+          <h1 class="title">中华社区卫生服务中心B超报告单</h1>
           <ul class="header">
             <li>
               姓名：{{printingData.name}}
@@ -88,4 +88,90 @@ export default {
 </script>
 
 <style scoped lang="scss">
+#printing {
+  .title {
+    text-align: center;
+
+  }
+  .header {
+    text-align: center;
+    li {
+      display: inline-block;
+      margin-right: 7px;
+
+    }
+  }
+  .photo {
+    text-align: center;
+    img {
+      display: inline-block;
+      margin-right: 20px;
+    }
+  }
+}
+
+.printing {
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 600px;
+  left: calc(50% - 300px);
+  border-radius: 2px;
+  z-index: 3000;
+  overflow: auto;
+  background-color: #fff;
+
+  &.print-enter-active,
+  &.print-leave-active {
+    transition: all .3s ease;
+  }
+
+  &.print-enter,
+  &.print-leave-to {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  #printing {
+    .title {
+      text-align: center;
+
+    }
+    .header {
+      text-align: center;
+      li {
+        display: inline-block;
+        margin-right: 7px;
+
+      }
+    }
+    .photo {
+      text-align: center;
+      img {
+        display: inline-block;
+        margin-right: 20px;
+      }
+    }
+  }
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 40;
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(7, 17, 27, 0.6);
+
+  &.fade-enter-active,
+  &.fade-leave-active {
+    transition: all .3s ease;
+  }
+
+  &.fade-enter,
+  &.fade-leave-to {
+    opacity: 0;
+  }
+}
 </style>

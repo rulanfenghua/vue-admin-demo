@@ -12,6 +12,13 @@ export function login(account, password) {
   })
 }
 
+export function logout() {
+  return request({
+    url: '/logout',
+    method: 'get'
+  })
+}
+
 export function changePass(account, password, newPassword) {
   const data = {
     loginName: account,

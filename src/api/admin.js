@@ -9,14 +9,14 @@ export function index() {
 
 export function getWeek() {
   return request({
-    url: '/station/getWeek',
+    url: '/station/getSevenDay',
     method: 'post'
   })
 }
 
 export function getGender() {
   return request({
-    url: '/station/getGender',
+    url: '/station/getByManWomanNum',
     method: 'post'
   })
 }

@@ -75,7 +75,7 @@
                 </transition>
                 </form> -->
                 <transition name="slide">
-                <el-form :model="loginForm" :rules="changeRules" auto-complete="on" label-position="left" class="login-input-change" v-show="changeToggle" label-width="80px">
+                <el-form :model="loginForm" :rules="changeRules" auto-complete="on" label-position="left" class="login-input-change" v-show="changeToggle" label-width="80px" style="width:600px">
                   <el-form-item prop="name" label="用户名">
                     <span class="">
 
@@ -112,8 +112,10 @@
                       auto-complete="on"
                       @keyup.enter.native="change" />
                   </el-form-item>
-                  <el-button :loading="changeLoading" type="primary" style="margin-bottom:30px;" @click.native.prevent="change">修改密码</el-button>
-                  <el-button type="primary" style="margin-bottom:30px;" @click.native.prevent="_toggle">取消</el-button>
+                  <div class="button">
+                  <el-button :loading="changeLoading" type="primary" @click.native.prevent="change">修改密码</el-button>
+                  <el-button type="primary" @click.native.prevent="_toggle">取消</el-button>
+                  </div>
                 </el-form>
                 </transition>
             </div>
@@ -202,6 +204,8 @@ export default {
         idCard: ''
       },
 
+      personalData: {},
+
       changeLoading: false,
 
       loginRules: {
@@ -230,7 +234,7 @@ export default {
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
-      login(this.loginForm.userName, this.loginForm.password).then(response => {
+      login(this.loginForm.username, this.loginForm.password).then(response => {
         if (response.code === 0) {
           this.$message({
             message: '登陆成功，欢迎 ' + response.data.userName,
@@ -239,11 +243,13 @@ export default {
           sessionStorage.setItem('name', response.data.userName)
           this.$store.commit('LOGIN_IN', response.code)
           this.$router.replace('/')
-          console.log('权限相关————————')
+          console.log('权限相关————————login')
           console.log(response.data)
-          console.log(response.data.stationId)
-          if (response.data.stationId) {
-            sessionStorage.setItem('id', response.data.stationId)
+          console.log(response.data.levels)
+          if (response.data.levels) {
+            sessionStorage.setItem('levels', response.data.levels)
+            console.log('角色权限相关————————login')
+            console.log('levels: ' + sessionStorage.getItem('levels'))
           }
         } else {
           loading.close()
@@ -253,6 +259,7 @@ export default {
         }
       }).catch(error => {
         loading.close()
+        console.log('错误————————login')
         console.log(error)
       }).then(() => {
         loading.close()
@@ -260,7 +267,7 @@ export default {
     },
     change() {
       this.changeLoading = true
-      changePass(this.loginForm.userName, this.loginForm.password, this.loginForm.newPassword).then(response => {
+      changePass(this.loginForm.username, this.loginForm.password, this.loginForm.newPassword).then(response => {
         if (response.code === 0) {
           this.$message({
             message: '密码修改成功',
@@ -275,6 +282,7 @@ export default {
         }
       }).catch(error => {
         this.changeLoading = false
+        console.log('错误————————change')
         console.log(error)
       }).then(() => {
         this.changeLoading = false
@@ -295,11 +303,14 @@ export default {
         spinner: 'el-icon-loading',
         background: 'rgba(125, 125, 125, 0.2)'
       })
-      loginResident(this.residentLoginForm.name, this.residentLoginForm.idCard).then(response => {
+      loginResident(this.residentLoginForm.name, this.residentLoginForm.idcard).then(response => {
         if (response.code === 0) {
-          this.$refs.resident._toggleResident()
+          console.log('居民登陆————————seach')
+          console.log(response)
+          this.personalData = response.data
           this.id = response.data.id
           this._initMess()
+          this.$refs.resident._toggleResident()
         } else {
           this.loading = false
           this.$message.error({
@@ -309,6 +320,7 @@ export default {
       }).catch(error => {
         // this.loading = false
         loading.close()
+        console.log('错误————————seach')
         console.log(error)
       }).then(() => {
         // this.loading = false
@@ -320,9 +332,9 @@ export default {
     },
     _initMess() {
       this.$http.get('/resident/getPersonalDateList' + '/' + this.id).then(response => {
-        this.personalMess = response.data
         console.log('居民列表数据————————login')
-        console.log(response.data)
+        console.log(response)
+        this.personalMess = response.data
       })
     }
   }
@@ -355,23 +367,37 @@ export default {
       .login-tab {
         display: flex;
         width: 100%;
-        height: 35px;
+        height: 40px;
         margin-bottom: 30px;
+        letter-spacing: 4px;
         .tab-manager {
           flex: 1;
           font-weight: bold;
-          line-height: 35px;
+          line-height: 40px;
           text-align: center;
           cursor: pointer;
           background-color: green;
+          &:active {
+            border: 1px solid #000;
+            background-color: green;
+            border-radius: 1px;
+          }
         }
         .tab-resident {
           flex: 1;
           font-weight: bold;
-          line-height: 35px;
+          line-height: 40px;
           text-align: center;
           cursor: pointer;
           background-color: yellow;
+          &:active {
+            border: 1px solid #000;
+            background-color: yellow;
+            border-radius: 1px;
+          }
+        }
+        .tab-confirm {
+
         }
       }
       .login-main-manager {
@@ -403,10 +429,12 @@ export default {
           .login-input-change {
             position: absolute;
             right: 0;
-            bottom: 0;
-            height: 200px;
-            width: 330px;
+            top: 102px;
+            // height: 194px; // 自适应高度
+            // width: 330px; // el-form的width属性不能在此设置
             z-index: 10;
+            border-radius: 4px;
+            border: 1px solid #fff;
             background-color: #fff;
             &.slide-enter-active, &.slide-leave-active {
               transition: all .3s ease;
@@ -414,6 +442,17 @@ export default {
             &.slide-enter, &.slide-leave-to {
               transform: translate3d(50%,0,0);
               opacity: 0;
+            }
+            .el-form-item {
+              margin-right: 42px;
+              margin-left: 26px;
+              &:first-child {
+                margin-top: 30px;
+              }
+            }
+            .button {
+              text-align: center;
+              padding-right: 204px;
             }
           }
       }
