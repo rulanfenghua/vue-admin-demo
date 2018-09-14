@@ -33,7 +33,7 @@ export function printing(id, checkDate) {
 
 export function getPersonalDate() {
   return request({
-    url: '/resident/getPersonalDate',
+    url: '/resident/getPersonalMess',
     method: 'get'
   })
 }

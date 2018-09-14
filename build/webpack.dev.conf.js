@@ -39,9 +39,9 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     // proxy: {
     //   '/': 'http://172.16.18.66:8081'
     // },
-    proxy: {
-      '/': 'https://easy-mock.com/mock/5b912893028a6217e24ec091/fun'
-    },
+    // proxy: {
+    //   '/': 'https://easy-mock.com/mock/5b912893028a6217e24ec091/fun'
+    // },
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,

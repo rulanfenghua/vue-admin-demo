@@ -72,7 +72,7 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="120">
           <template slot-scope="scope">
-            <el-button @click.native.prevent="initMess(scope.row.idcard)" type="text" size="small">
+            <el-button @click.native.prevent="initMess(scope.row.id,scope.row.idCard)" type="" size="small" loading="loadingMess">
               查看检查记录清单
             </el-button>
           </template>
@@ -84,7 +84,7 @@
         @size-change="handleSizeChange" @current-change="handleCurrentChange" />
     </div>
     <!-- 引入residentDetails组件 -->
-    <resident-details :personalMess="personalMess" :id="id" ref="resident"></resident-details>
+    <resident-details :personalMess="personalMess" :id="id" :personalData="personalData" ref="resident"></resident-details>
   </div>
 </template>
 
@@ -93,7 +93,7 @@ import {getPersonList} from '@/api/station'
 // import {
 //   getPersonalMess
 // } from '@/api/resident' // getPersonalDateList原有的api地址
-import residentDetails from './residentDetails'
+import residentDetails from '@/components/residentDetails'
 
 export default {
   name: 'manager',
@@ -104,6 +104,7 @@ export default {
     return {
       res_getPersonList: [],
       personalMess: [],
+      personalData: {},
 
       name: '',
       idcard: '',
@@ -143,7 +144,8 @@ export default {
         }]
       },
 
-      loading: false
+      loading: false,
+      loadingMess: false
     }
   },
   created() {
@@ -165,7 +167,7 @@ export default {
       this.loading = true
       console.log('起止日期——————station')
       console.log(this.date)
-      getPersonList(this.page, this.limit, this.name, this.idcard, this.station, this.date).then(response => {
+      getPersonList(this.page, this.limit, this.name, this.idcard, this.date).then(response => {
         this.res_getPersonList = response.data
       }).catch(error => {
         this.loading = false
@@ -174,16 +176,29 @@ export default {
         this.loading = false
       })
     },
-    initMess(id) {
+    initMess(id, idCard) {
       // getPersonalDateList原有的api封装
       // getPersonalMess().then(response => {
       //   this.$refs.resident._toggleResident()
       //   this.personalMess = response.data
       // })
+      this.loadingMess = true
+      let symbol = false
+      this.$http.get('/resident/getPersonalMess' + '/' + idCard).then(response => {
+        this.personalData = response.data
+        symbol = !symbol
+        if (symbol === false) {
+          this.loadingMess = false
+        }
+      })
       this.$http.get('/resident/getPersonalDateList' + '/' + id).then(response => {
         this.personalMess = response.data
         this.id = id
         this.$refs.resident._toggleResident()
+        symbol = !symbol
+        if (symbol === false) {
+          this.loadingMess = false
+        }
         console.log('居民列表数据——————station')
         console.log(response.data)
       })

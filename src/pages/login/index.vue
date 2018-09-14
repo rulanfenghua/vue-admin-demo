@@ -8,23 +8,8 @@
               <div class="tab-manager" @click="transManager">管理登陆入口</div>
             </div>
             <div class="login-main-manager" v-if="userToggle === 'manager'">
-                <!-- <form>
-                <ul class="login-input-enter">
-                  <li class="name">
-                    <span class="login-name-text">登陆名称</span>
-                    <input type="text" class="login-name-input" placeholder="账号" v-model.trim="account" autocomplete="on">
-                  </li>
-                  <li class="password">
-                    <span class="login-password-text">登陆密码</span>
-                    <input type="password" class="login-password-input" placeholder="密码" v-model.trim="password" @keyup.enter="userLogin" autocomplete="new-password">
-                  </li>
-                  <li class="button">
-                    <div class="enter" @click="userLogin">登陆</div>
-                    <div class="change" @click="_toggle">修改密码</div>
-                  </li>
-                </ul>
-                </form> -->
-                <el-form :model="loginForm" :rules="loginRules" auto-complete="on" label-position="left" class="login-input-enter" label-width="80px">
+              <div class="photo"></div>
+                <el-form :model="loginForm" :rules="loginRules" auto-complete="on" label-position="left" class="login-input-enter" label-width="80px" style="padding-top:30px">
                   <el-form-item prop="name" label="用户名">
                     <span class="">
 
@@ -52,28 +37,6 @@
                   <el-button type="primary" style="margin-bottom:30px;" @click.native.prevent="userLogin">点击登陆</el-button>
                   <el-button type="primary" style="margin-bottom:30px;" @click.native.prevent="_toggle">修改密码</el-button>
                 </el-form>
-                <!-- <form>
-                <transition name="slide">
-                <ul class="login-input-change" v-show="changeToggle">
-                  <li class="name">
-                    <span class="login-name-text">登陆名称</span>
-                    <input type="text" class="login-name-input" placeholder="账号" v-model.trim="account" autocomplete="on">
-                  </li>
-                  <li class="password">
-                    <span class="login-password-text">登陆密码</span>
-                    <input type="password" class="login-password-input" placeholder="密码" v-model.trim="password" autocomplete="new-password">
-                  </li>
-                  <li class="new-password">
-                    <span class="login-new-password-text">新密码</span>
-                    <input type="password" class="login-new-password-input" placeholder="新密码" v-model.trim="newPassword" autocomplete="new-password">
-                  </li>
-                  <li class="button">
-                    <div class="enter" @click="change">确定</div>
-                    <div class="change" @click="_toggle">取消</div>
-                  </li>
-                </ul>
-                </transition>
-                </form> -->
                 <transition name="slide">
                 <el-form :model="loginForm" :rules="changeRules" auto-complete="on" label-position="left" class="login-input-change" v-show="changeToggle" label-width="80px" style="width:600px">
                   <el-form-item prop="name" label="用户名">
@@ -124,22 +87,7 @@
               element-loading-spinner="el-icon-loading"
             > -->
             <div class="login-main-resident" v-else>
-              <!-- <div class="login-input">
-                <ul class="login-input-enter">
-                  <li class="name">
-                    <span class="login-name-text">姓名</span>
-                    <input type="text" class="login-name-input" placeholder="姓名" v-model.trim="name" autocomplete="on">
-                  </li>
-                  <li class="idcard">
-                    <span class="login-idcard-text">身份证号</span>
-                    <input type="text" class="login-idcard-input" placeholder="身份证号" v-model.trim="idCard" autocomplete="on">
-                  </li>
-                  <li class="button">
-                    <el-button class="seach" @click="seach">查询</el-button>
-                  </li>
-                </ul>
-              </div> -->
-              <el-form :model="residentLoginForm" :rules="seachRules" label-position="left" class="login-input-enter" label-width="80px">
+              <el-form :model="residentLoginForm" :rules="seachRules" label-position="left" class="login-input-enter" label-width="80px" style="padding-top:30px">
                   <el-form-item prop="name" label="名字">
                     <span class="">
 
@@ -166,8 +114,9 @@
                   </el-form-item>
                   <el-button type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="seach">查询诊断列表</el-button>
                 </el-form>
+              <div class="photo"></div>
             </div>
-            <!-- 引入组件 -->
+            <!-- 引入residentDetails组件 -->
             <resident-details :personalMess="personalMess" :id="id" :personalData="personalData" ref="resident"></resident-details>
           </div>
         </div>
@@ -364,11 +313,12 @@ export default {
       margin-bottom: 50px;
     }
     .login-content {
+      // background-color: #fff;
       .login-tab {
         display: flex;
         width: 100%;
         height: 40px;
-        margin-bottom: 30px;
+        // margin-bottom: 30px;
         letter-spacing: 4px;
         .tab-manager {
           flex: 1;
@@ -403,8 +353,13 @@ export default {
       .login-main-manager {
         width: 100%;
         height: 200px;
+        display: flex;
         // background-color: #fff;
+        .photo {
+          flex: 1;
+        }
           .login-input-enter {
+            flex: 1;
             .name {
 
             }
@@ -459,8 +414,10 @@ export default {
       .login-main-resident {
         width: 100%;
         height: 200px;
+        display: flex;
         // background-color: #fff;
           .login-input-enter {
+            flex: 1;
             .name {
 
             }
@@ -471,6 +428,9 @@ export default {
 
             }
           }
+        .photo {
+          flex: 1;
+        }
       }
     }
   }

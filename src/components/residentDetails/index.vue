@@ -48,17 +48,26 @@
             <li>
               档案编号：{{printingData.fileNumber}}
             </li>
+          </ul>
+          <div class="line"></div>
+          <div class="photo">
+            <img :src="printingData.bAddr1" alt="" style="width:200px;height:145px">
+            <img :src="printingData.bAddr2" alt="" style="width:200px;height:145px">
+          </div>
+          <div class="line"></div>
+          <p class="text" ref="text">
+          </p>
+          <ul class="bottom">
+            <li>
+              报告医师
+            </li>
             <li>
               检验时间：{{printingData.provingTime | formatTime}}
             </li>
           </ul>
-          <div class="photo">
-            <img :src="printingData.bAddr1" alt="" style="width:100px;height:100px">
-            <img :src="printingData.bAddr2" alt="" style="width:100px;height:100px">
+          <div class="end">本报告仅供参考，建议上一级医院进一步检查</div>
           </div>
-          <p class="text" ref="text">
-          </p>
-        </div>
+
         <div class="footer">
         <el-button @click="print" round type="success" size="small">立即打印</el-button>
         <el-button @click="print" round type="warning" size="small">保存为PDF</el-button>
@@ -130,7 +139,47 @@ export default {
         printable: 'printing',
         type: 'html',
         // 继承原来的所有样式
-        targetStyles: ['*']
+        // targetStyles: ['*'],
+        // scanStyles: false,
+        style: `
+          #printing {
+            box-sizing: border-box;
+            height: 994px;
+            position: relative;
+            margin-bottom: 44px;
+            background-color: red;
+          }
+          .title {
+            box-sizing: border-box;
+            text-align: center;
+            font-weight: bolder;
+            font-size: 20px;
+            padding-top: 20px;
+            padding-bottom: 13px;
+            letter-spacing: 2px;
+          }
+          .header {
+            display: block;
+            position: relative;
+            height: 28px;
+            padding-top: 20px;
+          }
+          .header li {
+            display: inline-block;
+            margin-right: 7px;
+          }
+          .line {
+            width: 100%;
+            height: 1px;
+            background-color: #ddd;
+            position: relative;
+            margin-top: 23px;
+          }
+          .photo {
+            text-align: center;
+            margin: 17px 0;
+          }
+        `
       })
     },
     _toggleResident() {
@@ -242,19 +291,22 @@ export default {
     .printing {
       position: fixed;
       top: 0;
-      min-height: calc(100% - 4px);
-      // width: 794px;
-      width: 600px;
+      bottom: 0;
+      // min-height: calc(100% - 4px);
+      min-height: 100%;
+      width: 794px;
+      // width: 600px;
+      // min-height: 1123px;
       margin: 2px 0;
-      left: calc(50% - 300px);
+      left: calc(50% - 397px);
       border-radius: 3px;
       box-shadow: 0 0 6px #ddd;
       z-index: 3000;
-      padding: 4px 10px;
+      padding: 4px 40px;
       overflow: auto;
       background-color: #fff;
-      display: flex;
-      flex-direction: column;
+      // display: flex;
+      // flex-direction: column;
 
       &.print-enter-active,
       &.print-leave-active {
@@ -267,38 +319,93 @@ export default {
         transform: translate3d(0, 10px, 0);
       }
       #printing {
-        // width: 600px;
-        // margin: 0 auto;
-        // background-color: #fff;
-        flex: 1;
+        box-sizing: border-box;
+        // @page {
+        //   size: 50mm 150mm;
+        // }
+        // flex: 1;
+        // min-height: calc(100% - 52px);
+        // height: 1038px;
+        height: 994px;
+        // display: flex;
+        // flex-direction: column;
+        position: relative;
+        margin-bottom: 44px;
+        // background-color: red;
         .title {
+          box-sizing: border-box;
           text-align: center;
           font-weight: bolder;
           font-size: 20px;
-
+          padding-top: 20px;
+          padding-bottom: 13px;
+          letter-spacing: 2px;
         }
         .header {
           // text-align: center;
+          display: block;
+          position: relative;
+          height: 28px;
+          padding-top: 20px;
+
           li {
             display: inline-block;
             margin-right: 7px;
-
           }
+        }
+        .line {
+          width: 100%;
+          height: 1px;
+          background-color: #ddd;
+          position: relative;
+          margin-top: 23px;
         }
         .photo {
           text-align: center;
+          margin: 17px 0;
           img {
             display: inline-block;
-            margin-right: 20px;
+            &:first-child {
+              margin-right: 90px;
+            }
           }
         }
         .text {
-          line-height: 17px;
+          line-height: 24px;
+          position: relative;
+          width: 100%;
+          padding: 7px 14px 0;
+          letter-spacing: 1px;
+        }
+        .bottom {
+          position: absolute;
+          bottom: 0;
+          right: 7px;
+          li {
+            margin-bottom: 20px;
+            &:last-child {
+              margin-bottom: 54px;
+            }
+          }
+        }
+        .end {
+          position: absolute;
+          width: 100%;
+          bottom: 0;
+          text-align: center;
+          font-size: 12px;
         }
       }
       .footer {
-        padding-bottom: 20px;
+        position: fixed;
+        // padding-top: 7px;
+        // padding-bottom: 13px;
+        bottom: 0;
+        padding-bottom: 7px;
+        left: -9px;
+        width: 100%;
         text-align: center;
+        background-color: #fff;
       }
     }
 
