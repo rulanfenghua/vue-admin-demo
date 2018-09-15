@@ -113,11 +113,11 @@ export default {
       this.$store.commit('LOGIN_OUT')
       /* 防止切换角色时addRoutes重复添加路由导致出现警告 */
       window.location.reload()
-      // logout().then(response => {
-      //   this.$store.commit('LOGIN_OUT')
-      //   /* 防止切换角色时addRoutes重复添加路由导致出现警告 */
-      //   window.location.reload()
-      // })
+      logout().then(response => {
+        this.$store.commit('LOGIN_OUT')
+        /* 防止切换角色时addRoutes重复添加路由导致出现警告 */
+        window.location.reload()
+      })
     }
   }
 }

@@ -49,7 +49,7 @@
             label="诊断时间"
             width="100">
             <template slot-scope="scope">
-              <span>{{ scope.row.checkDate }}</span>
+              <span>{{ scope.row.createDate | formatTime }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -65,7 +65,7 @@
             align="center"
             width="175">
             <template slot-scope="scope">
-              <span>{{ scope.row.idcard }}</span>
+              <span>{{ scope.row.idCard }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -172,11 +172,13 @@ export default {
   methods: {
     init() {
       index().then(response => {
-        console.log('首页数据————————index')
+        console.log('首页数据————————admin')
         console.log(response)
         this.res_index = response.data
       })
       getDay().then(response => {
+        console.log('表格数据————————admin')
+        console.log(response)
         this.res_getDay = response.data
       })
     },
@@ -202,6 +204,8 @@ export default {
         })
       })
       getLast().then(response => {
+        console.log('各站点末次————————admin')
+        console.log(response)
         this._initChart(this.$refs.last, {
           title: {
             text: '各站点末次上传统计'

@@ -30,19 +30,20 @@ export function getDay() {
 
 export function getLast() {
   return request({
-    url: '/station/getLast',
+    url: '/station/getYearEveryMonth',
     method: 'post'
   })
 }
 
 export function getPersonList(page, limit, name, idcard, station, date) {
   const data = {
-    page: page,
-    limit: limit,
+    pageNum: page,
+    pageSize: limit,
     name: name,
-    idcard: idcard,
-    station: station,
-    date: date
+    idCard: idcard,
+    stationId: station,
+    startDate: date[0],
+    endDate: date[1]
   }
   return request({
     url: '/station/getAllResidentList',

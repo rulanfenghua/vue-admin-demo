@@ -135,7 +135,7 @@ export default {
       name: '',
       idcard: '',
       station: '',
-      date: '',
+      date: [],
 
       page: 1,
       limit: 20,
@@ -195,6 +195,8 @@ export default {
       console.log('起止日期——————admin')
       console.log(this.date)
       getPersonList(this.page, this.limit, this.name, this.idcard, this.station, this.date).then(response => {
+        console.log('居民列表————————admin')
+        console.log(response)
         this.res_getPersonList = response.data
       }).catch(error => {
         this.loading = false

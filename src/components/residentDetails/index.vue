@@ -51,8 +51,8 @@
           </ul>
           <div class="line"></div>
           <div class="photo">
-            <img :src="printingData.bAddr1" alt="" style="width:200px;height:145px">
-            <img :src="printingData.bAddr2" alt="" style="width:200px;height:145px">
+            <img :src="printingData.bAddr1" alt="" style="">
+            <img :src="printingData.bAddr2" alt="" style="">
           </div>
           <div class="line"></div>
           <p class="text" ref="text">
@@ -139,46 +139,73 @@ export default {
         printable: 'printing',
         type: 'html',
         // 继承原来的所有样式
-        // targetStyles: ['*'],
+        // targetStyles: ['*']
         // scanStyles: false,
         style: `
           #printing {
-            box-sizing: border-box;
-            height: 994px;
-            position: relative;
-            margin-bottom: 44px;
-            background-color: red;
-          }
-          .title {
+          box-sizing: border-box;
+          height: 994px;
+          position: relative;
+          margin-bottom: 44px; }
+          #printing .title {
             box-sizing: border-box;
             text-align: center;
             font-weight: bolder;
-            font-size: 20px;
+            font-size: 24px;
             padding-top: 20px;
             padding-bottom: 13px;
-            letter-spacing: 2px;
-          }
-          .header {
+            letter-spacing: 0px;
+            font-family: "SimSun"; }
+          #printing .header {
             display: block;
             position: relative;
             height: 28px;
             padding-top: 20px;
-          }
-          .header li {
-            display: inline-block;
-            margin-right: 7px;
-          }
-          .line {
+            font-family: "NSimSun";
+            font-weight: bolder;
+            letter-spacing: -1px;
+            font-size: 19px; }
+            #printing .header li {
+              display: inline-block;
+              margin-right: 47px; }
+          #printing .line {
             width: 100%;
             height: 1px;
-            background-color: #ddd;
+            background-color: #eee;
             position: relative;
-            margin-top: 23px;
-          }
-          .photo {
+            margin-top: 23px; }
+          #printing .photo {
             text-align: center;
-            margin: 17px 0;
-          }
+            margin: 17px 0; }
+            #printing .photo img {
+              display: inline-block;
+              height: 184px;
+              width: 246px; }
+              #printing .photo img:first-child {
+                margin-right: 90px; }
+          #printing .text {
+            line-height: 24px;
+            position: relative;
+            width: 100%;
+            padding: 7px 14px 0;
+            letter-spacing: 1px;
+            font-family: "NSimSun";
+            letter-spacing: -1px;
+            font-size: 19px; }
+          #printing .bottom {
+            position: absolute;
+            bottom: 0;
+            right: 7px; }
+            #printing .bottom li {
+              margin-bottom: 20px; }
+              #printing .bottom li:last-child {
+                margin-bottom: 54px; }
+          #printing .end {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            text-align: center;
+            font-size: 12px; }
         `
       })
     },
@@ -190,8 +217,8 @@ export default {
     },
     _format(data) {
       data = data.replace(/(。)([\u4E00-\u9FA5]+：)/g, '$1<br><br>$2')
-      data = data.replace(/：(?=[\u4E00-\u9FA5])/g, '：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
-      data = data.replace(/。(?=[\u4E00-\u9FA5])/g, '。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
+      data = data.replace(/：(?=[\u4E00-\u9FA5])/g, '：<br>&nbsp;&nbsp;')
+      data = data.replace(/。(?=[\u4E00-\u9FA5])/g, '。<br>&nbsp;&nbsp;')
       return data
     }
   }
@@ -336,10 +363,11 @@ export default {
           box-sizing: border-box;
           text-align: center;
           font-weight: bolder;
-          font-size: 20px;
+          font-size: 24px;
           padding-top: 20px;
           padding-bottom: 13px;
-          letter-spacing: 2px;
+          letter-spacing: 0px;
+          font-family: "SimSun";
         }
         .header {
           // text-align: center;
@@ -347,16 +375,19 @@ export default {
           position: relative;
           height: 28px;
           padding-top: 20px;
-
+          font-family: "NSimSun";
+          font-weight: bolder;
+          letter-spacing: -1px;
+          font-size: 19px;
           li {
             display: inline-block;
-            margin-right: 7px;
+            margin-right: 47px;
           }
         }
         .line {
           width: 100%;
           height: 1px;
-          background-color: #ddd;
+          background-color: #eee;
           position: relative;
           margin-top: 23px;
         }
@@ -365,6 +396,8 @@ export default {
           margin: 17px 0;
           img {
             display: inline-block;
+            height: 184px;
+            width: 246px;
             &:first-child {
               margin-right: 90px;
             }
@@ -376,6 +409,9 @@ export default {
           width: 100%;
           padding: 7px 14px 0;
           letter-spacing: 1px;
+          font-family: "NSimSun";
+          letter-spacing: -1px;
+          font-size: 19px;
         }
         .bottom {
           position: absolute;

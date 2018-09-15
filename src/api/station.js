@@ -72,18 +72,19 @@ export function getDay() {
 
 export function getMouth() {
   return request({
-    url: '/station/getMouth',
+    url: '/station/getYearEveryMonth',
     method: 'post'
   })
 }
 
 export function getPersonList(page, limit, name, idcard, date) {
   const data = {
-    page: page,
-    limit: limit,
+    pageNum: page,
+    pageSize: limit,
     name: name,
-    idcard: idcard,
-    date: date
+    idCard: idcard,
+    startDate: date[0],
+    endDate: date[1]
   }
   return request({
     url: '/station/getAllResidentList',

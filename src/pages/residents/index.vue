@@ -20,7 +20,10 @@ export default {
     }
   },
   created() {
-    if (sessionStorage.getItem('id')) {
+    /* eslint-disable eqeqeq */
+    if (sessionStorage.getItem('levels') == 2) {
+      console.log('角色权限————————home')
+      console.log('levels: ' + sessionStorage.getItem('levels'))
       this.currentRole = 'manager'
     }
   }

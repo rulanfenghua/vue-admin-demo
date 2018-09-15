@@ -40,7 +40,7 @@
           <el-table :data="res_getDay" border fit highlight-current-row :style="{width: tableWidth+'px'}" :max-height="tableHeight">
             <el-table-column fixed label="诊断时间" width="100">
               <template slot-scope="scope">
-                <span>{{ scope.row.checkDate }}</span>
+                <span>{{ scope.row.createDate | formatTime }}</span>
               </template>
             </el-table-column>
             <el-table-column label="姓名" align="center" width="75">
@@ -50,7 +50,7 @@
             </el-table-column>
             <el-table-column label="身份证号" align="center" width="175">
               <template slot-scope="scope">
-                <span>{{ scope.row.idcard }}</span>
+                <span>{{ scope.row.idCard }}</span>
               </template>
             </el-table-column>
             <el-table-column label="性别" align="center" width="75">
@@ -141,6 +141,8 @@ export default {
         this.res_index = response.data
       })
       getDay().then(response => {
+        console.log('表格数据————————station')
+        console.log(response)
         this.res_getDay = response.data
       })
     },
@@ -168,6 +170,8 @@ export default {
         })
       })
       getMouth().then(response => {
+        console.log('一月检查量————————station')
+        console.log(response)
         this._initChart(this.$refs.mouth, {
           title: {
             text: '一月检查量变化趋势'

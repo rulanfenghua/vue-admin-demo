@@ -15,7 +15,7 @@
       <el-button @click="init"></el-button>
     </div>
     <div class="table-container" v-loading="loading" element-loading-text="正在加载居民列表" element-loading-spinner="el-icon-loading">
-      <el-table v-loading="listLoading" :data="res_getPersonList" border fit highlight-current-row style="width: 100%">
+      <el-table :data="res_getPersonList" border fit highlight-current-row style="width: 100%">
         <el-table-column
           label="姓名"
           align="center"
@@ -72,7 +72,7 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="120">
           <template slot-scope="scope">
-            <el-button @click.native.prevent="initMess(scope.row.id,scope.row.idCard)" type="" size="small" loading="loadingMess">
+            <el-button @click.native.prevent="initMess(scope.row.id,scope.row.idCard)" type="text" size="small">
               查看检查记录清单
             </el-button>
           </template>
@@ -167,8 +167,11 @@ export default {
       this.loading = true
       console.log('起止日期——————station')
       console.log(this.date)
+      console.log(this.page)
       getPersonList(this.page, this.limit, this.name, this.idcard, this.date).then(response => {
-        this.res_getPersonList = response.data
+        console.log('居民列表————————station')
+        console.log(response)
+        this.res_getPersonList = response.data.list
       }).catch(error => {
         this.loading = false
         console.log(error)
@@ -182,26 +185,33 @@ export default {
       //   this.$refs.resident._toggleResident()
       //   this.personalMess = response.data
       // })
-      this.loadingMess = true
-      let symbol = false
+      // this.loadingMess = true
+      // let symbol = false
+      console.log(id)
       this.$http.get('/resident/getPersonalMess' + '/' + idCard).then(response => {
         this.personalData = response.data
-        symbol = !symbol
-        if (symbol === false) {
-          this.loadingMess = false
-        }
+        // symbol = !symbol
+        // if (symbol === false) {
+        //   this.loadingMess = false
+        // }
       })
       this.$http.get('/resident/getPersonalDateList' + '/' + id).then(response => {
+        console.log('居民清单——————station')
+        console.log(response.data)
         this.personalMess = response.data
         this.id = id
         this.$refs.resident._toggleResident()
-        symbol = !symbol
-        if (symbol === false) {
-          this.loadingMess = false
-        }
-        console.log('居民列表数据——————station')
-        console.log(response.data)
+        // symbol = !symbol
+        // if (symbol === false) {
+        //   this.loadingMess = false
+        // }
       })
+    },
+    handleSizeChange() {
+
+    },
+    handleCurrentChange() {
+
     }
   }
 }
