@@ -37,16 +37,16 @@
           <h1 class="title">中华社区卫生服务中心B超报告单</h1>
           <ul class="header">
             <li>
-              姓名：{{printingData.name}}
+              <span>姓名：</span>{{printingData.name}}
             </li>
             <li>
-              性别：{{printingData.gender}}
+              <span>性别：</span>{{printingData.gender}}
             </li>
             <li>
-              年龄：{{printingData.age}}
+              <span>年龄：</span>{{printingData.age}}
             </li>
             <li>
-              档案编号：{{printingData.fileNumber}}
+              <span>档案编号：</span>{{printingData.fileNumber}}
             </li>
           </ul>
           <div class="line"></div>
@@ -135,78 +135,77 @@ export default {
     print() {
       /* eslint-disable no-undef */
       printJS({
-        // style: 'width:100%',
         printable: 'printing',
         type: 'html',
         // 继承原来的所有样式
-        // targetStyles: ['*']
+        targetStyles: ['*']
         // scanStyles: false,
-        style: `
-          #printing {
-          box-sizing: border-box;
-          height: 994px;
-          position: relative;
-          margin-bottom: 44px; }
-          #printing .title {
-            box-sizing: border-box;
-            text-align: center;
-            font-weight: bolder;
-            font-size: 24px;
-            padding-top: 20px;
-            padding-bottom: 13px;
-            letter-spacing: 0px;
-            font-family: "SimSun"; }
-          #printing .header {
-            display: block;
-            position: relative;
-            height: 28px;
-            padding-top: 20px;
-            font-family: "NSimSun";
-            font-weight: bolder;
-            letter-spacing: -1px;
-            font-size: 19px; }
-            #printing .header li {
-              display: inline-block;
-              margin-right: 47px; }
-          #printing .line {
-            width: 100%;
-            height: 1px;
-            background-color: #eee;
-            position: relative;
-            margin-top: 23px; }
-          #printing .photo {
-            text-align: center;
-            margin: 17px 0; }
-            #printing .photo img {
-              display: inline-block;
-              height: 184px;
-              width: 246px; }
-              #printing .photo img:first-child {
-                margin-right: 90px; }
-          #printing .text {
-            line-height: 24px;
-            position: relative;
-            width: 100%;
-            padding: 7px 14px 0;
-            letter-spacing: 1px;
-            font-family: "NSimSun";
-            letter-spacing: -1px;
-            font-size: 19px; }
-          #printing .bottom {
-            position: absolute;
-            bottom: 0;
-            right: 7px; }
-            #printing .bottom li {
-              margin-bottom: 20px; }
-              #printing .bottom li:last-child {
-                margin-bottom: 54px; }
-          #printing .end {
-            position: absolute;
-            width: 100%;
-            bottom: 0;
-            text-align: center;
-            font-size: 12px; }
-        `
+        // style: `
+        //   #printing {
+        //   box-sizing: border-box;
+        //   height: 994px;
+        //   position: relative;
+        //   margin-bottom: 44px; }
+        //   #printing .title {
+        //     box-sizing: border-box;
+        //     text-align: center;
+        //     font-weight: bolder;
+        //     font-size: 24px;
+        //     padding-top: 20px;
+        //     padding-bottom: 13px;
+        //     letter-spacing: 0px;
+        //     font-family: "SimSun"; }
+        //   #printing .header {
+        //     display: block;
+        //     position: relative;
+        //     height: 28px;
+        //     padding-top: 20px;
+        //     font-family: "NSimSun";
+        //     font-weight: bolder;
+        //     letter-spacing: -1px;
+        //     font-size: 19px; }
+        //     #printing .header li {
+        //       display: inline-block;
+        //       margin-right: 47px; }
+        //   #printing .line {
+        //     width: 100%;
+        //     height: 1px;
+        //     background-color: #eee;
+        //     position: relative;
+        //     margin-top: 23px; }
+        //   #printing .photo {
+        //     text-align: center;
+        //     margin: 17px 0; }
+        //     #printing .photo img {
+        //       display: inline-block;
+        //       height: 184px;
+        //       width: 246px; }
+        //       #printing .photo img:first-child {
+        //         margin-right: 90px; }
+        //   #printing .text {
+        //     line-height: 24px;
+        //     position: relative;
+        //     width: 100%;
+        //     padding: 7px 14px 0;
+        //     letter-spacing: 1px;
+        //     font-family: "NSimSun";
+        //     letter-spacing: -1px;
+        //     font-size: 19px; }
+        //   #printing .bottom {
+        //     position: absolute;
+        //     bottom: 0;
+        //     right: 7px; }
+        //     #printing .bottom li {
+        //       margin-bottom: 20px; }
+        //       #printing .bottom li:last-child {
+        //         margin-bottom: 54px; }
+        //   #printing .end {
+        //     position: absolute;
+        //     width: 100%;
+        //     bottom: 0;
+        //     text-align: center;
+        //     font-size: 12px; }
+        // `
       })
     },
     _toggleResident() {
@@ -228,7 +227,7 @@ export default {
 <style lang="scss">
 .el-dialog {
   height: 430px;
-  width: 600px;
+  width: 640px;
   .el-dialog__body {
     height: calc(430px - 57px);
     overflow: auto;
@@ -244,7 +243,10 @@ export default {
           .details-name {
             margin-top: -26px;
             margin-bottom: 9px;
-            text-align: center;
+            // text-align: center;
+            padding-left: 34px;
+            font-size: 14px;
+            font-weight: bold;
             li {
               display: inline-block;
               margin-right: 30px;
@@ -253,7 +255,10 @@ export default {
           .details-addr {
             position: relative;
             margin-bottom: 17px;
-            text-align: center;
+            // text-align: center;
+            padding-left: 34px;
+            font-size: 14px;
+            font-weight: bold;
             li {
               display: inline-block;
               margin-right: 30px;
@@ -262,7 +267,7 @@ export default {
               display: block;
               position: absolute;
               left: 0;
-              bottom: -15px;
+              bottom: -17px;
               width: 100%;
               border-top: 1px solid #ddd;
               content: '';
@@ -278,6 +283,7 @@ export default {
           .mess-item {
             margin-bottom: 23px;
             position: relative;
+            padding-left: 32px;
             &:first-child {
               margin-top: 27px;
             }
@@ -353,7 +359,7 @@ export default {
         // flex: 1;
         // min-height: calc(100% - 52px);
         // height: 1038px;
-        height: 994px;
+        height: 977px;
         // display: flex;
         // flex-direction: column;
         position: relative;
@@ -375,19 +381,22 @@ export default {
           position: relative;
           height: 28px;
           padding-top: 20px;
-          font-family: "NSimSun";
-          font-weight: bolder;
-          letter-spacing: -1px;
-          font-size: 19px;
+          text-align: center;
           li {
             display: inline-block;
-            margin-right: 47px;
+            margin-right: 64px;
+            span {
+              font-family: "NSimSun";
+              font-weight: bolder;
+              letter-spacing: 0;
+              font-size: 19px;
+            }
           }
         }
         .line {
           width: 100%;
           height: 1px;
-          background-color: #eee;
+          background-color: #ccc;
           position: relative;
           margin-top: 23px;
         }
@@ -404,19 +413,21 @@ export default {
           }
         }
         .text {
-          line-height: 24px;
+          line-height: 26px;
           position: relative;
           width: 100%;
           padding: 7px 14px 0;
-          letter-spacing: 1px;
           font-family: "NSimSun";
-          letter-spacing: -1px;
+          letter-spacing: 0;
           font-size: 19px;
         }
         .bottom {
           position: absolute;
           bottom: 0;
           right: 7px;
+          font-family: "NSimSun";
+          letter-spacing: -1px;
+          font-size: 19px;
           li {
             margin-bottom: 20px;
             &:last-child {
@@ -429,7 +440,8 @@ export default {
           width: 100%;
           bottom: 0;
           text-align: center;
-          font-size: 12px;
+          font-family: "NSimSun";
+          font-size: 13px;
         }
       }
       .footer {

@@ -1,7 +1,9 @@
 <template>
   <div class="residents-admin">
     <div class="filter-container">
+      输入查询条件查询：
       <div class="name-picker">
+
         <el-input v-model="name" placeholder="输入姓名查询"></el-input>
       </div>
       <div class="idcard-picker">
@@ -10,6 +12,10 @@
       <div class="station-picker">
         <el-input v-model="station" placeholder="输入站点查询"></el-input>
       </div>
+      <el-button @click="init" type="primary">点击查询</el-button>
+    </div>
+    <div class="date-container">
+      选择日期查询：
       <div class="date-picker">
         <el-date-picker
           v-model="date"
@@ -23,24 +29,29 @@
         >
         </el-date-picker>
       </div>
-      <el-button @click="init"></el-button>
+      <el-button @click="init" type="primary">点击查询</el-button>
     </div>
     <div class="table-container" v-loading="loading"
       element-loading-text="正在加载居民列表"
       element-loading-spinner="el-icon-loading"
     >
       <el-table
-        v-loading="listLoading"
         :data="res_getPersonList"
         border
         fit
         highlight-current-row
         style="width: 100%"
+        :max-height="tableHeight"
       >
+        <el-table-column
+          type="index"
+          align="center"
+          index="1">
+        </el-table-column>
         <el-table-column
           label="姓名"
           align="center"
-          width="75">
+          width="95">
           <template slot-scope="scope">
             <span>{{ scope.row.name }}</span>
           </template>
@@ -48,7 +59,7 @@
         <el-table-column
           label="身份证号"
           align="center"
-          width="175">
+          width="212">
           <template slot-scope="scope">
             <span>{{ scope.row.idCard }}</span>
           </template>
@@ -56,7 +67,7 @@
         <el-table-column
           label="性别"
           align="center"
-          width="75">
+          width="80">
           <template slot-scope="scope">
             <span>{{ scope.row.gender }}</span>
           </template>
@@ -64,7 +75,7 @@
         <el-table-column
           label="年龄"
           align="center"
-          width="75">
+          width="80">
           <template slot-scope="scope">
             <span>{{ scope.row.age }}</span>
           </template>
@@ -72,14 +83,15 @@
         <el-table-column
           label="卡类型"
           align="center"
-          width="75">
+          width="95">
           <template slot-scope="scope">
             <span>{{ scope.row.idType }}</span>
           </template>
         </el-table-column>
         <el-table-column
           label="电话"
-          width="140">
+          align="center"
+          width="160">
           <template slot-scope="scope">
             <span>{{ scope.row.tel }}</span>
           </template>
@@ -92,16 +104,16 @@
           </template>
         </el-table-column>
         <el-table-column
-          fixed="right"
+
           label="操作"
-          align="center"
-          width="120">
+          align="left"
+          width="140">
           <template slot-scope="scope">
             <el-button
               @click.native.prevent="initMess(scope.row.id,scope.row.idCard)"
-              type=""
+              type="text"
               size="small"
-              loading="loadingMess">
+            >
               查看检查记录清单
             </el-button>
           </template>
@@ -109,7 +121,7 @@
       </el-table>
     </div>
     <div class="pagination-container">
-      <el-pagination :current-page="page" :page-sizes="[10,20,30]" :page-size="limit" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
+      <el-pagination :current-page="page" :page-sizes="[10,20,30]" :page-size="limit" :total="50" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
     </div>
     <!-- 引入residentDetails组件 -->
     <resident-details :personalMess="personalMess" :id="id" :personalData="personalData" ref="resident"></resident-details>
@@ -125,6 +137,11 @@ export default {
   name: 'admin',
   components: {
     residentDetails
+  },
+  computed: {
+    tableHeight() {
+      return ((document.documentElement.clientHeight || document.body.clientHeight) - 345)
+    }
   },
   data() {
     return {
@@ -171,8 +188,7 @@ export default {
         }]
       },
 
-      loading: false,
-      loadingMess: false
+      loading: false
     }
   },
   created() {
@@ -211,30 +227,68 @@ export default {
       //   this.$refs.resident._toggleResident()
       //   this.personalMess = response.data
       // })
-      this.loadingMess = true
-      let symbol = false
+      // this.loadingMess = true
+      // let symbol = false
       this.$http.get('/resident/getPersonalMess' + '/' + idCard).then(response => {
         this.personalData = response.data
-        symbol = !symbol
-        if (symbol === false) {
-          this.loadingMess = false
-        }
+        // symbol = !symbol
+        // if (symbol === false) {
+        //   this.loadingMess = false
+        // }
       })
       this.$http.get('/resident/getPersonalDateList' + '/' + id).then(response => {
         this.personalMess = response.data
         this.id = id
         this.$refs.resident._toggleResident()
-        symbol = !symbol
-        if (symbol === false) {
-          this.loadingMess = false
-        }
+        // symbol = !symbol
+        // if (symbol === false) {
+        //   this.loadingMess = false
+        // }
         console.log('居民列表数据——————admin')
         console.log(response.data)
       })
+    },
+    handleSizeChange() {
+
+    },
+    handleCurrentChange() {
+
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
+.residents-admin {
+  height: 100%;
+  margin: 0 30px 17px;
+  .filter-container {
+    margin-top: 19px;
+    margin-left: 33px;
+    font-size: 15px;
+    font-weight: bold;
+    .name-picker {
+      display: inline-block;
+    }
+    .idcard-picker {
+      display: inline-block;
+    }
+    .station-picker {
+      display: inline-block;
+    }
+  }
+  .date-container {
+    margin-top: 19px;
+    margin-bottom: 30px;
+    margin-left: 33px;
+    font-size: 15px;
+    font-weight: bold;
+    .date-picker {
+      display: inline-block;
+    }
+  }
+  .table-container {
+    margin-bottom: 17px;
+  }
+}
 </style>

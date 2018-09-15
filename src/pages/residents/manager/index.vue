@@ -29,7 +29,7 @@
           align="center"
           width="175">
           <template slot-scope="scope">
-            <span>{{ scope.row.idcard }}</span>
+            <span>{{ scope.row.idCard }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -207,11 +207,13 @@ export default {
         // }
       })
     },
-    handleSizeChange() {
-
+    handleSizeChange(value) {
+      this.limit = value
+      this.init()
     },
-    handleCurrentChange() {
-
+    handleCurrentChange(value) {
+      this.page = value
+      this.init()
     }
   }
 }

@@ -9,8 +9,10 @@
             </div>
             <div class="login-main-manager" v-if="userToggle === 'manager'">
               <div class="photo"></div>
-                <el-form :model="loginForm" :rules="loginRules" auto-complete="on" label-position="left" class="login-input-enter" label-width="80px" style="padding-top:30px">
-                  <el-form-item prop="name" label="用户名">
+                <el-form :model="loginForm" :rules="loginRules" auto-complete="on" label-position="left" class="login-input-enter" label-width="80px" style="padding-top:30px"
+                status-icon
+                >
+                  <el-form-item prop="username" label="用户名">
                     <span class="">
 
                     </span>
@@ -38,8 +40,10 @@
                   <el-button type="primary" style="margin-bottom:30px;" @click.native.prevent="_toggle">修改密码</el-button>
                 </el-form>
                 <transition name="slide">
-                <el-form :model="loginForm" :rules="changeRules" auto-complete="on" label-position="left" class="login-input-change" v-show="changeToggle" label-width="80px" style="width:600px">
-                  <el-form-item prop="name" label="用户名">
+                <el-form :model="loginForm" :rules="changeRules" auto-complete="on" label-position="left" class="login-input-change" v-show="changeToggle" label-width="80px" style="width:600px"
+                status-icon
+                >
+                  <el-form-item prop="username" label="用户名">
                     <span class="">
 
                     </span>
@@ -87,7 +91,9 @@
               element-loading-spinner="el-icon-loading"
             > -->
             <div class="login-main-resident" v-else>
-              <el-form :model="residentLoginForm" :rules="seachRules" label-position="left" class="login-input-enter" label-width="80px" style="padding-top:30px">
+              <el-form :model="residentLoginForm" :rules="seachRules" label-position="left" class="login-input-enter" label-width="80px" style="padding-top:30px"
+              status-icon
+              >
                   <el-form-item prop="name" label="名字">
                     <span class="">
 
@@ -131,6 +137,14 @@ import residentDetails from '@/components/residentDetails'
 
 export default {
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        callback()
+      }
+    }
+
     return {
       // loginForm.userName: '',
       // password: '',
@@ -138,7 +152,7 @@ export default {
       userToggle: 'resident',
       changeToggle: false,
       loginForm: {
-        userName: '',
+        username: '',
         password: '',
         newPassword: ''
       },
@@ -150,7 +164,7 @@ export default {
       residentToggle: false,
       residentLoginForm: {
         name: '',
-        idCard: ''
+        idcard: ''
       },
 
       personalData: {},
@@ -158,17 +172,17 @@ export default {
       changeLoading: false,
 
       loginRules: {
-        username: [{ trigger: 'blur' }],
-        password: [{ trigger: 'blur' }]
+        username: [{ validator: validatePass, trigger: 'blur' }],
+        password: [{ trigger: 'blur', required: true, message: '请填写登陆密码' }]
       },
       changeRules: {
-        username: [{ trigger: 'blur' }],
-        password: [{ trigger: 'blur' }],
-        newPassword: [{ trigger: 'blur' }]
+        username: [{ trigger: 'blur', required: true, message: '请输入登陆名称' }],
+        password: [{ trigger: 'blur', required: true, message: '请填写登陆密码' }],
+        newPassword: [{ trigger: 'blur', required: true, message: '请填写新密码' }]
       },
       seachRules: {
-        name: [{ trigger: 'blur' }],
-        idcard: [{ trigger: 'blur' }]
+        name: [{ trigger: 'blur', required: true, message: '请输入姓名' }],
+        idcard: [{ trigger: 'blur', required: true, message: '请输入身份证号' }]
       }
     }
   },
@@ -289,6 +303,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.el-form-item__label {
+  color: #ddddddf5;
+}
+</style>
 
 <style scoped lang="scss">
 .login-wrapper{
