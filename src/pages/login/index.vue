@@ -1,137 +1,98 @@
 <template>
-    <div class="login-wrapper">
-        <div class="login">
-          <h1 class="title">桥西区医学影像管理系统</h1>
-          <div class="login-content">
-            <div class="login-tab">
-              <div class="tab-resident" @click="transResident">居民查询入口</div>
-              <div class="tab-manager" @click="transManager">管理登陆入口</div>
-            </div>
-            <div class="login-main-manager" v-if="userToggle === 'manager'">
-              <div class="photo"></div>
-                <el-form :model="loginForm" :rules="loginRules" auto-complete="on" label-position="left" class="login-input-enter" label-width="80px" style="padding-top:30px"
-                status-icon
-                >
-                  <el-form-item prop="username" label="用户名">
-                    <span class="">
-
-                    </span>
-                    <el-input
-                      v-model="loginForm.username"
-                      placeholder="请填写您的用户名"
-                      name="username"
-                      type="text"
-                      auto-complete="on"
-                    />
-                  </el-form-item>
-                  <el-form-item prop="password" label="密码">
-                    <span class="">
-
-                    </span>
-                    <el-input
-                      type="password"
-                      v-model="loginForm.password"
-                      placeholder="请填写您的密码"
-                      name="password"
-                      auto-complete="on"
-                      @keyup.enter.native="userLogin" />
-                  </el-form-item>
-                  <el-button type="primary" style="margin-bottom:30px;" @click.native.prevent="userLogin">点击登陆</el-button>
-                  <el-button type="primary" style="margin-bottom:30px;" @click.native.prevent="_toggle">修改密码</el-button>
-                </el-form>
-                <transition name="slide">
-                <el-form :model="loginForm" :rules="changeRules" auto-complete="on" label-position="left" class="login-input-change" v-show="changeToggle" label-width="80px" style="width:600px"
-                status-icon
-                >
-                  <el-form-item prop="username" label="用户名">
-                    <span class="">
-
-                    </span>
-                    <el-input
-                      v-model="loginForm.username"
-                      placeholder="请填写您的用户名"
-                      name="username"
-                      type="text"
-                      auto-complete="on"
-                    />
-                  </el-form-item>
-                  <el-form-item prop="password" label="密码">
-                    <span class="">
-
-                    </span>
-                    <el-input
-                      type="password"
-                      v-model="loginForm.password"
-                      placeholder="请填写您的密码"
-                      name="password"
-                      auto-complete="on"
-                    />
-                  </el-form-item>
-                  <el-form-item prop="newPassword" label="新密码">
-                    <span class="">
-
-                    </span>
-                    <el-input
-                      type="password"
-                      v-model="loginForm.newPassword"
-                      placeholder="请填写您新的密码"
-                      name="newPassword"
-                      auto-complete="on"
-                      @keyup.enter.native="change" />
-                  </el-form-item>
-                  <div class="button">
-                  <el-button :loading="changeLoading" type="primary" @click.native.prevent="change" size="medium">修改密码</el-button>
-                  <el-button type="info" @click.native.prevent="_toggle" size="medium">取消</el-button>
-                  </div>
-                </el-form>
-                </transition>
-            </div>
-            <!-- <div class="login-main-resident" v-else v-loading="loading"
-              element-loading-text="正在加载居民数据"
-              element-loading-spinner="el-icon-loading"
-            > -->
-            <div class="login-main-resident" v-else>
-              <el-form :model="residentLoginForm" :rules="seachRules" label-position="left" class="login-input-enter" label-width="80px" style="padding-top:30px"
-              status-icon
-              >
-                  <el-form-item prop="name" label="名字">
-                    <span class="">
-
-                    </span>
-                    <el-input
-                      v-model="residentLoginForm.name"
-                      placeholder="请填写您的名字"
-                      name="name"
-                      type="text"
-                      auto-complete="on"
-                    />
-                  </el-form-item>
-                  <el-form-item prop="idcard" label="身份证号">
-                    <span class="">
-
-                    </span>
-                    <el-input
-                      type="text"
-                      v-model="residentLoginForm.idcard"
-                      placeholder="请填写您的身份证号"
-                      name="idcard"
-                      auto-complete="on"
-                      @keyup.enter.native="seach" />
-                  </el-form-item>
-                  <el-button type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="seach">查询诊断列表</el-button>
-                </el-form>
-              <div class="photo"></div>
-            </div>
-            <!-- 引入residentDetails组件 -->
-            <resident-details :personalMess="personalMess" :id="id" :personalData="personalData" ref="resident"></resident-details>
-          </div>
+  <!-- login页面 -->
+  <div class="login-wrapper">
+    <div class="login">
+      <h1 class="title">桥西区医学影像管理系统</h1>
+      <div class="login-content">
+        <div class="login-tab">
+          <div class="tab-resident" @click="transResident">居民查询入口</div>
+          <div class="tab-manager" @click="transManager">管理登陆入口</div>
         </div>
+        <!-- 管理登陆部分 -->
+        <div class="login-main-manager" v-if="userToggle === 'manager'">
+          <div class="photo"></div>
+          <!-- 登陆部分 -->
+          <el-form :model="loginForm" :rules="loginRules" auto-complete="on" label-position="left" class="login-input-enter"
+            label-width="80px" style="padding-top:30px" status-icon>
+            <el-form-item prop="username" label="用户名">
+              <span class="">
+
+              </span>
+              <el-input v-model="loginForm.username" placeholder="请填写您的用户名" name="username" type="text" auto-complete="on" />
+            </el-form-item>
+            <el-form-item prop="password" label="密码">
+              <span class="">
+
+              </span>
+              <el-input type="password" v-model="loginForm.password" placeholder="请填写您的密码" name="password"
+                auto-complete="on" @keyup.enter.native="userLogin" />
+            </el-form-item>
+            <el-button type="primary" style="margin-bottom:30px;" @click.native.prevent="userLogin">点击登陆</el-button>
+            <el-button type="primary" style="margin-bottom:30px;" @click.native.prevent="_toggle">修改密码</el-button>
+          </el-form>
+          <!-- 修改密码部分 -->
+          <transition name="slide">
+            <el-form :model="loginForm" :rules="changeRules" auto-complete="on" label-position="left" class="login-input-change"
+              v-show="changeToggle" label-width="80px" style="width:600px" status-icon>
+              <el-form-item prop="username" label="用户名">
+                <span class="">
+
+                </span>
+                <el-input v-model="loginForm.username" placeholder="请填写您的用户名" name="username" type="text" auto-complete="on" />
+              </el-form-item>
+              <el-form-item prop="password" label="密码">
+                <span class="">
+
+                </span>
+                <el-input type="password" v-model="loginForm.password" placeholder="请填写您的密码" name="password"
+                  auto-complete="on" />
+              </el-form-item>
+              <el-form-item prop="newPassword" label="新密码">
+                <span class="">
+
+                </span>
+                <el-input type="password" v-model="loginForm.newPassword" placeholder="请填写您新的密码" name="newPassword"
+                  auto-complete="on" @keyup.enter.native="change" />
+              </el-form-item>
+              <div class="button">
+                <el-button :loading="changeLoading" type="primary" @click.native.prevent="change" size="medium">修改密码</el-button>
+                <el-button type="info" @click.native.prevent="_toggle" size="medium">取消</el-button>
+              </div>
+            </el-form>
+          </transition>
+        </div>
+        <!-- 管理登陆部分结束 -->
+        <!-- 居民查询部分 -->
+        <div class="login-main-resident" v-else>
+          <el-form :model="residentLoginForm" :rules="seachRules" label-position="left" class="login-input-enter"
+            label-width="80px" style="padding-top:30px" status-icon>
+            <el-form-item prop="name" label="名字">
+              <span class="">
+
+              </span>
+              <el-input v-model="residentLoginForm.name" placeholder="请填写您的名字" name="name" type="text" auto-complete="on" />
+            </el-form-item>
+            <el-form-item prop="idcard" label="身份证号">
+              <span class="">
+
+              </span>
+              <el-input type="text" v-model="residentLoginForm.idcard" placeholder="请填写您的身份证号" name="idcard"
+                auto-complete="on" @keyup.enter.native="seach" />
+            </el-form-item>
+            <el-button type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="seach">查询诊断列表</el-button>
+          </el-form>
+          <div class="photo"></div>
+        </div>
+        <!-- 居民查询部分结束 -->
+        <!-- 引入residentDetails组件 -->
+        <resident-details :personalMess="personalMess" :id="id" :personalData="personalData" ref="resident"></resident-details>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
 import {login, changePass} from '@/api/permission'
-// import {loginResident, getPersonalMess} from '@/api/resident'
 import {loginResident} from '@/api/resident'
 import residentDetails from '@/components/residentDetails'
 
@@ -139,16 +100,13 @@ export default {
   data() {
     var validatePass = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入密码'))
+        callback(new Error('请输入登陆名称'))
       } else {
         callback()
       }
     }
 
     return {
-      // loginForm.userName: '',
-      // password: '',
-      // newPassword: '',
       userToggle: 'resident',
       changeToggle: false,
       loginForm: {
@@ -157,8 +115,6 @@ export default {
         newPassword: ''
       },
 
-      // name: '',
-      // idCard: '',
       id: '',
       personalMess: [],
       residentToggle: false,
@@ -228,6 +184,7 @@ export default {
         loading.close()
       })
     },
+    // 修改密码方法
     change() {
       this.changeLoading = true
       changePass(this.loginForm.username, this.loginForm.password, this.loginForm.newPassword).then(response => {

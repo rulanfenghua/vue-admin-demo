@@ -1,35 +1,35 @@
 <template>
-<div class="resident-details-wrapper">
-  <el-dialog :visible.sync="residentToggle" class="dialog" title="检查记录列表：">
-    <!-- 清单列表 -->
-    <div class="resident-details">
-      <div class="details-wrapper">
-      <ul class="details-name">
-        <li>姓名：{{personalData.name}}</li>
-        <li>身份证号：{{personalData.idCard}}</li>
-        <li>性别：{{personalData.gender}}</li>
-        <li>年龄：{{personalData.age}}</li>
-      </ul>
-      <ul class="details-addr">
-        <li>电话：{{personalData.tel}}</li>
-        <li>家庭住址：{{personalData.homeAddr}}</li>
-      </ul>
-      <!-- <h2>检查记录列表：</h2> -->
+  <div class="resident-details-wrapper">
+    <el-dialog :visible.sync="residentToggle" class="dialog" title="检查记录列表：">
+      <!-- 清单列表 -->
+      <div class="resident-details">
+        <div class="details-wrapper">
+          <ul class="details-name">
+            <li>姓名：{{personalData.name}}</li>
+            <li>身份证号：{{personalData.idCard}}</li>
+            <li>性别：{{personalData.gender}}</li>
+            <li>年龄：{{personalData.age}}</li>
+          </ul>
+          <ul class="details-addr">
+            <li>电话：{{personalData.tel}}</li>
+            <li>家庭住址：{{personalData.homeAddr}}</li>
+          </ul>
+          <!-- <h2>检查记录列表：</h2> -->
+        </div>
+        <ul class="mess">
+          <li class="mess-item" v-for="(data,index) in personalMess" :key="index">
+            <span class="text">诊断时间：</span>
+            <span class="date">{{data.checkDate | formatTime}}</span>
+            <span>诊断状态：诊断完成</span>
+            <el-button @click="getPrinting(id,data.checkDate,index)" type="warning" plain size="small" :loading="index===thisIndex">查看报告单</el-button>
+          </li>
+        </ul>
       </div>
-      <ul class="mess">
-        <li class="mess-item" v-for="(data,index) in personalMess" :key="index">
-          <span class="text">诊断时间：</span>
-          <span class="date">{{data.checkDate | formatTime}}</span>
-          <span>诊断状态：诊断完成</span>
-          <el-button @click="getPrinting(id,data.checkDate,index)" type="warning" plain size="small" :loading="index===thisIndex">查看报告单</el-button>
-        </li>
-      </ul>
-    </div>
-    <div class="button">
-    <el-button @click="_toggleResident" round>确定</el-button>
-    </div>
-    <!-- 清单列表结束 -->
-  </el-dialog>
+      <div class="button">
+        <el-button @click="_toggleResident" round>确定</el-button>
+      </div>
+      <!-- 清单列表结束 -->
+    </el-dialog>
     <!-- 打印内容 -->
     <transition name="print">
       <div class="printing" v-if="printingToggle">
@@ -66,12 +66,11 @@
             </li>
           </ul>
           <div class="end">本报告仅供参考，建议上一级医院进一步检查</div>
-          </div>
-
+        </div>
         <div class="footer">
-        <el-button @click="print" round type="success" size="small">立即打印</el-button>
-        <el-button @click="print" round type="warning" size="small">保存为PDF</el-button>
-        <el-button @click="_toggle();_toggleResident()" round type="primary" plain size="small">确定</el-button>
+          <el-button @click="print" round type="success" size="small">立即打印</el-button>
+          <el-button @click="print" round type="warning" size="small">保存为PDF</el-button>
+          <el-button @click="_toggle();_toggleResident()" round type="primary" plain size="small">确定</el-button>
         </div>
       </div>
     </transition>
@@ -81,7 +80,7 @@
       <div class="mask" v-show="printingToggle" @click="_toggle" title="点击背景可以返回"></div>
     </transition>
     <!-- 背景结束 -->
-</div>
+  </div>
 </template>
 
 <script>
@@ -247,11 +246,13 @@ export default {
             padding-left: 34px;
             font-size: 14px;
             font-weight: bold;
+
             li {
               display: inline-block;
               margin-right: 30px;
             }
           }
+
           .details-addr {
             position: relative;
             margin-bottom: 17px;
@@ -259,10 +260,12 @@ export default {
             padding-left: 34px;
             font-size: 14px;
             font-weight: bold;
+
             li {
               display: inline-block;
               margin-right: 30px;
             }
+
             &:after {
               display: block;
               position: absolute;
@@ -273,20 +276,24 @@ export default {
               content: '';
             }
           }
+
           h2 {
             font-weight: bolder;
             font-size: 16px;
             line-height: 40px;
           }
         }
+
         .mess {
           .mess-item {
             margin-bottom: 23px;
             position: relative;
             padding-left: 32px;
+
             &:first-child {
               margin-top: 27px;
             }
+
             &:after {
               display: block;
               position: absolute;
@@ -296,12 +303,13 @@ export default {
               border-top: 1px solid #ddd;
               content: '';
             }
-            .text {
 
-            }
+            .text {}
+
             .date {
               margin-right: 40px;
             }
+
             .el-button {
               position: absolute;
               top: -7px;
@@ -310,6 +318,7 @@ export default {
           }
         }
       }
+
       .button {
         position: absolute;
         width: 600px;
@@ -351,6 +360,7 @@ export default {
         opacity: 0;
         transform: translate3d(0, 10px, 0);
       }
+
       #printing {
         box-sizing: border-box;
         // @page {
@@ -364,6 +374,7 @@ export default {
         // flex-direction: column;
         position: relative;
         margin-bottom: 44px;
+
         // background-color: red;
         .title {
           box-sizing: border-box;
@@ -375,6 +386,7 @@ export default {
           letter-spacing: 0px;
           font-family: "SimSun";
         }
+
         .header {
           // text-align: center;
           display: block;
@@ -382,9 +394,11 @@ export default {
           height: 28px;
           padding-top: 20px;
           text-align: center;
+
           li {
             display: inline-block;
             margin-right: 64px;
+
             span {
               font-family: "NSimSun";
               font-weight: bolder;
@@ -393,6 +407,7 @@ export default {
             }
           }
         }
+
         .line {
           width: 100%;
           height: 1px;
@@ -400,18 +415,22 @@ export default {
           position: relative;
           margin-top: 23px;
         }
+
         .photo {
           text-align: center;
           margin: 17px 0;
+
           img {
             display: inline-block;
             height: 184px;
             width: 246px;
+
             &:first-child {
               margin-right: 90px;
             }
           }
         }
+
         .text {
           line-height: 26px;
           position: relative;
@@ -421,6 +440,7 @@ export default {
           letter-spacing: 0;
           font-size: 19px;
         }
+
         .bottom {
           position: absolute;
           bottom: 0;
@@ -428,13 +448,16 @@ export default {
           font-family: "NSimSun";
           letter-spacing: -1px;
           font-size: 19px;
+
           li {
             margin-bottom: 20px;
+
             &:last-child {
               margin-bottom: 54px;
             }
           }
         }
+
         .end {
           position: absolute;
           width: 100%;
@@ -444,6 +467,7 @@ export default {
           font-size: 13px;
         }
       }
+
       .footer {
         position: fixed;
         // padding-top: 7px;

@@ -47,7 +47,7 @@ export const DynamicRoutes = [
       },
       {
         path: '/logging',
-        component: () => import('@/pages/logging'),
+        component: () => import('@/pages/acci-logging'),
         name: 'logging',
         meta: {
           name: '日志管理',
@@ -56,7 +56,7 @@ export const DynamicRoutes = [
       },
       {
         path: '/systemSetting',
-        component: () => import('@/pages/systemSetting'),
+        component: () => import('@/pages/acci-systemSetting'),
         name: 'systemSetting',
         meta: {
           name: '系统管理',

@@ -248,11 +248,13 @@ export default {
         console.log(response.data)
       })
     },
-    handleSizeChange() {
-
+    handleSizeChange(value) {
+      this.limit = value
+      this.init()
     },
-    handleCurrentChange() {
-
+    handleCurrentChange(value) {
+      this.page = value
+      this.init()
     }
   }
 }
