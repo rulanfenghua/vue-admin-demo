@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrapper">
     <div class="login">
-      <h1 class="title">桥西区医学影像管理系统</h1>
+      <h1 class="title">桥西区医学影像信息管理系统</h1>
       <div class="login-content">
         <div class="login-tab">
           <div class="tab-resident" @click="transResident">居民查询入口</div>

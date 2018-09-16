@@ -69,7 +69,7 @@
         </div>
         <div class="footer">
           <el-button @click="print" round type="success" size="small">立即打印</el-button>
-          <el-button @click="print" round type="warning" size="small">保存为PDF</el-button>
+          <el-button @click="toPdf" round type="warning" size="small">保存为PDF</el-button>
           <el-button @click="_toggle();_toggleResident()" round type="primary" plain size="small">确定</el-button>
         </div>
       </div>
@@ -206,6 +206,9 @@ export default {
         //     font-size: 12px; }
         // `
       })
+    },
+    toPdf() {
+      this.getPdf('printing', '中华社区卫生服务中心B超报告单')
     },
     _toggleResident() {
       this.residentToggle = !this.residentToggle
@@ -344,7 +347,7 @@ export default {
       border-radius: 3px;
       box-shadow: 0 0 6px #ddd;
       z-index: 3000;
-      padding: 4px 40px;
+      // padding: 4px 40px;
       overflow: auto;
       background-color: #fff;
       // display: flex;
@@ -368,13 +371,12 @@ export default {
         // }
         // flex: 1;
         // min-height: calc(100% - 52px);
-        // height: 1038px;
-        height: 977px;
+        height: 1092px;
+        // height: 977px;
         // display: flex;
         // flex-direction: column;
         position: relative;
         margin-bottom: 44px;
-
         // background-color: red;
         .title {
           box-sizing: border-box;
@@ -409,10 +411,11 @@ export default {
         }
 
         .line {
-          width: 100%;
+          width: 89%;
           height: 1px;
           background-color: #ccc;
           position: relative;
+          margin: 0 auto;
           margin-top: 23px;
         }
 
@@ -435,7 +438,7 @@ export default {
           line-height: 26px;
           position: relative;
           width: 100%;
-          padding: 7px 14px 0;
+          padding: 7px 49px 0;
           font-family: "NSimSun";
           letter-spacing: 0;
           font-size: 19px;
@@ -444,7 +447,7 @@ export default {
         .bottom {
           position: absolute;
           bottom: 0;
-          right: 7px;
+          right: 42px;
           font-family: "NSimSun";
           letter-spacing: -1px;
           font-size: 19px;

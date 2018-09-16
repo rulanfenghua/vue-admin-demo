@@ -157,6 +157,9 @@ export default {
               display: block;
               width: 64px;
               text-align: center;
+              &:hover {
+                color: #fff;
+              }
               i {
                 display: block;
                 font-size: 27px;

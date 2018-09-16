@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './styles/index.scss'
 
 import axios from './config/httpConfig'
+import htmlToPdf from '@/utils/htmlToPdf'
 import * as globalFilter from './filters/filters'
 
 Vue.prototype.$http = axios
@@ -18,6 +19,7 @@ Object.keys(globalFilter).forEach(key => {
 })
 
 Vue.use(ElementUI)
+Vue.use(htmlToPdf)
 
 Vue.config.productionTip = false
 

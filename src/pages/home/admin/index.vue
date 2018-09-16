@@ -304,18 +304,24 @@ export default {
       border-radius: 1px;
       box-shadow: 0 0 5px #b59f9f;
       border-color: rgba(0, 0, 0, .05);
+      cursor: pointer;
       &:first-child {
         margin-left: 7px;
       }
       &:hover {
         .button {
-
+          background-color: #fff;
         }
       }
       .button {
         width: 50%;
         height: 100%;
         background-color: rebeccapurple;
+        display: inline-block;
+      }
+      .count {
+        display: inline-block;
+        vertical-align: top;
       }
     }
   }
