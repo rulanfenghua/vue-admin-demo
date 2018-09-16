@@ -9,8 +9,10 @@
             </div>
             <div class="login-main-manager" v-if="userToggle === 'manager'">
               <div class="photo"></div>
+              <div>
                 <el-form :model="loginForm" :rules="loginRules" auto-complete="on" label-position="left" class="login-input-enter" label-width="80px" style="padding-top:30px"
                 status-icon
+                ref="loginForm"
                 >
                   <el-form-item prop="username" label="用户名">
                     <span class="">
@@ -42,6 +44,7 @@
                 <transition name="slide">
                 <el-form :model="loginForm" :rules="changeRules" auto-complete="on" label-position="left" class="login-input-change" v-show="changeToggle" label-width="80px" style="width:600px"
                 status-icon
+                ref="changeForm"
                 >
                   <el-form-item prop="username" label="用户名">
                     <span class="">
@@ -85,14 +88,17 @@
                   </div>
                 </el-form>
                 </transition>
+              </div>
             </div>
             <!-- <div class="login-main-resident" v-else v-loading="loading"
               element-loading-text="正在加载居民数据"
               element-loading-spinner="el-icon-loading"
             > -->
             <div class="login-main-resident" v-else>
+              <div>
               <el-form :model="residentLoginForm" :rules="seachRules" label-position="left" class="login-input-enter" label-width="80px" style="padding-top:30px"
               status-icon
+              ref="seachForm"
               >
                   <el-form-item prop="name" label="名字">
                     <span class="">
@@ -121,6 +127,7 @@
                   <el-button type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="seach">查询诊断列表</el-button>
                 </el-form>
               <div class="photo"></div>
+              </div>
             </div>
             <!-- 引入residentDetails组件 -->
             <resident-details :personalMess="personalMess" :id="id" :personalData="personalData" ref="resident"></resident-details>
@@ -137,13 +144,13 @@ import residentDetails from '@/components/residentDetails'
 
 export default {
   data() {
-    var validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'))
-      } else {
-        callback()
-      }
-    }
+    // var validatePass = (rule, value, callback) => {
+    //   if (value === '') {
+    //     callback(new Error('请输入登陆名称'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
 
     return {
       // loginForm.userName: '',
@@ -172,7 +179,7 @@ export default {
       changeLoading: false,
 
       loginRules: {
-        username: [{ validator: validatePass, trigger: 'blur' }],
+        username: [{ required: true, message: '请填写登陆名称', trigger: 'blur' }],
         password: [{ trigger: 'blur', required: true, message: '请填写登陆密码' }]
       },
       changeRules: {
@@ -191,64 +198,76 @@ export default {
   },
   methods: {
     userLogin() {
-      const loading = this.$loading({
-        lock: true,
-        text: '登陆中',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      })
-      login(this.loginForm.username, this.loginForm.password).then(response => {
-        if (response.code === 0) {
-          this.$message({
-            message: '登陆成功，欢迎 ' + response.data.userName,
-            type: 'success'
+      this.$refs.loginForm.validate((valid) => {
+        if (valid) {
+          const loading = this.$loading({
+            lock: true,
+            text: '登陆中',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
           })
-          sessionStorage.setItem('name', response.data.userName)
-          this.$store.commit('LOGIN_IN', response.code)
-          this.$router.replace('/')
-          console.log('权限相关————————login')
-          console.log(response.data)
-          console.log(response.data.levels)
-          if (response.data.levels) {
-            sessionStorage.setItem('levels', response.data.levels)
-            console.log('角色权限相关————————login')
-            console.log('levels: ' + sessionStorage.getItem('levels'))
-          }
+          login(this.loginForm.username, this.loginForm.password).then(response => {
+            if (response.code === 0) {
+              this.$message({
+                message: '登陆成功，欢迎 ' + response.data.userName,
+                type: 'success'
+              })
+              sessionStorage.setItem('name', response.data.userName)
+              this.$store.commit('LOGIN_IN', response.code)
+              this.$router.replace('/')
+              console.log('权限相关————————login')
+              console.log(response.data)
+              console.log(response.data.levels)
+              if (response.data.levels) {
+                sessionStorage.setItem('levels', response.data.levels)
+                console.log('角色权限相关————————login')
+                console.log('levels: ' + sessionStorage.getItem('levels'))
+              }
+            } else {
+              loading.close()
+              this.$message.error({
+                message: response.msg
+              })
+            }
+          }).catch(error => {
+            loading.close()
+            console.log('错误————————login')
+            console.log(error)
+          }).then(() => {
+            loading.close()
+          })
         } else {
-          loading.close()
-          this.$message.error({
-            message: response.msg
-          })
+          return false
         }
-      }).catch(error => {
-        loading.close()
-        console.log('错误————————login')
-        console.log(error)
-      }).then(() => {
-        loading.close()
       })
     },
     change() {
-      this.changeLoading = true
-      changePass(this.loginForm.username, this.loginForm.password, this.loginForm.newPassword).then(response => {
-        if (response.code === 0) {
-          this.$message({
-            message: '密码修改成功',
-            type: 'success'
+      this.$refs.changeForm.validate((valid) => {
+        if (valid) {
+          this.changeLoading = true
+          changePass(this.loginForm.username, this.loginForm.password, this.loginForm.newPassword).then(response => {
+            if (response.code === 0) {
+              this.$message({
+                message: '密码修改成功',
+                type: 'success'
+              })
+              this._toggle()
+            } else {
+              this.changeLoading = false
+              this.$message.error({
+                message: response.msg
+              })
+            }
+          }).catch(error => {
+            this.changeLoading = false
+            console.log('错误————————change')
+            console.log(error)
+          }).then(() => {
+            this.changeLoading = false
           })
-          this._toggle()
         } else {
-          this.changeLoading = false
-          this.$message.error({
-            message: response.msg
-          })
+          return false
         }
-      }).catch(error => {
-        this.changeLoading = false
-        console.log('错误————————change')
-        console.log(error)
-      }).then(() => {
-        this.changeLoading = false
       })
     },
     transResident() {
@@ -259,35 +278,40 @@ export default {
     },
     // 居民查询方法
     seach() {
-      // this.loading = true // 废弃的element加载层
-      const loading = this.$loading({
-        lock: true,
-        text: '正在加载居民数据',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      })
-      loginResident(this.residentLoginForm.name, this.residentLoginForm.idcard).then(response => {
-        if (response.code === 0) {
-          console.log('居民登陆————————seach')
-          console.log(response)
-          this.personalData = response.data
-          this.id = response.data.id
-          this._initMess()
-          this.$refs.resident._toggleResident()
-        } else {
-          this.loading = false
-          this.$message.error({
-            message: response.msg
+      this.$refs.seachForm.validate((valid) => {
+        if (valid) {
+          const loading = this.$loading({
+            lock: true,
+            text: '正在加载居民数据',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
           })
+          loginResident(this.residentLoginForm.name, this.residentLoginForm.idcard).then(response => {
+            if (response.code === 0) {
+              console.log('居民登陆————————seach')
+              console.log(response)
+              this.personalData = response.data
+              this.id = response.data.id
+              this._initMess()
+              this.$refs.resident._toggleResident()
+            } else {
+              this.loading = false
+              this.$message.error({
+                message: response.msg
+              })
+            }
+          }).catch(error => {
+            // this.loading = false
+            loading.close()
+            console.log('错误————————seach')
+            console.log(error)
+          }).then(() => {
+            // this.loading = false
+            loading.close()
+          })
+        } else {
+          return false
         }
-      }).catch(error => {
-        // this.loading = false
-        loading.close()
-        console.log('错误————————seach')
-        console.log(error)
-      }).then(() => {
-        // this.loading = false
-        loading.close()
       })
     },
     _toggle() {
