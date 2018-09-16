@@ -46,7 +46,7 @@
         <el-table-column
           type="index"
           align="center"
-          index="1">
+        >
         </el-table-column>
         <el-table-column
           label="姓名"
@@ -121,7 +121,7 @@
       </el-table>
     </div>
     <div class="pagination-container">
-      <el-pagination :current-page="page" :page-sizes="[10,20,30]" :page-size="limit" :total="50" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
+      <el-pagination :current-page="page" :page-sizes="[10,20,30]" :page-size="limit" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
     </div>
     <!-- 引入residentDetails组件 -->
     <resident-details :personalMess="personalMess" :id="id" :personalData="personalData" ref="resident"></resident-details>
@@ -213,7 +213,8 @@ export default {
       getPersonList(this.page, this.limit, this.name, this.idcard, this.station, this.date).then(response => {
         console.log('居民列表————————admin')
         console.log(response)
-        this.res_getPersonList = response.data
+        this.res_getPersonList = response.data.list
+        this.total = response.data.total
       }).catch(error => {
         this.loading = false
         console.log(error)

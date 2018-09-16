@@ -1,21 +1,33 @@
 <template>
   <div class="residents-manager">
     <div class="filter-container">
+      输入查询条件查询：
       <div class="name-picker">
         <el-input v-model="name" placeholder="输入姓名查询"></el-input>
       </div>
       <div class="idcard-picker">
         <el-input v-model="idcard" placeholder="输入身份证号查询"></el-input>
       </div>
+      <el-button @click="init" type="primary">点击查询</el-button>
+    </div>
+    <div class="date-container">
+      选择日期查询：
       <div class="date-picker">
         <el-date-picker v-model="date" type="daterange" align="right" unlink-panels range-separator="至"
           start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
         </el-date-picker>
       </div>
-      <el-button @click="init"></el-button>
+      <el-button @click="init" type="primary">点击查询</el-button>
     </div>
     <div class="table-container" v-loading="loading" element-loading-text="正在加载居民列表" element-loading-spinner="el-icon-loading">
-      <el-table :data="res_getPersonList" border fit highlight-current-row style="width: 100%">
+      <el-table :data="res_getPersonList" border fit highlight-current-row style="width: 100%"
+      :max-height="tableHeight"
+      >
+        <el-table-column
+          type="index"
+          align="center"
+        >
+        </el-table-column>
         <el-table-column
           label="姓名"
           align="center"
@@ -100,6 +112,11 @@ export default {
   components: {
     residentDetails
   },
+  computed: {
+    tableHeight() {
+      return ((document.documentElement.clientHeight || document.body.clientHeight) - 345)
+    }
+  },
   data() {
     return {
       res_getPersonList: [],
@@ -172,6 +189,7 @@ export default {
         console.log('居民列表————————station')
         console.log(response)
         this.res_getPersonList = response.data.list
+        this.total = response.data.total
       }).catch(error => {
         this.loading = false
         console.log(error)
@@ -220,4 +238,36 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.residents-manager {
+  height: 100%;
+  margin: 0 30px 17px;
+  .filter-container {
+    margin-top: 19px;
+    margin-left: 33px;
+    font-size: 15px;
+    font-weight: bold;
+    .name-picker {
+      display: inline-block;
+    }
+    .idcard-picker {
+      display: inline-block;
+    }
+    .station-picker {
+      display: inline-block;
+    }
+  }
+  .date-container {
+    margin-top: 19px;
+    margin-bottom: 30px;
+    margin-left: 33px;
+    font-size: 15px;
+    font-weight: bold;
+    .date-picker {
+      display: inline-block;
+    }
+  }
+  .table-container {
+    margin-bottom: 17px;
+  }
+}
 </style>
