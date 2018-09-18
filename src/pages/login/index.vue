@@ -8,9 +8,9 @@
           <div class="tab-manager" @click="transManager" :class="{'active': userToggle === 'manager'}">管理登陆入口</div>
         </div>
         <div class="login-main-manager" v-if="userToggle === 'manager'">
-          <div class="photo"></div>
+          <!-- <div class="photo"></div> -->
             <el-form :model="loginForm" :rules="loginRules" auto-complete="on" label-position="left" class="login-input-enter"
-              label-width="80px" style="padding-top:30px" status-icon ref="loginForm">
+              label-width="90px" style="padding-top:30px" status-icon ref="loginForm">
               <el-form-item prop="username" label="用户名">
                 <span class="">
 
@@ -77,10 +77,10 @@
                   auto-complete="on" @keyup.enter.native="seach" />
               </el-form-item>
               <div class="button">
-              <el-button type="primary" style="width:85%;margin-bottom:30px;" @click.native.prevent="seach">查询诊断列表</el-button>
+              <el-button type="primary" style="width:64%;margin-bottom:30px;" @click.native.prevent="seach">查询诊断列表</el-button>
               </div>
             </el-form>
-            <div class="photo"></div>
+            <!-- <div class="photo"></div> -->
         </div>
       </div>
     </div>
@@ -151,12 +151,12 @@ export default {
     userLogin() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          const loading = this.$loading({
-            lock: true,
-            text: '登陆中',
-            spinner: 'el-icon-loading',
-            background: 'rgba(0, 0, 0, 0.7)'
-          })
+          // const loading = this.$loading({
+          //   lock: true,
+          //   text: '登陆中',
+          //   spinner: 'el-icon-loading',
+          //   background: 'rgba(0, 0, 0, 0.7)'
+          // })
           login(this.loginForm.username, this.loginForm.password).then(response => {
             if (response.code === 0) {
               this.$message({
@@ -175,17 +175,17 @@ export default {
                 console.log('levels: ' + sessionStorage.getItem('levels'))
               }
             } else {
-              loading.close()
+              // loading.close()
               this.$message.error({
                 message: response.msg
               })
             }
           }).catch(error => {
-            loading.close()
+            // loading.close()
             console.log('错误————————login')
             console.log(error)
           }).then(() => {
-            loading.close()
+            // loading.close()
           })
         } else {
           return false
@@ -232,12 +232,12 @@ export default {
     seach() {
       this.$refs.seachForm.validate((valid) => {
         if (valid) {
-          const loading = this.$loading({
-            lock: true,
-            text: '正在加载居民数据',
-            spinner: 'el-icon-loading',
-            background: 'rgba(0, 0, 0, 0.7)'
-          })
+          // const loading = this.$loading({
+          //   lock: true,
+          //   text: '正在加载居民数据',
+          //   spinner: 'el-icon-loading',
+          //   background: 'rgba(0, 0, 0, 0.7)'
+          // })
           loginResident(this.residentLoginForm.name, this.residentLoginForm.idcard).then(response => {
             if (response.code === 0) {
               console.log('居民登陆————————seach')
@@ -247,19 +247,17 @@ export default {
               this._initMess()
               this.$refs.resident._toggleResident()
             } else {
-              this.loading = false
+              // loading.close()
               this.$message.error({
                 message: response.msg
               })
             }
           }).catch(error => {
-            // this.loading = false
-            loading.close()
+            // loading.close()
             console.log('错误————————seach')
             console.log(error)
           }).then(() => {
-            // this.loading = false
-            loading.close()
+            // loading.close()
           })
         } else {
           return false
@@ -302,15 +300,18 @@ export default {
   // background: no-repeat center/100% url('./影像.jpg');
   // opacity: 0.3;
   overflow: hidden;
+
   .login {
     position: relative;
-    width: 524px;
+    width: 325px;
     /* top: calc(50% - 200px);
     left: calc(50% - 300px); */
     top: calc(50% - 130px);
     left: calc(50% - 19px);
     .title {
       display: block;
+      // position: absolute;
+      width: 600px;
       font-weight: 900;
       text-align: center;
       font-size: 35px;
@@ -319,15 +320,19 @@ export default {
       font-family: Helvetica,Arial,"Hiragino Sans GB","Microsoft Yahei","黑体",sans-serif!important;
       letter-spacing: 5px;
       margin-bottom: 50px;
+      margin-left: -134px;
     }
     .login-content {
       // background-color: #fff;
       .login-tab {
         display: flex;
+        // margin-left: 59px;
         width: 100%;
         height: 40px;
         // margin-bottom: 30px;
-        letter-spacing: 4px;
+        // letter-spacing: 4px;
+
+        font-size: 14px;
         .tab-resident {
           flex: 1;
           font-weight: bold;
@@ -336,17 +341,18 @@ export default {
           cursor: pointer;
           background-color: #347ed3;
           color: #fff;
+          border-radius: 4px;
           &:active {
             border: 1px solid  #347ed3;
             background-color:  #347ed3;
-            border-radius: 1px;
+            // border-radius: 1px;
           }
           &.active {
             background-color: #0d234a;
             &:active {
               border: 1px solid  #0d234a;
               background-color:  #0d234a;
-              border-radius: 1px;
+              // border-radius: 1px;
             }
           }
         }
@@ -359,17 +365,18 @@ export default {
           // background-color:#2960c5;
           background-color: #347ed3;
           color: #fff;
+          border-radius: 4px;
           &:active {
             border: 1px solid #347ed3;
             background-color: #347ed3;
-            border-radius: 1px;
+            // border-radius: 1px;
           }
           &.active {
             background-color: #0d234a;
             &:active {
               border: 1px solid  #0d234a;
               background-color:  #0d234a;
-              border-radius: 1px;
+              // border-radius: 1px;
             }
           }
         }
@@ -472,6 +479,7 @@ export default {
     z-index: -1;
     filter: blur(1px);
     // opacity: 0.9;
+    overflow: hidden;
   }
 }
 </style>

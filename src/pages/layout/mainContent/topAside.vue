@@ -26,19 +26,7 @@
           </li>
           <li class="tab-item">
             <router-link to="/systemSetting">
-              <i class="icon-cog"></i>
-              <span>系统管理</span>
-            </router-link>
-          </li>
-          <li class="tab-item">
-            <router-link to="/systemSetting">
-              <i class="icon-cog"></i>
-              <span>系统管理</span>
-            </router-link>
-          </li>
-          <li class="tab-item">
-            <router-link to="/systemSetting">
-              <i class="icon-cog"></i>
+              <i class="icon-cogs"></i>
               <span>系统管理</span>
             </router-link>
           </li>
@@ -211,7 +199,7 @@ export default {
       }
     }
     .breadcrumd-wrapper {
-      background-color: royalblue;
+      background-color: #6fa7e8;
       color: #fff;
       padding: 4px 0 4px 6px;
       .intro {

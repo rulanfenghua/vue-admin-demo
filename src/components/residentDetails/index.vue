@@ -493,6 +493,7 @@ export default {
       z-index: 40;
       -webkit-backdrop-filter: blur(10px);
       background: rgba(7, 17, 27, 0.6);
+      overflow: hidden;
 
       &.fade-enter-active,
       &.fade-leave-active {

@@ -2,28 +2,36 @@
   <div class="admin">
     <div class="panel-container">
       <div class="panel-item">
-        <div class="button"></div>
+        <div class="button">
+          <i class="icon-user-plus"></i>
+        </div>
         <ul class="count">
           <li class="amount">{{res_index.AMOUNT}}</li>
           <li class="text">人员总数</li>
         </ul>
       </div>
       <div class="panel-item">
-        <div class="button"></div>
+        <div class="button">
+          <i class="icon-paragraph-left"></i>
+        </div>
         <ul class="count">
           <li class="amount">{{res_index.DAY}}</li>
           <li class="text">日检查量</li>
         </ul>
       </div>
       <div class="panel-item">
-        <div class="button"></div>
+        <div class="button">
+          <i class="icon-indent-increase"></i>
+        </div>
         <ul class="count">
           <li class="amount">{{res_index.WEEK}}</li>
           <li class="text">周检查量</li>
         </ul>
       </div>
       <div class="panel-item">
-        <div class="button"></div>
+        <div class="button">
+          <i class="icon-table2"></i>
+        </div>
         <ul class="count">
           <li class="amount">{{res_index.MOUTH}}</li>
           <li class="text">月检查量</li>
@@ -223,7 +231,7 @@ export default {
           series: [{
             name: '上传数量',
             type: 'bar',
-            data: this._toArray_value(response.data),
+            data: this._toArray_value_supper(response.data),
             color: function (params) {
               var colorList = ['#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8']
               return colorList[params.dataIndex]
@@ -260,7 +268,7 @@ export default {
         console.log('调用子组件————————home/admin')
         console.log('id: ' + id + '  checkDate: ' + checkDate)
         this.$refs.print.getPrinting(id, checkDate)
-        this.$refs.print._toggle()
+        // this.$refs.print._toggle()
       })
     },
     _initChart(element, expectedData) {
@@ -296,6 +304,22 @@ export default {
       })
       console.log(expectedArray)
       return expectedArray
+    },
+    _toArray_key_supper_supper(arr) {
+      let expectedArray = []
+      arr.forEach(obj => {
+        expectedArray.push(obj.STATION_NAME)
+      })
+      console.log(expectedArray)
+      return expectedArray
+    },
+    _toArray_value_supper_supper(arr) {
+      let expectedArray = []
+      arr.forEach(obj => {
+        expectedArray.push(obj.NUM)
+      })
+      console.log(expectedArray)
+      return expectedArray
     }
   }
 }
@@ -304,6 +328,7 @@ export default {
 <style scoped lang="scss">
 .admin{
   background-color: #e6e1e1;
+  overflow: hidden;
   .panel-container {
     width: 100%;
     display: flex;
@@ -322,6 +347,9 @@ export default {
       &:hover {
         .button {
           background-color: #143965;
+          i {
+            color: #b59f9f;
+          }
         }
       }
       .button {
@@ -329,6 +357,12 @@ export default {
         height: 100%;
         background-color: #347bcd;
         display: inline-block;
+        text-align: center;
+        padding-top: 9px;
+        i {
+          color: #fff;
+          font-size: 24px;
+        }
       }
       .count {
         display: inline-block;

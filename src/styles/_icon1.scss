@@ -1,17 +1,17 @@
 @font-face {
-  font-family: 'index';
-  src:  url('fonts/index.eot?i116jh');
-  src:  url('fonts/index.eot?i116jh#iefix') format('embedded-opentype'),
-    url('fonts/index.ttf?i116jh') format('truetype'),
-    url('fonts/index.woff?i116jh') format('woff'),
-    url('fonts/index.svg?i116jh#index') format('svg');
+  font-family: 'admin-icon';
+  src:  url('fonts/admin-icon.eot?4hjo4f');
+  src:  url('fonts/admin-icon.eot?4hjo4f#iefix') format('embedded-opentype'),
+    url('fonts/admin-icon.ttf?4hjo4f') format('truetype'),
+    url('fonts/admin-icon.woff?4hjo4f') format('woff'),
+    url('fonts/admin-icon.svg?4hjo4f#admin-icon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'index' !important;
+  font-family: 'admin-icon' !important;
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -33,21 +33,9 @@
 .icon-address-book:before {
   content: "\e944";
 }
-.icon-user-plus:before {
-  content: "\e973";
-}
-.icon-cogs:before {
-  content: "\e995";
+.icon-cog:before {
+  content: "\e994";
 }
 .icon-switch:before {
   content: "\e9b6";
-}
-.icon-table2:before {
-  content: "\ea71";
-}
-.icon-paragraph-left:before {
-  content: "\ea77";
-}
-.icon-indent-increase:before {
-  content: "\ea7b";
 }
