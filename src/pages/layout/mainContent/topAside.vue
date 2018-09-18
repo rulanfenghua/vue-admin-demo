@@ -24,11 +24,27 @@
               <span>日志管理</span>
             </router-link>
           </li>
-          <li class="tab-item">
-            <router-link to="/systemSetting">
+          <li class="tab-item" style="position:relative" @click="slideControl">
+            <a href="javascript:void(0);">
               <i class="icon-cogs"></i>
               <span>系统管理</span>
-            </router-link>
+            </a>
+            <transition name="slide" mode="out-in">
+            <ul class="setting-item" v-show="slide">
+              <li class="setting"><router-link to="/systemSetting/users">
+              <i class="icon-address-book"></i>
+              <span>用户管理</span>
+            </router-link></li>
+              <li class="setting"><router-link to="/systemSetting/roles">
+              <i class="icon-address-book"></i>
+              <span>角色管理</span>
+            </router-link></li>
+              <li class="setting"><router-link to="/systemSetting/dict">
+              <i class="icon-address-book"></i>
+              <span>字典管理</span>
+            </router-link></li>
+            </ul>
+            </transition>
           </li>
         </ul>
       </div>
@@ -72,7 +88,8 @@ export default {
   name: 'topAside',
   data() {
     return {
-      name: ''
+      name: '',
+      slide: false
     }
   },
   computed: {
@@ -106,6 +123,10 @@ export default {
         /* 防止切换角色时addRoutes重复添加路由导致出现警告 */
         window.location.reload()
       })
+    },
+    slideControl() {
+      this.slide = !this.slide
+      console.log(1)
     }
   }
 }
@@ -219,5 +240,22 @@ export default {
   }
   .breadcrumb-leave-active {
     position: absolute;
+  }
+
+  .setting-item {
+    position: absolute;
+    top: 0;
+    left: 64px;
+    width: 200px;
+    &.slide-enter-active, &.slide-leave-active {
+      transition: all .6s ease;
+    }
+    &.slide-enter, &.slide-leave-to {
+      transform: translate3d(-100%,0,0);
+      opacity: 0;
+    }
+    .setting {
+      display: inline-block;
+    }
   }
 </style>

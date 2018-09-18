@@ -231,9 +231,9 @@ export default {
           series: [{
             name: '上传数量',
             type: 'bar',
-            data: this._toArray_value_supper(response.data),
+            data: this._toArray_value_supper_supper(response.data),
             color: function (params) {
-              var colorList = ['#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8']
+              var colorList = ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#FF7599', '#FDEC6D', '#44A9A8', '#2D8CF0']
               return colorList[params.dataIndex]
             }
           }]

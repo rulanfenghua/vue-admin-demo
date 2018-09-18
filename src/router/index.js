@@ -56,12 +56,38 @@ export const DynamicRoutes = [
       },
       {
         path: '/systemSetting',
-        component: () => import('@/pages/acci-systemSetting'),
         name: 'systemSetting',
+        component: () => import('@/pages/acci-systemSetting'),
         meta: {
           name: '系统管理',
           icon: ''
-        }
+        },
+        children: [
+          {
+            path: '/systemSetting/users',
+            component: () => import('@/pages/acci-systemSetting/users'),
+            name: 'users',
+            meta: {
+              name: '用户管理'
+            }
+          },
+          {
+            path: '/systemSetting/roles',
+            component: () => import('@/pages/acci-systemSetting/roles'),
+            name: 'roles',
+            meta: {
+              name: '角色管理'
+            }
+          },
+          {
+            path: '/systemSetting/dict',
+            component: () => import('@/pages/acci-systemSetting/dict'),
+            name: 'dict',
+            meta: {
+              name: '字典管理'
+            }
+          }
+        ]
       }
     ]
   },

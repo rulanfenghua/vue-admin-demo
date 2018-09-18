@@ -1,12 +1,12 @@
 <template>
-  <div class="systemSetting">
-    <router-view></router-view>
+  <div class="manager">
+    users manager
   </div>
 </template>
 
 <script>
 export default {
-  name: 'systemSetting'
+  name: 'manager'
 }
 </script>
 
