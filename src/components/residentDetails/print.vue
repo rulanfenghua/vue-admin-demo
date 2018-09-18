@@ -55,6 +55,7 @@
 
 <script>
 import 'print-js'
+import { printing } from '@/api/resident'
 
 export default {
   name: 'print',
@@ -66,7 +67,11 @@ export default {
   },
   methods: {
     getPrinting(id, checkDate) {
-      this.$http.get('/resident/printing' + '/' + id + '/' + checkDate).then(response => {
+      console.log('调用子组件————————home/admin')
+      console.log('id: ' + id + '  checkDate: ' + checkDate)
+      printing(id, checkDate).then(response => {
+        console.log('调用子组件————————home/admin')
+        console.log('id: ' + id + '  checkDate: ' + checkDate)
         this.printingData = response.data
         this._toggle()
         this.$nextTick(() => {

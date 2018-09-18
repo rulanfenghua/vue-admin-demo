@@ -57,7 +57,7 @@ export function getPersonList(page, limit, name, idcard, station, date) {
     }
   }
   return request({
-    url: '/station/getAllResidentList',
+    url: '/station/getAllList',
     method: 'post',
     data
   })

@@ -94,6 +94,7 @@
           </el-table-column>
           <el-table-column
             label="电话"
+            align="center"
             width="140">
             <template slot-scope="scope">
               <span>{{ scope.row.tel }}</span>
@@ -113,7 +114,7 @@
             width="120">
             <template slot-scope="scope">
               <el-button
-                @click.native.prevent="seach(scope.row.id, scope.row.checkDate)"
+                @click.native.prevent="seach(scope.row.id, scope.row.createDate)"
                 type="text"
                 size="small">
                 查看检查报告
@@ -199,7 +200,8 @@ export default {
           series: [{
             name: '检查量',
             type: 'line',
-            data: this._toArray_value_supper(response.data)
+            data: this._toArray_value_supper(response.data),
+            color: ['#6fa7e8']
           }]
         })
       })
@@ -221,7 +223,11 @@ export default {
           series: [{
             name: '上传数量',
             type: 'bar',
-            data: this._toArray_value(response.data)
+            data: this._toArray_value(response.data),
+            color: function (params) {
+              var colorList = ['#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8', '#6fa7e8']
+              return colorList[params.dataIndex]
+            }
           }]
         })
       })
@@ -240,14 +246,19 @@ export default {
             data: [
               {value: response.data.WOMAN, name: '女性居民'},
               {value: response.data.MAN, name: '男性居民'}
-            ]
+            ],
+            color: ['#6fa7e8', '#2f4554']
           }]
         })
       })
     },
     // 打印 调用子组件的方法
     seach(id, checkDate) {
+      console.log('调用子组件————————home/admin')
+      console.log('id: ' + id + '  checkDate: ' + checkDate)
       this.$nextTick(() => {
+        console.log('调用子组件————————home/admin')
+        console.log('id: ' + id + '  checkDate: ' + checkDate)
         this.$refs.print.getPrinting(id, checkDate)
         this.$refs.print._toggle()
       })
@@ -310,13 +321,13 @@ export default {
       }
       &:hover {
         .button {
-          background-color: #fff;
+          background-color: #143965;
         }
       }
       .button {
         width: 50%;
         height: 100%;
-        background-color: rebeccapurple;
+        background-color: #347bcd;
         display: inline-block;
       }
       .count {

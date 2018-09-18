@@ -4,12 +4,11 @@
       <h1 class="title">桥西区医学影像信息管理系统</h1>
       <div class="login-content">
         <div class="login-tab">
-          <div class="tab-resident" @click="transResident">居民查询入口</div>
-          <div class="tab-manager" @click="transManager">管理登陆入口</div>
+          <div class="tab-resident" @click="transResident" :class="{'active': userToggle === 'resident'}">居民查询入口</div>
+          <div class="tab-manager" @click="transManager" :class="{'active': userToggle === 'manager'}">管理登陆入口</div>
         </div>
         <div class="login-main-manager" v-if="userToggle === 'manager'">
           <div class="photo"></div>
-          <div>
             <el-form :model="loginForm" :rules="loginRules" auto-complete="on" label-position="left" class="login-input-enter"
               label-width="80px" style="padding-top:30px" status-icon ref="loginForm">
               <el-form-item prop="username" label="用户名">
@@ -25,13 +24,15 @@
                 <el-input type="password" v-model="loginForm.password" placeholder="请填写您的密码" name="password"
                   auto-complete="on" @keyup.enter.native="userLogin" />
               </el-form-item>
+              <div class="button">
               <el-button type="primary" style="margin-bottom:30px;" @click.native.prevent="userLogin">点击登陆</el-button>
               <el-button type="primary" style="margin-bottom:30px;" @click.native.prevent="_toggle">修改密码</el-button>
+              </div>
             </el-form>
             <transition name="slide">
               <el-form :model="loginForm" :rules="changeRules" auto-complete="on" label-position="left" class="login-input-change"
-                v-show="changeToggle" label-width="80px" style="width:600px" status-icon ref="changeForm">
-                <el-form-item prop="username" label="用户名">
+                v-show="changeToggle" label-width="80px" style="width:524px" status-icon ref="changeForm">
+                <el-form-item prop="username" label="用户名" style="color:#000">
                   <span class="">
 
                   </span>
@@ -58,12 +59,10 @@
                 </div>
               </el-form>
             </transition>
-          </div>
         </div>
         <div class="login-main-resident" v-else>
-          <div>
             <el-form :model="residentLoginForm" :rules="seachRules" label-position="left" class="login-input-enter"
-              label-width="80px" style="padding-top:30px" status-icon ref="seachForm">
+              label-width="90px" style="padding-top:30px" status-icon ref="seachForm">
               <el-form-item prop="name" label="名字">
                 <span class="">
 
@@ -77,12 +76,16 @@
                 <el-input type="text" v-model="residentLoginForm.idcard" placeholder="请填写您的身份证号" name="idcard"
                   auto-complete="on" @keyup.enter.native="seach" />
               </el-form-item>
-              <el-button type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="seach">查询诊断列表</el-button>
+              <div class="button">
+              <el-button type="primary" style="width:85%;margin-bottom:30px;" @click.native.prevent="seach">查询诊断列表</el-button>
+              </div>
             </el-form>
             <div class="photo"></div>
-          </div>
         </div>
       </div>
+    </div>
+    <div class="background">
+      <!-- <img src="./影像.jpg" alt="" width="100%" height="100%"> -->
     </div>
     <!-- 引入residentDetails组件 -->
     <resident-details :personalMess="personalMess" :id="id" :personalData="personalData" ref="resident"></resident-details>
@@ -280,6 +283,14 @@ export default {
 <style lang="scss">
 .el-form-item__label {
   color: #ddddddf5;
+  font-size: 16px;
+  // font-weight: bold;
+  font-family: "黑体";
+}
+.login-input-change {
+  .el-form-item__label {
+    color: #646479;
+  }
 }
 </style>
 
@@ -287,13 +298,17 @@ export default {
 .login-wrapper{
   width: 100%;
   height: 100%;
-  background-color: #0f54a1;
-
+  // background-color: #0f54a1;
+  // background: no-repeat center/100% url('./影像.jpg');
+  // opacity: 0.3;
+  overflow: hidden;
   .login {
     position: relative;
-    width: 600px;
-    top: calc(50% - 200px);
-    left: calc(50% - 300px);
+    width: 524px;
+    /* top: calc(50% - 200px);
+    left: calc(50% - 300px); */
+    top: calc(50% - 130px);
+    left: calc(50% - 19px);
     .title {
       display: block;
       font-weight: 900;
@@ -313,30 +328,49 @@ export default {
         height: 40px;
         // margin-bottom: 30px;
         letter-spacing: 4px;
-        .tab-manager {
-          flex: 1;
-          font-weight: bold;
-          line-height: 40px;
-          text-align: center;
-          cursor: pointer;
-          background-color: green;
-          &:active {
-            border: 1px solid #000;
-            background-color: green;
-            border-radius: 1px;
-          }
-        }
         .tab-resident {
           flex: 1;
           font-weight: bold;
           line-height: 40px;
           text-align: center;
           cursor: pointer;
-          background-color: yellow;
+          background-color: #347ed3;
+          color: #fff;
           &:active {
-            border: 1px solid #000;
-            background-color: yellow;
+            border: 1px solid  #347ed3;
+            background-color:  #347ed3;
             border-radius: 1px;
+          }
+          &.active {
+            background-color: #0d234a;
+            &:active {
+              border: 1px solid  #0d234a;
+              background-color:  #0d234a;
+              border-radius: 1px;
+            }
+          }
+        }
+        .tab-manager {
+          flex: 1;
+          font-weight: bold;
+          line-height: 40px;
+          text-align: center;
+          cursor: pointer;
+          // background-color:#2960c5;
+          background-color: #347ed3;
+          color: #fff;
+          &:active {
+            border: 1px solid #347ed3;
+            background-color: #347ed3;
+            border-radius: 1px;
+          }
+          &.active {
+            background-color: #0d234a;
+            &:active {
+              border: 1px solid  #0d234a;
+              background-color:  #0d234a;
+              border-radius: 1px;
+            }
           }
         }
         .tab-confirm {
@@ -360,6 +394,7 @@ export default {
 
             }
             .button {
+              text-align: center;
               .enter {
                 background-color: yellow;
                 height: 30px;
@@ -382,8 +417,8 @@ export default {
             // width: 330px; // el-form的width属性不能在此设置
             z-index: 10;
             border-radius: 4px;
-            border: 1px solid #fff;
-            background-color: #fff;
+            border: 1px solid #e6e6e6;
+            background-color: #e6e6e6;
             &.slide-enter-active, &.slide-leave-active {
               transition: all .3s ease;
             }
@@ -418,7 +453,7 @@ export default {
 
             }
             .button {
-
+              text-align: center;
             }
           }
         .photo {
@@ -426,6 +461,17 @@ export default {
         }
       }
     }
+  }
+  .background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: no-repeat center/100% url('./影像.jpg');
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    filter: blur(1px);
+    // opacity: 0.9;
   }
 }
 </style>

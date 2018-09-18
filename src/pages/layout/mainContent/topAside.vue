@@ -129,14 +129,15 @@ export default {
     .top-aside {
       padding-top: 23px;
       height: 100px;
-      background-color: greenyellow;
+      // background-color: greenyellow;
+      background: no-repeat center/100% url('./影像标头.png');
       .title {
         display: inline-block;
         padding: 12px 40px 0 40px;
         font-weight: 575;
-        font-size: 24px;
+        font-size: 29px;
         vertical-align: top;
-        color: #000;
+        color: #fff;
       }
       .tab-container {
         height: 100px;
@@ -157,8 +158,9 @@ export default {
               display: block;
               width: 64px;
               text-align: center;
+              color: #fff;
               &:hover {
-                color: #fff;
+               color: #7ba3d2;
               }
               i {
                 display: block;
@@ -184,6 +186,7 @@ export default {
           position: relative;
           font-size: 16px;
           font-weight: bold;
+          color: #fff;
           &::after {
             display: block;
             position: absolute;
@@ -202,6 +205,7 @@ export default {
           cursor: pointer;
           i {
             font-size: 24px;
+            color: #fff;
           }
         }
       }

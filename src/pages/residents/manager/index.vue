@@ -14,7 +14,7 @@
       选择日期查询：
       <div class="date-picker">
         <el-date-picker v-model="date" type="daterange" align="right" unlink-panels range-separator="至"
-          start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+          start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss">
         </el-date-picker>
       </div>
       <el-button @click="init" type="primary">点击查询</el-button>

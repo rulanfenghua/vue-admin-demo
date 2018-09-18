@@ -25,6 +25,7 @@
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
+          value-format="yyyy-MM-dd HH:mm:ss"
           :picker-options="pickerOptions"
         >
         </el-date-picker>
@@ -210,6 +211,7 @@ export default {
       this.loading = true
       console.log('起止日期——————admin')
       console.log(this.date)
+      console.log(this.date[0])
       getPersonList(this.page, this.limit, this.name, this.idcard, this.station, this.date).then(response => {
         console.log('居民列表————————admin')
         console.log(response)

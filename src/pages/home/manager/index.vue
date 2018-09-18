@@ -220,7 +220,7 @@ export default {
     seach(id, checkDate) {
       this.$nextTick(() => {
         this.$refs.print.getPrinting(id, checkDate)
-        this.$refs.print._toggle()
+        // this.$refs.print._toggle()
       })
     },
     _initChart(element, expectedData) {
