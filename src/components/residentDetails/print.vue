@@ -55,7 +55,7 @@
 
 <script>
 import 'print-js'
-import { printing } from '@/api/resident'
+import { stationPrinting } from '@/api/resident'
 
 export default {
   name: 'print',
@@ -69,7 +69,7 @@ export default {
     getPrinting(id, checkDate) {
       console.log('调用子组件————————home/admin')
       console.log('id: ' + id + '  checkDate: ' + checkDate)
-      printing(id, checkDate).then(response => {
+      stationPrinting(id, checkDate).then(response => {
         console.log('调用子组件————————home/admin')
         console.log('id: ' + id + '  checkDate: ' + checkDate)
         this.printingData = response.data

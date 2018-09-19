@@ -31,6 +31,18 @@ export function printing(id, checkDate) {
   })
 }
 
+export function stationPrinting(id, checkDate) {
+  const data = {
+    id: id,
+    checkDate: checkDate
+  }
+  return request({
+    url: '/station/getPersonalDate',
+    method: 'post',
+    data
+  })
+}
+
 export function getPersonalDate() {
   return request({
     url: '/resident/getPersonalMess',

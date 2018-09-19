@@ -111,8 +111,6 @@ export default {
   },
   methods: {
     getPrinting(id, checkDate, index) {
-      console.log('传入参数————————print')
-      console.log('id: ' + id)
       console.log('checkDate: ' + checkDate)
       this.thisIndex = index
       // this.$http.get('/resident/printing' + '/' + id + '/' + checkDate).then(response => {
@@ -227,14 +225,17 @@ export default {
 </script>
 
 <style lang="scss">
-.el-dialog {
-  height: 430px;
-  width: 640px;
-  .el-dialog__body {
-    height: calc(430px - 57px);
-    overflow: auto;
+.resident-details-wrapper {
+  .el-dialog {
+    height: 430px;
+    width: 640px;
+    .el-dialog__body {
+      height: calc(430px - 57px);
+      overflow: auto;
+    }
   }
 }
+
 </style>
 <style scoped lang="scss">
   .resident-details-wrapper {

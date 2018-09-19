@@ -1,9 +1,10 @@
 import request from '@/config/httpConfig'
 
-export function login(account, password) {
+export function login(account, password, captcha) {
   const data = {
     userName: account,
-    password: password
+    password: password,
+    captcha: captcha
   }
   return request({
     url: '/login',

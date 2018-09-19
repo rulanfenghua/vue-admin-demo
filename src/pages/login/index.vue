@@ -9,15 +9,14 @@
         </div>
         <div class="login-main-manager" v-if="userToggle === 'manager'">
           <!-- <div class="photo"></div> -->
-            <el-form :model="loginForm" :rules="loginRules" auto-complete="on" label-position="left" class="login-input-enter"
-              label-width="90px" style="padding-top:30px" status-icon ref="loginForm">
-              <el-form-item prop="username" label="用户名">
+            <el-form :model="loginForm" :rules="loginRules" auto-complete="on" label-position="left" class="login-input-enter" style="padding-top:30px" status-icon ref="loginForm" label-width="90px">
+              <el-form-item prop="username">
                 <span class="">
 
                 </span>
                 <el-input v-model="loginForm.username" placeholder="请填写您的用户名" name="username" type="text" auto-complete="on" />
               </el-form-item>
-              <el-form-item prop="password" label="密码">
+              <el-form-item prop="password">
                 <span class="">
 
                 </span>
@@ -31,7 +30,7 @@
             </el-form>
             <transition name="slide">
               <el-form :model="loginForm" :rules="changeRules" auto-complete="on" label-position="left" class="login-input-change"
-                v-show="changeToggle" label-width="80px" style="width:524px" status-icon ref="changeForm">
+                v-show="changeToggle" label-width="80px" style="width:525px" status-icon ref="changeForm">
                 <el-form-item prop="username" label="用户名" style="color:#000">
                   <span class="">
 
@@ -61,9 +60,8 @@
             </transition>
         </div>
         <div class="login-main-resident" v-else>
-            <el-form :model="residentLoginForm" :rules="seachRules" label-position="left" class="login-input-enter"
-              label-width="90px" style="padding-top:30px" status-icon ref="seachForm">
-              <el-form-item prop="name" label="名字">
+            <el-form :model="residentLoginForm" :rules="seachRules" label-position="left" class="login-input-enter" style="padding-top:30px" status-icon ref="seachForm" label-width="90px">
+              <el-form-item prop="name" label="您的名字">
                 <span class="">
 
                 </span>
@@ -76,8 +74,17 @@
                 <el-input type="text" v-model="residentLoginForm.idcard" placeholder="请填写您的身份证号" name="idcard"
                   auto-complete="on" @keyup.enter.native="seach" />
               </el-form-item>
+              <!-- <div class="captcha">
+                <el-input type="text" name="captcha" placeholder="请输入验证码" v-model.trim="captcha" @keyup.enter.native="seach" style="width:132px;" />
+                <img width="80" height="25" :src="captchaSrc" @click="changeImg" style="cursor:pointer" />
+              </div> -->
+              <el-form-item prop="captcha" label="验证码">
+                <el-input type="text" v-model.trim="residentLoginForm.captcha" placeholder="请输入验证码" name="captcha"
+                  auto-complete="off" @keyup.enter.native="seach" style="width:132px;" />
+                <img width="80" height="25" :src="captchaSrc" @click="changeImg" style="cursor:pointer;" />
+              </el-form-item>
               <div class="button">
-              <el-button type="primary" style="width:64%;margin-bottom:30px;" @click.native.prevent="seach">查询诊断列表</el-button>
+              <el-button type="primary" style="width:64%;height:37px" @click.native.prevent="seach">查询诊断列表</el-button>
               </div>
             </el-form>
             <!-- <div class="photo"></div> -->
@@ -97,6 +104,7 @@
 import {login, changePass} from '@/api/permission'
 import {loginResident} from '@/api/resident'
 import residentDetails from '@/components/residentDetails'
+import baseURL from '@/config/baseUrl'
 
 export default {
   data() {
@@ -124,6 +132,9 @@ export default {
         name: '',
         idcard: ''
       },
+
+      captcha: '',
+      captchaSrc: baseURL + '/common/captcha',
 
       personalData: {},
 
@@ -157,7 +168,7 @@ export default {
           //   spinner: 'el-icon-loading',
           //   background: 'rgba(0, 0, 0, 0.7)'
           // })
-          login(this.loginForm.username, this.loginForm.password).then(response => {
+          login(this.loginForm.username, this.loginForm.password, this.captcha).then(response => {
             if (response.code === 0) {
               this.$message({
                 message: '登陆成功，欢迎 ' + response.data.userName,
@@ -179,6 +190,8 @@ export default {
               this.$message.error({
                 message: response.msg
               })
+              this.captcha = ''
+              this.src = baseURL + '/common/captcha?t=' + Math.random()
             }
           }).catch(error => {
             // loading.close()
@@ -264,6 +277,9 @@ export default {
         }
       })
     },
+    changeImg() {
+      this.src = baseURL + '?t=' + Math.random()
+    },
     _toggle() {
       this.changeToggle = !this.changeToggle
     },
@@ -279,17 +295,20 @@ export default {
 </script>
 
 <style lang="scss">
-.el-form-item__label {
-  color: #ddddddf5;
-  font-size: 16px;
-  // font-weight: bold;
-  font-family: "黑体";
-}
-.login-input-change {
+.login-wrapper {
   .el-form-item__label {
-    color: #646479;
+    color: #ddddddf5;
+    font-size: 16px;
+    // font-weight: bold;
+    font-family: "黑体";
+  }
+  .login-input-change {
+    .el-form-item__label {
+      color: #646479;
+    }
   }
 }
+
 </style>
 
 <style scoped lang="scss">
@@ -418,7 +437,7 @@ export default {
           }
           .login-input-change {
             position: absolute;
-            right: 0;
+            right: -104px;
             top: 102px;
             // height: 194px; // 自适应高度
             // width: 330px; // el-form的width属性不能在此设置

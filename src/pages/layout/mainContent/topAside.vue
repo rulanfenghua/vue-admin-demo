@@ -24,12 +24,13 @@
               <span>日志管理</span>
             </router-link>
           </li>
-          <li class="tab-item" style="position:relative" @click="slideControl">
+          <li class="tab-item" style="position:relative" @mouseover="slideControl" @mouseout="slideControl">
             <a href="javascript:void(0);">
               <i class="icon-cogs"></i>
               <span>系统管理</span>
             </a>
-            <transition name="slide" mode="out-in">
+            <!-- <transition name="slide" mode="out-in"> -->
+            <transition name="slide">
             <ul class="setting-item" v-show="slide">
               <li class="setting"><router-link to="/systemSetting/users">
               <i class="icon-address-book"></i>
@@ -246,12 +247,12 @@ export default {
     position: absolute;
     top: 0;
     left: 64px;
-    width: 200px;
+    width: 400px;
     &.slide-enter-active, &.slide-leave-active {
       transition: all .6s ease;
     }
     &.slide-enter, &.slide-leave-to {
-      transform: translate3d(-100%,0,0);
+      transform: translate3d(-15%,0,0);
       opacity: 0;
     }
     .setting {

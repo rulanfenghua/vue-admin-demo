@@ -225,7 +225,8 @@ export default {
             data: ['上传数量']
           },
           xAxis: {
-            data: ['站点1', '站点2', '站点3', '站点4', '站点5', '站点6', '站点7', '站点8', '站点9']
+            // data: ['站点1', '站点2', '站点3', '站点4', '站点5', '站点6', '站点7', '站点8', '站点9']
+            data: this._toArray_key_supper_supper(response.data)
           },
           yAxis: {},
           series: [{
@@ -265,8 +266,6 @@ export default {
       console.log('调用子组件————————home/admin')
       console.log('id: ' + id + '  checkDate: ' + checkDate)
       this.$nextTick(() => {
-        console.log('调用子组件————————home/admin')
-        console.log('id: ' + id + '  checkDate: ' + checkDate)
         this.$refs.print.getPrinting(id, checkDate)
         // this.$refs.print._toggle()
       })
@@ -294,7 +293,6 @@ export default {
       arr.forEach(obj => {
         expectedArray.push(obj.CREATETIME)
       })
-      console.log(expectedArray)
       return expectedArray
     },
     _toArray_value_supper(arr) {
@@ -302,7 +300,6 @@ export default {
       arr.forEach(obj => {
         expectedArray.push(obj.COUNT)
       })
-      console.log(expectedArray)
       return expectedArray
     },
     _toArray_key_supper_supper(arr) {
@@ -310,7 +307,6 @@ export default {
       arr.forEach(obj => {
         expectedArray.push(obj.STATION_NAME)
       })
-      console.log(expectedArray)
       return expectedArray
     },
     _toArray_value_supper_supper(arr) {
@@ -318,7 +314,6 @@ export default {
       arr.forEach(obj => {
         expectedArray.push(obj.NUM)
       })
-      console.log(expectedArray)
       return expectedArray
     }
   }

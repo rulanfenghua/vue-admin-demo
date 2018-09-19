@@ -3,7 +3,6 @@
     <div class="filter-container">
       输入查询条件查询：
       <div class="name-picker">
-
         <el-input v-model="name" placeholder="输入姓名查询"></el-input>
       </div>
       <div class="idcard-picker">
