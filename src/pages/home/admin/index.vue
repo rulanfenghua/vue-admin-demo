@@ -2,7 +2,7 @@
   <div class="admin">
     <div class="panel-container">
       <div class="panel-item">
-        <div class="button">
+        <div class="button amount">
           <i class="icon-user-plus"></i>
         </div>
         <ul class="count">
@@ -11,7 +11,7 @@
         </ul>
       </div>
       <div class="panel-item">
-        <div class="button">
+        <div class="button day">
           <i class="icon-paragraph-left"></i>
         </div>
         <ul class="count">
@@ -20,7 +20,7 @@
         </ul>
       </div>
       <div class="panel-item">
-        <div class="button">
+        <div class="button week">
           <i class="icon-indent-increase"></i>
         </div>
         <ul class="count">
@@ -29,7 +29,7 @@
         </ul>
       </div>
       <div class="panel-item">
-        <div class="button">
+        <div class="button mouth">
           <i class="icon-table2"></i>
         </div>
         <ul class="count">
@@ -50,12 +50,15 @@
           border
           fit
           highlight-current-row
+          :default-sort = "{prop: 'createDate', order: 'descending'}"
           :style="{width: tableWidth+'px'}"
           :max-height="tableHeight">
           <el-table-column
             fixed
-            label="诊断时间"
-            width="100">
+            sortable
+            prop="createDate"
+            label="创建时间"
+            width="105">
             <template slot-scope="scope">
               <span>{{ scope.row.createDate | formatTime }}</span>
             </template>
@@ -63,7 +66,7 @@
           <el-table-column
             label="姓名"
             align="center"
-            width="75">
+            width="100">
             <template slot-scope="scope">
               <span>{{ scope.row.name }}</span>
             </template>
@@ -71,7 +74,7 @@
           <el-table-column
             label="身份证号"
             align="center"
-            width="175">
+            width="200">
             <template slot-scope="scope">
               <span>{{ scope.row.idCard }}</span>
             </template>
@@ -79,7 +82,7 @@
           <el-table-column
             label="性别"
             align="center"
-            width="75">
+            width="100">
             <template slot-scope="scope">
               <span>{{ scope.row.gender }}</span>
             </template>
@@ -87,7 +90,7 @@
           <el-table-column
             label="年龄"
             align="center"
-            width="75">
+            width="100">
             <template slot-scope="scope">
               <span>{{ scope.row.age }}</span>
             </template>
@@ -95,7 +98,7 @@
           <el-table-column
             label="卡类型"
             align="center"
-            width="75">
+            width="100">
             <template slot-scope="scope">
               <span>{{ scope.row.idType }}</span>
             </template>
@@ -103,14 +106,14 @@
           <el-table-column
             label="电话"
             align="center"
-            width="140">
+            width="165">
             <template slot-scope="scope">
               <span>{{ scope.row.tel }}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="家庭住址"
-            width="240">
+            width="265">
             <template slot-scope="scope">
               <span>{{ scope.row.homeAddr }}</span>
             </template>
@@ -122,7 +125,7 @@
             width="120">
             <template slot-scope="scope">
               <el-button
-                @click.native.prevent="seach(scope.row.id, scope.row.createDate)"
+                @click.native.prevent="initMess(scope.row.id, scope.row.idCard)"
                 type="text"
                 size="small">
                 查看检查报告
@@ -135,13 +138,15 @@
     </div>
     </div>
     <!-- 引入打印组件 -->
-    <print ref="print"></print>
+    <!-- <print ref="print"></print> -->
+    <!-- 引入residentDetails组件 -->
+    <resident-details :personalMess="personalMess" :id="id" :personalData="personalData" ref="resident"></resident-details>
   </div>
 </template>
 
 <script>
 import {index, getWeek, getDay, getGender, getLast} from '@/api/admin'
-import print from '@/components/residentDetails/print'
+import residentDetails from '@/components/residentDetails'
 import echarts from 'echarts'
 
 export default {
@@ -150,11 +155,16 @@ export default {
     return {
       chart: null,
       res_index: {},
-      res_getDay: []
+      res_getDay: [],
+
+      personalMess: [],
+      personalData: {},
+
+      id: ''
     }
   },
   components: {
-    print
+    residentDetails
   },
   computed: {
     clientHeight() {
@@ -195,18 +205,21 @@ export default {
       getWeek().then(response => {
         this._initChart(this.$refs.week, {
           title: {
-            text: '一周检查量变化趋势'
+            text: '一周检查量变化趋势',
+            left: '30%'
           },
           tooltip: {},
           legend: {
-            data: ['检查量']
+            // data: ['检查量']
           },
           xAxis: {
             data: this._toArray_key_supper(response.data)
           },
-          yAxis: {},
+          yAxis: {
+            name: '检查量'
+          },
           series: [{
-            name: '检查量',
+            // name: '检查量',
             type: 'line',
             data: this._toArray_value_supper(response.data),
             color: ['#6fa7e8']
@@ -218,23 +231,30 @@ export default {
         console.log(response)
         this._initChart(this.$refs.last, {
           title: {
-            text: '各站点末次上传统计'
+            text: '各站点末次上传统计',
+            left: '30%'
           },
           tooltip: {},
           legend: {
-            data: ['上传数量']
+            // data: ['上传数量']
           },
           xAxis: {
             // data: ['站点1', '站点2', '站点3', '站点4', '站点5', '站点6', '站点7', '站点8', '站点9']
-            data: this._toArray_key_supper_supper(response.data)
+            data: this._toArray_key_supper_supper(response.data),
+            axisLabel: {
+              rotate: -60
+            }
+            // name: '服务站'
           },
-          yAxis: {},
+          yAxis: {
+            name: '上传数量'
+          },
           series: [{
-            name: '上传数量',
+            // name: '上传数量',
             type: 'bar',
             data: this._toArray_value_supper_supper(response.data),
             color: function (params) {
-              var colorList = ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#FF7599', '#FDEC6D', '#44A9A8', '#2D8CF0']
+              var colorList = ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#112853', '#FDEC6D', '#44A9A8', '#2D8CF0']
               return colorList[params.dataIndex]
             }
           }]
@@ -247,11 +267,31 @@ export default {
           },
           tooltip: {},
           legend: {
-            data: ['男性居民', '女性居民']
+            data: ['男性居民', '女性居民'],
+            right: 0,
+            orient: 'vertical',
+            top: '15%'
           },
           series: [{
             name: '居民男女比例',
             type: 'pie',
+            label: {
+              formatter: '{b|{b}}:{per|{d}}%',
+              // backgroundColor: '#eee',
+              // borderColor: '#aaa',
+              // borderWidth: 1,
+              // borderRadius: 4,
+              rich: {
+                b: {
+                  fontWeight: 'bold'
+                  // fontSize: 14
+                  // lineHeight: 33
+                },
+                per: {
+                }
+              }
+              // position: 'inner'
+            },
             data: [
               {value: response.data.WOMAN, name: '女性居民'},
               {value: response.data.MAN, name: '男性居民'}
@@ -262,12 +302,24 @@ export default {
       })
     },
     // 打印 调用子组件的方法
-    seach(id, checkDate) {
-      console.log('调用子组件————————home/admin')
-      console.log('id: ' + id + '  checkDate: ' + checkDate)
-      this.$nextTick(() => {
-        this.$refs.print.getPrinting(id, checkDate)
-        // this.$refs.print._toggle()
+    // seach(id, checkDate) {
+    //   console.log('调用子组件————————home/admin')
+    //   console.log('id: ' + id + '  checkDate: ' + checkDate)
+    //   this.$nextTick(() => {
+    //     this.$refs.print.getPrinting(id, checkDate)
+    //     // this.$refs.print._toggle()
+    //   })
+    // },
+    initMess(id, idCard) {
+      this.$http.get('/resident/getPersonalMess' + '/' + idCard).then(response => {
+        this.personalData = response.data
+      })
+      this.$http.get('/resident/getPersonalDateList' + '/' + id).then(response => {
+        this.personalMess = response.data
+        this.id = id
+        this.$refs.resident._toggleResident()
+        console.log('居民列表数据——————home/admin')
+        console.log(response.data)
       })
     },
     _initChart(element, expectedData) {
@@ -335,33 +387,51 @@ export default {
       border-radius: 1px;
       box-shadow: 0 0 5px #b59f9f;
       border-color: rgba(0, 0, 0, .05);
+      display: flex;
       cursor: pointer;
       &:first-child {
         margin-left: 7px;
       }
       &:hover {
         .button {
-          background-color: #143965;
+          opacity: 0.7!important;
           i {
             color: #b59f9f;
           }
         }
       }
       .button {
-        width: 50%;
+        flex: 1;
         height: 100%;
         background-color: #347bcd;
         display: inline-block;
         text-align: center;
         padding-top: 9px;
+        &.amount {
+          background-color: rgb(30,159,255);
+        }
+        &.day {
+          background-color: rgb(0,150,136);
+        }
+        &.week {
+          background-color: rgb(255,87,34);
+        }
+        &.mouth {
+          background-color: rgb(255,184,0);
+        }
         i {
           color: #fff;
           font-size: 24px;
         }
       }
       .count {
+        flex: 1;
+        height: 40px;
         display: inline-block;
         vertical-align: top;
+        text-align: center;
+        font-family: 'simHei',serif;
+        line-height: 20px;
       }
     }
   }

@@ -18,12 +18,12 @@
               <span>居民列表</span>
             </router-link>
           </li>
-          <li class="tab-item">
+          <!-- <li class="tab-item">
             <router-link to="/logging">
               <i class="icon-file-text"></i>
               <span>日志管理</span>
             </router-link>
-          </li>
+          </li> -->
           <li class="tab-item" style="position:relative" @mouseover="slideControl" @mouseout="slideControl">
             <a href="javascript:void(0);">
               <i class="icon-cogs"></i>

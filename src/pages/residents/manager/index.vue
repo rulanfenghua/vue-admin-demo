@@ -8,13 +8,13 @@
       <div class="idcard-picker">
         <el-input v-model="idcard" placeholder="输入身份证号查询"></el-input>
       </div>
-      <el-button @click="init" type="primary">点击查询</el-button>
+      <!-- <el-button @click="init" type="primary">点击查询</el-button> -->
     </div>
     <div class="date-container">
       选择日期查询：
       <div class="date-picker">
         <el-date-picker v-model="date" type="daterange" align="right" unlink-panels range-separator="至"
-          start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss">
+          start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" style="width:390px">
         </el-date-picker>
       </div>
       <el-button @click="init" type="primary">点击查询</el-button>
@@ -31,7 +31,7 @@
         <el-table-column
           label="姓名"
           align="center"
-          width="75">
+          width="125">
           <template slot-scope="scope">
             <span>{{ scope.row.name }}</span>
           </template>
@@ -39,7 +39,7 @@
         <el-table-column
           label="身份证号"
           align="center"
-          width="175">
+          width="245">
           <template slot-scope="scope">
             <span>{{ scope.row.idCard }}</span>
           </template>
@@ -47,7 +47,7 @@
         <el-table-column
           label="性别"
           align="center"
-          width="75">
+          width="125">
           <template slot-scope="scope">
             <span>{{ scope.row.gender }}</span>
           </template>
@@ -55,7 +55,7 @@
         <el-table-column
           label="年龄"
           align="center"
-          width="75">
+          width="125">
           <template slot-scope="scope">
             <span>{{ scope.row.age }}</span>
           </template>
@@ -63,26 +63,26 @@
         <el-table-column
           label="卡类型"
           align="center"
-          width="75">
+          width="125">
           <template slot-scope="scope">
             <span>{{ scope.row.idType }}</span>
           </template>
         </el-table-column>
         <el-table-column
           label="电话"
-          width="140">
+          width="200">
           <template slot-scope="scope">
             <span>{{ scope.row.tel }}</span>
           </template>
         </el-table-column>
         <el-table-column
           label="家庭住址"
-          width="240">
+          width="375">
           <template slot-scope="scope">
             <span>{{ scope.row.homeAddr }}</span>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="120">
+        <el-table-column fixed="right" label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button @click.native.prevent="initMess(scope.row.id,scope.row.idCard)" type="text" size="small">
               查看检查记录清单
@@ -114,7 +114,7 @@ export default {
   },
   computed: {
     tableHeight() {
-      return ((document.documentElement.clientHeight || document.body.clientHeight) - 345)
+      return ((document.documentElement.clientHeight || document.body.clientHeight) - 284)
     }
   },
   data() {
@@ -240,8 +240,11 @@ export default {
 <style scoped lang="scss">
 .residents-manager {
   height: 100%;
+  // width: 100%;
   margin: 0 30px 17px;
+  overflow: hidden;
   .filter-container {
+    display: inline-block;
     margin-top: 19px;
     margin-left: 33px;
     font-size: 15px;
@@ -257,6 +260,7 @@ export default {
     }
   }
   .date-container {
+    display: inline-block;
     margin-top: 19px;
     margin-bottom: 30px;
     margin-left: 33px;
