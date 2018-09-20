@@ -150,16 +150,16 @@ export default {
   },
   /* table数据格式化 */
   filters: {
-    formatResultStatus: function (val) {
+    formatResultStatus: function(val) {
       return val === 0 ? '成功' : '失败'
     },
-    formatSourceStatus: function (val) {
+    formatSourceStatus: function(val) {
       return val === 0 ? '网页端' : val === 1 ? 'App' : '终端'
     }
   },
   methods: {
     /* 判断按钮是否显示 */
-    contens: function (arg) {
+    contens: function(arg) {
       let btnData = sessionStorage.getItem('permissionArr')
       let permissionArr = btnData.split(',')
       return permissionArr.index1Of(arg) !== -1
@@ -227,7 +227,7 @@ export default {
     //       console.log(response)
     //     })
     // },
-    nodeclicked: function () {
+    nodeclicked: function() {
       const loading = this.$loading({
         lock: true,
         text: '数据加载中...',
@@ -359,27 +359,27 @@ export default {
     //     })
     // },
     // 每页显示数据量变更
-    handleSizeChange: function (val) {
+    handleSizeChange: function(val) {
       this.pagesize = val
       this.nodeclicked()
     },
 
     // 页码变更
-    handleCurrentChange: function (val) {
+    handleCurrentChange: function(val) {
       this.currentPage = val
 
       this.nodeclicked()
     },
-    getOrg: function () {
+    getOrg: function() {
       // this.name = val
       this.nodeclicked()
     },
-    getResult: function (val) {
+    getResult: function(val) {
       console.log('this.query.result————————' + val)
       this.query.result = val
       this.nodeclicked()
     },
-    getDate: function () {
+    getDate: function() {
       this.flag = false
       this.nodeclicked()
     }

@@ -218,16 +218,16 @@ export default {
   },
   /* table数据格式化 */
   filters: {
-    formatResultStatus: function (val) {
+    formatResultStatus: function(val) {
       return val === 0 ? '成功' : '失败'
     },
-    formatTypeStatus: function (val) {
+    formatTypeStatus: function(val) {
       return val === 0 ? '上行' : '下行'
     },
-    formatEditionStatus: function (val) {
+    formatEditionStatus: function(val) {
       return val === 0 ? '正式版' : '测试版'
     },
-    formatDate: function (val) {
+    formatDate: function(val) {
       if (!val) {
         return ''
       }
@@ -236,13 +236,13 @@ export default {
   },
   methods: {
     /* 判断按钮是否显示 */
-    contens: function (arg) {
+    contens: function(arg) {
       let btnData = sessionStorage.getItem('permissionArr')
       let permissionArr = btnData.split(',')
       return permissionArr.indexOf(arg) !== -1
     },
     /* 初始化执行/请求App列表 */
-    loadData: function () {
+    loadData: function() {
       let reqdata = {}
       let aesdata = reqdata
       this.$http.post('/dict/list', aesdata)
@@ -299,7 +299,7 @@ export default {
           console.log(response)
         })
     },
-    nodeclicked: function () {
+    nodeclicked: function() {
       this.sucessCount = 0
       this.failCount = 0
       this.allCount = 0
@@ -320,19 +320,19 @@ export default {
       /* 显示子项 */
     },
     /* status下拉框 */
-    getTypeStatus: function (val) {
+    getTypeStatus: function(val) {
       console.log('this.form.interfaceType     ' + val)
       this.form.interfaceType = val || ''
     },
-    getEditionStatus: function (val) {
+    getEditionStatus: function(val) {
       console.log('this.form.interfaceEdition     ' + val)
       this.form.interfaceEdition = val || ''
     },
     /* 请求添加接口接口 */
-    handleAdd: function () {
+    handleAdd: function() {
       this.dialogFormVisible = true
     },
-    addEditUsers: function () {
+    addEditUsers: function() {
       var parentId
       var type
       if (this.addflag) {
@@ -432,7 +432,7 @@ export default {
       }
     },
     /* 编辑 */
-    handleEdit: function (index, row) {
+    handleEdit: function(index, row) {
       console.log(index, row)
       this.form.name = row.name
       this.form.code = row.code
@@ -441,7 +441,7 @@ export default {
       this.form.currentId = row.currentId
     },
     /* 删除 */
-    handleDelete: function (index, row) {
+    handleDelete: function(index, row) {
       this.$confirm('是否删除?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -476,7 +476,7 @@ export default {
       })
     },
     /* 清空form */
-    resetForm: function () {
+    resetForm: function() {
       this.form.name = ''
       this.form.code = ''
       this.form.type = ''
@@ -487,20 +487,20 @@ export default {
       }
     },
     // 每页显示数据量变更
-    handleSizeChange: function (val) {
+    handleSizeChange: function(val) {
       this.pagesize = val
       let row = JSON.parse(sessionStorage.getItem('row'))
       this.rowDbclick(row, event)
     },
 
     // 页码变更
-    handleCurrentChange: function (val) {
+    handleCurrentChange: function(val) {
       this.currentPage = val
       console.log('this.currentPage  ' + this.currentPage)
       let row = JSON.parse(sessionStorage.getItem('row'))
       this.rowDbclick(row, event)
     },
-    typeOpen: function () {
+    typeOpen: function() {
       var resp = JSON.parse(sessionStorage.getItem('resp'))
       var subdataList = []
       resp.forEach((item, i) => {
@@ -510,7 +510,7 @@ export default {
       })
       this.subtableData = subdataList
     },
-    subhandleAdd: function () {
+    subhandleAdd: function() {
       this.addflag = true
       this.dialogFormVisible = true
     }

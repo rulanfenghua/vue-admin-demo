@@ -489,10 +489,10 @@ export default {
   },
   /* table数据格式化 */
   filters: {
-    formatStatus: function (val) {
+    formatStatus: function(val) {
       return val === 1 ? '禁用' : '正常'
     },
-    formatDate: function (val) {
+    formatDate: function(val) {
       if (!val) {
         return ''
       }
@@ -501,13 +501,13 @@ export default {
   },
   methods: {
     /* 判断按钮是否显示 */
-    contens: function (arg) {
+    contens: function(arg) {
       let btnData = sessionStorage.getItem('permissionArr')
       let permissionArr = btnData.split(',')
       return permissionArr.indexOf(arg) !== -1
     },
     /* 权限全选 */
-    handleCheckAllChange: function (val) {
+    handleCheckAllChange: function(val) {
       let keysArr = []
       this.permissionList.forEach((v, i) => {
         keysArr.push(v.id)
@@ -530,7 +530,7 @@ export default {
       }
     },
     /* 初始化执行/请求角色列表 */
-    loadData: function (input, pageNum, pageSize) {
+    loadData: function(input, pageNum, pageSize) {
       const loading = this.$loading({
         lock: true,
         text: '数据加载中...',
@@ -571,7 +571,7 @@ export default {
           console.log(response)
         })
     },
-    rowDbclick: function (row, event) {
+    rowDbclick: function(row, event) {
       this.dialogGetDetail = true
       this.$http.get('/sysStation/detail/' + row.id)
         .then(response => {
@@ -600,35 +600,35 @@ export default {
       this.form.createDate = row.createDate
       this.form.updateDate = row.updateDate
       let _this = this
-      setTimeout(function () {
+      setTimeout(function() {
         if (_this.$refs.tree) {
           _this.$refs.tree.setCheckedKeys(row.permissions === null ? [] : row.permissions)
         }
       }, 500)
     },
     /* status下拉框 */
-    getStatus: function (val) {
+    getStatus: function(val) {
       // this.form.status = val.toString() ? val.toString() : ''
     },
     /* 分页器 */
     // 每页显示数据量变更
-    handleSizeChange: function (val) {
+    handleSizeChange: function(val) {
       this.pagesize = val
       this.loadData(this.input, this.currentPage, this.pagesize)
     },
 
     // 页码变更
-    handleCurrentChange: function (val) {
+    handleCurrentChange: function(val) {
       this.currentPage = val
       console.log('this.currentPage  ' + this.currentPage)
 
       this.loadData(this.input, this.currentPage, this.pagesize)
     },
-    inputBtn: function () {
+    inputBtn: function() {
       this.loadData(this.input, this.currentPage, this.pagesize)
     },
     /* 请求添加角色接口 */
-    addEditRoles: function () {
+    addEditRoles: function() {
       // this.form.permissions = [].concat(this.$refs.tree.getHalfCheckedKeys(), this.$refs.tree.getCheckedKeys())
       // if (!this.form.permissions.length) {
       //   this.$message({
@@ -731,21 +731,21 @@ export default {
       }
     },
     /* 编辑 */
-    handleEdit: function (index, row) {
+    handleEdit: function(index, row) {
       this.form.roleName = row.stationName
       this.form.roleKey = row.stationCode
       this.form.roleDescription = row.tel
       // this.form.status = row.status.toString()
       this.form.remark = row.remark
       let _this = this
-      setTimeout(function () {
+      setTimeout(function() {
         if (_this.$refs.tree) {
           _this.$refs.tree.setCheckedKeys(row.permissions === null ? [] : row.permissions)
         }
       }, 500)
     },
     /* 清空form */
-    resetForm: function () {
+    resetForm: function() {
       this.form.roleName = ''
       this.form.roleKey = ''
       this.form.roleDescription = ''
@@ -761,7 +761,7 @@ export default {
       this.$refs.tree.setCheckedKeys([])
     },
     /* 删除 */
-    handleDelete: function (index, row) {
+    handleDelete: function(index, row) {
       this.$confirm('是否删除?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

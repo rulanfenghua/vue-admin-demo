@@ -333,19 +333,19 @@ export default {
   },
   /* table数据格式化 */
   filters: {
-    formatStatus: function (val) {
+    formatStatus: function(val) {
       return val === 1 ? '禁用' : '正常'
     }
   },
   methods: {
     /* 判断按钮是否显示 */
-    contens: function (arg) {
+    contens: function(arg) {
       let btnData = sessionStorage.getItem('permissionArr')
       let permissionArr = btnData.split(',')
       return permissionArr.indexOf(arg) !== -1
     },
     /* 初始化执行/请求用户列表 */
-    loadData: function (query, pageNum, pageSize) {
+    loadData: function(query, pageNum, pageSize) {
       const loading = this.$loading({
         lock: true,
         text: '数据加载中...',
@@ -386,7 +386,7 @@ export default {
           console.log(response)
         })
     },
-    rowDbclick: function (row, event) {
+    rowDbclick: function(row, event) {
       this.dialogGetDetail = true
       console.log('row.id: ' + row.id)
       this.$http.get('/sysUser/detail/' + row.id)
@@ -417,7 +417,7 @@ export default {
         })
     },
     /* status下拉框 */
-    getStatus: function (val) {
+    getStatus: function(val) {
       this.form.status = val || ''
     },
     // getorganIdStatus: function (val) {
@@ -450,22 +450,22 @@ export default {
     //       console.log(response)
     //     })
     // },
-    getdeptIdStatus: function (val) {
+    getdeptIdStatus: function(val) {
       this.form.deptId = val || ''
     },
-    getQueryStatus: function (val) {
+    getQueryStatus: function(val) {
       this.query.status = val || ''
       this.loadData(this.query, this.currentPage, this.pagesize)
     },
     /* 分页器 */
     // 每页显示数据量变更
-    handleSizeChange: function (val) {
+    handleSizeChange: function(val) {
       this.pagesize = val
       this.loadData(this.query, this.currentPage, this.pagesize)
     },
 
     // 页码变更
-    handleCurrentChange: function (val) {
+    handleCurrentChange: function(val) {
       this.currentPage = val
       console.log('this.currentPage  ' + this.currentPage)
 
@@ -490,7 +490,7 @@ export default {
     // },
 
     /* 请求添加用户接口 */
-    addEditUsers: function () {
+    addEditUsers: function() {
       // if (!this.$refs.tree.getCheckedKeys().length) {
       //   this.$message({
       //     type: 'warning',
@@ -613,7 +613,7 @@ export default {
       }
     },
     /* 编辑 */
-    handleEdit: function (index, row) {
+    handleEdit: function(index, row) {
       this.isShow = false
       this.deptIdOptions = []
       // this.$http.get('/dept/getByOrgId/' + row.organId)
@@ -660,7 +660,7 @@ export default {
       // }, 500)
     },
     /* 删除 */
-    handleDelete: function (index, row) {
+    handleDelete: function(index, row) {
       this.$confirm('是否删除?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -697,7 +697,7 @@ export default {
       })
     },
     /* 初始化角色列表 */
-    initPermissionList: function () {
+    initPermissionList: function() {
       console.log('跳转了')
       this.$http.get('/sysRole/listAll')
         .then(response => {
@@ -752,7 +752,7 @@ export default {
       //   })
     },
     /* 清空form */
-    resetForm: function () {
+    resetForm: function() {
       this.isShow = true
       this.form.userName = ''
       this.form.loginName = ''
@@ -773,7 +773,7 @@ export default {
       // }
       // this.$refs.tree.setCheckedKeys([])
     },
-    queryBtn: function () {
+    queryBtn: function() {
       this.loadData(this.query, this.currentPage, this.pagesize)
     }
   }
