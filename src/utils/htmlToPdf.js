@@ -7,7 +7,8 @@ export default {
     Vue.prototype.getPdf = function(id, title) {
       html2Canvas(document.querySelector(`#${id}`), {
         // allowTaint: true
-        useCORS: true // 看情况选用上面还是下面的
+        useCORS: true, // 看情况选用上面还是下面的
+        logging: false
       }).then(function(canvas) {
         let contentWidth = canvas.width
         let contentHeight = canvas.height

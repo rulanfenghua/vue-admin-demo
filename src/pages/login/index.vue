@@ -4,33 +4,38 @@
       <h1 class="title">桥西区医学影像信息管理系统</h1>
       <div class="login-content">
         <div class="login-tab">
-          <div class="tab-resident" @click="transResident" :class="{'active': userToggle === 'resident'}">居民查询入口</div>
-          <div class="tab-manager" @click="transManager" :class="{'active': userToggle === 'manager'}">管理登陆入口</div>
+          <div class="tab-resident" @click="transResident" :class="{'active': userToggle === 'manager'}">居民查询入口</div>
+          <div class="tab-manager" @click="transManager" :class="{'active': userToggle === 'resident'}">管理登陆入口</div>
         </div>
         <div class="login-main-manager" v-if="userToggle === 'manager'">
           <!-- <div class="photo"></div> -->
             <el-form :model="loginForm" :rules="loginRules" auto-complete="on" label-position="left" class="login-input-enter" style="padding-top:30px" status-icon ref="loginForm" label-width="90px">
-              <el-form-item prop="username">
+              <el-form-item prop="username" label="用户名">
                 <span class="">
 
                 </span>
                 <el-input v-model="loginForm.username" placeholder="请填写您的用户名" name="username" type="text" auto-complete="on" />
               </el-form-item>
-              <el-form-item prop="password">
+              <el-form-item prop="password" label="密码">
                 <span class="">
 
                 </span>
                 <el-input type="password" v-model="loginForm.password" placeholder="请填写您的密码" name="password"
                   auto-complete="on" @keyup.enter.native="userLogin" />
               </el-form-item>
+              <el-form-item prop="captcha" label="验证码">
+                <el-input type="text" v-model.trim="loginForm.captcha" placeholder="请输入验证码" name="captcha"
+                  auto-complete="off" @keyup.enter.native="seach" style="width:132px;" />
+                <img width="80" height="25" :src="captchaSrc" @click="changeImg" style="cursor:pointer;vertical-align:middle;height:34px;border-radius:2px" />
+              </el-form-item>
               <div class="button">
-              <el-button type="primary" style="margin-bottom:30px;" @click.native.prevent="userLogin">点击登陆</el-button>
-              <el-button type="primary" style="margin-bottom:30px;" @click.native.prevent="_toggle">修改密码</el-button>
+              <el-button type="primary" style="background-color:#347ed3;" @click.native.prevent="userLogin">点击登陆</el-button>
+              <el-button type="primary" style="background-color:#347ed3;" @click.native.prevent="_toggle">修改密码</el-button>
               </div>
             </el-form>
             <transition name="slide">
               <el-form :model="loginForm" :rules="changeRules" auto-complete="on" label-position="left" class="login-input-change"
-                v-show="changeToggle" label-width="80px" style="width:525px" status-icon ref="changeForm">
+                v-show="changeToggle" label-width="80px" style="width:325px" status-icon ref="changeForm">
                 <el-form-item prop="username" label="用户名" style="color:#000">
                   <span class="">
 
@@ -81,10 +86,10 @@
               <el-form-item prop="captcha" label="验证码">
                 <el-input type="text" v-model.trim="residentLoginForm.captcha" placeholder="请输入验证码" name="captcha"
                   auto-complete="off" @keyup.enter.native="seach" style="width:132px;" />
-                <img width="80" height="25" :src="captchaSrc" @click="changeImg" style="cursor:pointer;" />
+                <img width="80" height="25" :src="captchaSrc" @click="changeImg" style="cursor:pointer;vertical-align:middle;height:34px;border-radius:2px" />
               </el-form-item>
               <div class="button">
-              <el-button type="primary" style="width:64%;height:37px" @click.native.prevent="seach">查询诊断列表</el-button>
+              <el-button type="primary" style="width:90%;background-color:#347ed3" @click.native.prevent="seach">查询诊断列表</el-button>
               </div>
             </el-form>
             <!-- <div class="photo"></div> -->
@@ -122,7 +127,8 @@ export default {
       loginForm: {
         username: '',
         password: '',
-        newPassword: ''
+        newPassword: '',
+        captcha: ''
       },
 
       id: '',
@@ -130,10 +136,10 @@ export default {
       residentToggle: false,
       residentLoginForm: {
         name: '',
-        idcard: ''
+        idcard: '',
+        captcha: ''
       },
 
-      captcha: '',
       captchaSrc: baseURL + '/common/captcha',
 
       personalData: {},
@@ -142,7 +148,8 @@ export default {
 
       loginRules: {
         username: [{ required: true, message: '请填写登陆名称', trigger: 'blur' }],
-        password: [{ trigger: 'blur', required: true, message: '请填写登陆密码' }]
+        password: [{ trigger: 'blur', required: true, message: '请填写登陆密码' }],
+        captcha: [{ trigger: 'blur', required: true, message: '请填写验证码' }]
       },
       changeRules: {
         username: [{ trigger: 'blur', required: true, message: '请输入登陆名称' }],
@@ -151,7 +158,8 @@ export default {
       },
       seachRules: {
         name: [{ trigger: 'blur', required: true, message: '请输入姓名' }],
-        idcard: [{ trigger: 'blur', required: true, message: '请输入身份证号' }]
+        idcard: [{ trigger: 'blur', required: true, message: '请输入身份证号' }],
+        captcha: [{ trigger: 'blur', required: true, message: '请输入验证码' }]
       }
     }
   },
@@ -168,7 +176,7 @@ export default {
           //   spinner: 'el-icon-loading',
           //   background: 'rgba(0, 0, 0, 0.7)'
           // })
-          login(this.loginForm.username, this.loginForm.password, this.captcha).then(response => {
+          login(this.loginForm.username, this.loginForm.password, this.loginForm.captcha).then(response => {
             if (response.code === 0) {
               this.$message({
                 message: '登陆成功，欢迎 ' + response.data.userName,
@@ -191,7 +199,7 @@ export default {
                 message: response.msg
               })
               this.captcha = ''
-              this.src = baseURL + '/common/captcha?t=' + Math.random()
+              this.captchaSrc = baseURL + '/common/captcha?t=' + Math.random()
             }
           }).catch(error => {
             // loading.close()
@@ -251,7 +259,7 @@ export default {
           //   spinner: 'el-icon-loading',
           //   background: 'rgba(0, 0, 0, 0.7)'
           // })
-          loginResident(this.residentLoginForm.name, this.residentLoginForm.idcard).then(response => {
+          loginResident(this.residentLoginForm.name, this.residentLoginForm.idcard, this.residentLoginForm.captcha).then(response => {
             if (response.code === 0) {
               console.log('居民登陆————————seach')
               console.log(response)
@@ -264,6 +272,8 @@ export default {
               this.$message.error({
                 message: response.msg
               })
+              this.captcha = ''
+              this.captchaSrc = baseURL + '/common/captcha?t=' + Math.random()
             }
           }).catch(error => {
             // loading.close()
@@ -278,7 +288,8 @@ export default {
       })
     },
     changeImg() {
-      this.src = baseURL + '?t=' + Math.random()
+      console.log(1)
+      this.captchaSrc = baseURL + '/common/captcha?t=' + Math.random()
     },
     _toggle() {
       this.changeToggle = !this.changeToggle
@@ -307,6 +318,15 @@ export default {
       color: #646479;
     }
   }
+  .el-button {
+    font-weight: bold;
+    font-size: 14px;
+  }
+  .login-input-enter {
+    .el-button {
+      width: 140px;
+    }
+  }
 }
 
 </style>
@@ -315,18 +335,13 @@ export default {
 .login-wrapper{
   width: 100%;
   height: 100%;
-  // background-color: #0f54a1;
-  // background: no-repeat center/100% url('./影像.jpg');
-  // opacity: 0.3;
   overflow: hidden;
 
   .login {
     position: relative;
     width: 325px;
-    /* top: calc(50% - 200px);
-    left: calc(50% - 300px); */
-    top: calc(50% - 130px);
-    left: calc(50% - 19px);
+    top: calc(50% - 175px);
+    left: calc(50% + 65px);
     .title {
       display: block;
       // position: absolute;
@@ -352,7 +367,7 @@ export default {
         // letter-spacing: 4px;
 
         font-size: 14px;
-        .tab-resident {
+        .tab-manager {
           flex: 1;
           font-weight: bold;
           line-height: 40px;
@@ -375,7 +390,7 @@ export default {
             }
           }
         }
-        .tab-manager {
+        .tab-resident {
           flex: 1;
           font-weight: bold;
           line-height: 40px;
@@ -421,24 +436,12 @@ export default {
             }
             .button {
               text-align: center;
-              .enter {
-                background-color: yellow;
-                height: 30px;
-                width: 90px;
-                cursor: pointer;
-              }
-              .change {
-                background-color: green;
-                height: 30px;
-                width: 90px;
-                cursor: pointer;
-              }
             }
           }
           .login-input-change {
             position: absolute;
-            right: -104px;
-            top: 102px;
+            right: 0;
+            top: 146px;
             // height: 194px; // 自适应高度
             // width: 330px; // el-form的width属性不能在此设置
             z-index: 10;
@@ -449,7 +452,7 @@ export default {
               transition: all .3s ease;
             }
             &.slide-enter, &.slide-leave-to {
-              transform: translate3d(50%,0,0);
+              transform: translate3d(30%,0,0);
               opacity: 0;
             }
             .el-form-item {
@@ -461,7 +464,7 @@ export default {
             }
             .button {
               text-align: center;
-              padding-right: 204px;
+              // padding-right: 204px;
             }
           }
       }

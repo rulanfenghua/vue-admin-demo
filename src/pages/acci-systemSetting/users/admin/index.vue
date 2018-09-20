@@ -1,4 +1,5 @@
 <template>
+  <div class="container">
   <el-container>
     <el-header>
       <el-row :model="query" :gutter="20">
@@ -176,6 +177,7 @@
       </el-dialog>
     </el-main>
   </el-container>
+  </div>
 </template>
 
 <script>
@@ -780,93 +782,96 @@ export default {
 }
 </script>
 
-<style>
-.el-header,
-.el-footer {
-    background-color: transparent;
-    color: #333;
-    text-align: center;
-    height: 60px;
-    line-height: 60px;
-}
-.el-header .el-col{
-    text-align: left;
-}
-.rightTop{
-        width: 100%;
-        height: 60px;
-        line-height: 60px;
-        text-align: right;
-        padding-right: 10px;
-    }
-    .rightTop .el-input{
-        width: 180px;
-    }
-.el-dialog .el-input{
-        width: 200px;
-    }
-.el-main {
-    background-color: transparent;
-    color: #333;
-    text-align: center;
-    height: 100%;
-}
-.el-main .el-form {
-    text-align: left;
-}
-.el-main .el-table{
-    height: 100%;
-    line-height: 100%;
-}
-.el-main .el-table td{
-    height: 35px;
-}
-.el-main .el-table th{
-    padding: 8px 0!important;
-    text-align: center;
-}
-.el-main .pagination{
-    height: 30px;
-    line-height: 30px;
-    position: relative;
-    text-align: right;
-    width: 80%;
-    margin-top: 20px;
-}
-.el-main .pagination2{
-    height: 30px;
-    line-height: 30px;
-    margin-top: 20px;
+<style lang='scss'>
+.container{
+  .el-header,
+  .el-footer {
+      background-color: transparent;
+      color: #333;
+      text-align: center;
+      height: 60px;
+      line-height: 60px;
+  }
+  .el-header .el-col{
+      text-align: left;
+  }
+  .rightTop{
+          width: 100%;
+          height: 60px;
+          line-height: 60px;
+          text-align: right;
+          padding-right: 10px;
+      }
+      .rightTop .el-input{
+          width: 180px;
+      }
+  .el-dialog .el-input{
+          width: 200px;
+      }
+  .el-main {
+      background-color: transparent;
+      color: #333;
+      text-align: center;
+      height: 100%;
+  }
+  .el-main .el-form {
+      text-align: left;
+  }
+  .el-main .el-table{
+      height: 100%;
+      line-height: 100%;
+  }
+  .el-main .el-table td{
+      height: 35px;
+  }
+  .el-main .el-table th{
+      padding: 8px 0!important;
+      text-align: center;
+  }
+  .el-main .pagination{
+      height: 30px;
+      line-height: 30px;
+      position: relative;
+      text-align: right;
+      width: 80%;
+      margin-top: 20px;
+  }
+  .el-main .pagination2{
+      height: 30px;
+      line-height: 30px;
+      margin-top: 20px;
+  }
+
+  .el-main .pagination .dbtips{
+      float: left;color: goldenrod;font-size: 14px;
+  }
+  .el-main .dialog-footer {
+      text-align: center;
+  }
+  .el-button--success{
+      color: #fff;
+      background-color: #1E9FFF!important;
+      border-color: #1E9FFF!important;
+  }
+  .el-button--danger{
+      color: #fff;
+      background-color: #FFB800!important;
+      border-color: #FFB800!important;
+  }
+  ::-webkit-scrollbar-corner,
+  ::-webkit-scrollbar-track {
+      background-color: #e2e2e2;
+  }
+
+  ::-webkit-scrollbar-thumb {
+      border-radius: 0;
+      background-color: rgba(0, 0, 0, .3);
+  }
+
+  ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+  }
 }
 
-.el-main .pagination .dbtips{
-    float: left;color: goldenrod;font-size: 14px;
-}
-.el-main .dialog-footer {
-    text-align: center;
-}
-.el-button--success{
-    color: #fff;
-    background-color: #1E9FFF!important;
-    border-color: #1E9FFF!important;
-}
-.el-button--danger{
-    color: #fff;
-    background-color: #FFB800!important;
-    border-color: #FFB800!important;
-}
-::-webkit-scrollbar-corner,
- ::-webkit-scrollbar-track {
-    background-color: #e2e2e2;
-}
-
-::-webkit-scrollbar-thumb {
-    border-radius: 0;
-    background-color: rgba(0, 0, 0, .3);
-}
-
-::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-}
 </style>
