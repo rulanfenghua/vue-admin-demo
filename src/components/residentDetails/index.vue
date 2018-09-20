@@ -85,6 +85,7 @@
 
 <script>
 import { printing } from '@/api/resident' // printing原有api地址
+import { crossorigin } from '@/utils/crossoriginImg' // 解决跨域，将跨域图片路径转为base64格式
 import 'print-js'
 
 export default {
@@ -95,7 +96,10 @@ export default {
       residentToggle: false,
       printingToggle: false,
 
-      thisIndex: null
+      thisIndex: null, // 判断控制按钮loading条件
+
+      url1: '',
+      url2: ''
     }
   },
   props: {
@@ -118,6 +122,7 @@ export default {
         console.log('打印数据————————print')
         console.log(response)
         this.printingData = response.data
+
         this._toggleResident()
         this._toggle()
         this.$nextTick(() => {
@@ -125,8 +130,10 @@ export default {
         })
       }).catch((error) => {
         console.log(error)
-      }).then(() => {
+      }).then((response) => {
         this.thisIndex = null
+        this.url1 = crossorigin(response.data.bAddr1)
+        this.url2 = crossorigin(response.data.bAddr2)
       })
     },
     print() {
