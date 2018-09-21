@@ -49,6 +49,8 @@
           :data="res_getDay"
           border
           fit
+          size="small"
+          stripe
           highlight-current-row
           :default-sort = "{prop: 'createDate', order: 'descending'}"
           :style="{width: tableWidth+'px'}"
@@ -204,25 +206,52 @@ export default {
     initChart() {
       getWeek().then(response => {
         this._initChart(this.$refs.week, {
+          color: ['#6fa7e8'],
           title: {
             text: '一周检查量变化趋势',
             left: '30%'
           },
-          tooltip: {},
+          tooltip: {
+            trigger: 'axis'
+            // axisPointer: {
+            //   type: 'cross'
+            // }
+          },
           legend: {
-            // data: ['检查量']
+            data: ['检查量'],
+            show: false
           },
           xAxis: {
-            data: this._toArray_key_supper(response.data)
+            data: this._toArray_key_supper(response.data),
+            axisTick: {
+              alignWithLabel: true
+            },
+            axisLabel: {
+              // fontWeight: 'bold'
+            }
           },
           yAxis: {
-            name: '检查量'
+            name: '检查量',
+            type: 'value',
+            axisLine: {
+              lineStyle: {
+                color: '#193a70'
+              }
+            },
+            axisLabel: {
+              formatter(value, index) {
+                if (value % 1 === 0) {
+                  return value
+                }
+              },
+              fontWeight: 'bold'
+            }
           },
           series: [{
             // name: '检查量',
             type: 'line',
             data: this._toArray_value_supper(response.data),
-            color: ['#6fa7e8']
+            color: ['#2f4554']
           }]
         })
       })
@@ -230,6 +259,7 @@ export default {
         console.log('各站点末次————————admin')
         console.log(response)
         this._initChart(this.$refs.last, {
+          color: ['#6fa7e8'],
           title: {
             text: '各站点末次上传统计',
             left: '30%'
@@ -242,19 +272,33 @@ export default {
             // data: ['站点1', '站点2', '站点3', '站点4', '站点5', '站点6', '站点7', '站点8', '站点9']
             data: this._toArray_key_supper_supper(response.data),
             axisLabel: {
-              rotate: -60
+              rotate: -60,
+              fontWeight: 'bold'
             }
             // name: '服务站'
           },
           yAxis: {
-            name: '上传数量'
+            name: '上传数量',
+            axisLine: {
+              lineStyle: {
+                color: '#193a70'
+              }
+            },
+            axisLabel: {
+              formatter(value, index) {
+                if (value % 1 === 0) {
+                  return value
+                }
+              },
+              fontWeight: 'bold'
+            }
           },
           series: [{
             // name: '上传数量',
             type: 'bar',
             data: this._toArray_value_supper_supper(response.data),
             color: function (params) {
-              var colorList = ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#112853', '#FDEC6D', '#44A9A8', '#2D8CF0']
+              var colorList = ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#2f4554', '#FDEC6D', '#44A9A8', '#2D8CF0']
               return colorList[params.dataIndex]
             }
           }]
@@ -343,7 +387,7 @@ export default {
     _toArray_key_supper(arr) {
       let expectedArray = []
       arr.forEach(obj => {
-        expectedArray.push(obj.CREATETIME)
+        expectedArray.push(obj.CREATETIME.slice(5))
       })
       return expectedArray
     },
@@ -357,7 +401,8 @@ export default {
     _toArray_key_supper_supper(arr) {
       let expectedArray = []
       arr.forEach(obj => {
-        expectedArray.push(obj.STATION_NAME)
+        var subIndex = obj.STATION_NAME.indexOf('卫生')
+        expectedArray.push(obj.STATION_NAME.slice(0, subIndex))
       })
       return expectedArray
     },

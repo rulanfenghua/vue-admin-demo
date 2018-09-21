@@ -5,21 +5,15 @@
       <div class="login-content">
         <div class="login-tab">
           <div class="tab-resident" @click="transResident" :class="{'active': userToggle === 'manager'}">居民查询入口</div>
-          <div class="tab-manager" @click="transManager" :class="{'active': userToggle === 'resident'}">管理登陆入口</div>
+          <div class="tab-manager" @click="transManager" :class="{'active': userToggle === 'resident'}">管理登录入口</div>
         </div>
         <div class="login-main-manager" v-if="userToggle === 'manager'">
           <!-- <div class="photo"></div> -->
             <el-form :model="loginForm" :rules="loginRules" auto-complete="on" label-position="left" class="login-input-enter" style="padding-top:30px" status-icon ref="loginForm" label-width="90px">
               <el-form-item prop="username" label="用户名">
-                <span class="">
-
-                </span>
                 <el-input v-model="loginForm.username" placeholder="请填写您的用户名" name="username" type="text" auto-complete="on" />
               </el-form-item>
               <el-form-item prop="password" label="密码">
-                <span class="">
-
-                </span>
                 <el-input type="password" v-model="loginForm.password" placeholder="请填写您的密码" name="password"
                   auto-complete="on" @keyup.enter.native="userLogin" />
               </el-form-item>
@@ -29,8 +23,10 @@
                 <img width="80" height="25" :src="captchaSrc" @click="changeImg" style="cursor:pointer;vertical-align:middle;height:34px;border-radius:2px" />
               </el-form-item>
               <div class="button">
-              <el-button type="primary" style="background-color:#347ed3;" @click.native.prevent="userLogin">点击登陆</el-button>
+              <el-button type="primary" style="background-color:#347ed3;" @click.native.prevent="userLogin">点击登录</el-button>
               <el-button type="primary" style="background-color:#347ed3;" @click.native.prevent="_toggle">修改密码</el-button>
+              <!-- <button style="" @click.native.prevent="userLogin">点击登录</button>
+              <button style="background-color:#347ed3;" @click="_toggle">修改密码</button> -->
               </div>
             </el-form>
             <transition name="slide">
@@ -67,15 +63,9 @@
         <div class="login-main-resident" v-else>
             <el-form :model="residentLoginForm" :rules="seachRules" label-position="left" class="login-input-enter" style="padding-top:30px" status-icon ref="seachForm" label-width="90px">
               <el-form-item prop="name" label="您的名字">
-                <span class="">
-
-                </span>
                 <el-input v-model="residentLoginForm.name" placeholder="请填写您的名字" name="name" type="text" auto-complete="on" />
               </el-form-item>
               <el-form-item prop="idcard" label="身份证号">
-                <span class="">
-
-                </span>
                 <el-input type="text" v-model="residentLoginForm.idcard" placeholder="请填写您的身份证号" name="idcard"
                   auto-complete="on" @keyup.enter.native="seach" />
               </el-form-item>
@@ -115,7 +105,7 @@ export default {
   data() {
     // var validatePass = (rule, value, callback) => {
     //   if (value === '') {
-    //     callback(new Error('请输入登陆名称'))
+    //     callback(new Error('请输入登录名称'))
     //   } else {
     //     callback()
     //   }
@@ -147,13 +137,13 @@ export default {
       changeLoading: false,
 
       loginRules: {
-        username: [{ required: true, message: '请填写登陆名称', trigger: 'blur' }],
-        password: [{ trigger: 'blur', required: true, message: '请填写登陆密码' }],
+        username: [{ required: true, message: '请填写登录名称', trigger: 'blur' }],
+        password: [{ trigger: 'blur', required: true, message: '请填写登录密码' }],
         captcha: [{ trigger: 'blur', required: true, message: '请填写验证码' }]
       },
       changeRules: {
-        username: [{ trigger: 'blur', required: true, message: '请输入登陆名称' }],
-        password: [{ trigger: 'blur', required: true, message: '请填写登陆密码' }],
+        username: [{ trigger: 'blur', required: true, message: '请输入登录名称' }],
+        password: [{ trigger: 'blur', required: true, message: '请填写登录密码' }],
         newPassword: [{ trigger: 'blur', required: true, message: '请填写新密码' }]
       },
       seachRules: {
@@ -172,14 +162,14 @@ export default {
         if (valid) {
           // const loading = this.$loading({
           //   lock: true,
-          //   text: '登陆中',
+          //   text: '登录中',
           //   spinner: 'el-icon-loading',
           //   background: 'rgba(0, 0, 0, 0.7)'
           // })
           login(this.loginForm.username, this.loginForm.password, this.loginForm.captcha).then(response => {
             if (response.code === 0) {
               this.$message({
-                message: '登陆成功，欢迎 ' + response.data.userName,
+                message: '登录成功，欢迎 ' + response.data.userName,
                 type: 'success'
               })
               sessionStorage.setItem('name', response.data.userName)
@@ -198,7 +188,7 @@ export default {
               this.$message.error({
                 message: response.msg
               })
-              this.captcha = ''
+              this.loginForm.captcha = ''
               this.captchaSrc = baseURL + '/common/captcha?t=' + Math.random()
             }
           }).catch(error => {
@@ -207,6 +197,8 @@ export default {
             console.log(error)
           }).then(() => {
             // loading.close()
+            this.loginForm.captcha = ''
+            this.captchaSrc = baseURL + '/common/captcha?t=' + Math.random()
           })
         } else {
           return false
@@ -261,7 +253,7 @@ export default {
           // })
           loginResident(this.residentLoginForm.name, this.residentLoginForm.idcard, this.residentLoginForm.captcha).then(response => {
             if (response.code === 0) {
-              console.log('居民登陆————————seach')
+              console.log('居民登录————————seach')
               console.log(response)
               this.personalData = response.data
               this.id = response.data.id
@@ -272,7 +264,7 @@ export default {
               this.$message.error({
                 message: response.msg
               })
-              this.captcha = ''
+              this.residentLoginForm.captcha = ''
               this.captchaSrc = baseURL + '/common/captcha?t=' + Math.random()
             }
           }).catch(error => {
@@ -281,6 +273,8 @@ export default {
             console.log(error)
           }).then(() => {
             // loading.close()
+            this.residentLoginForm.captcha = ''
+            this.captchaSrc = baseURL + '/common/captcha?t=' + Math.random()
           })
         } else {
           return false
@@ -288,7 +282,6 @@ export default {
       })
     },
     changeImg() {
-      console.log(1)
       this.captchaSrc = baseURL + '/common/captcha?t=' + Math.random()
     },
     _toggle() {
@@ -340,8 +333,8 @@ export default {
   .login {
     position: relative;
     width: 325px;
-    top: calc(50% - 175px);
-    left: calc(50% + 65px);
+    top: calc(50% - 165px);
+    left: calc(50% + 75px);
     .title {
       display: block;
       // position: absolute;
@@ -365,7 +358,6 @@ export default {
         height: 40px;
         // margin-bottom: 30px;
         // letter-spacing: 4px;
-
         font-size: 14px;
         .tab-manager {
           flex: 1;
@@ -499,7 +491,7 @@ export default {
     width: 100%;
     height: 100%;
     z-index: -1;
-    filter: blur(1px);
+    // filter: blur(1px);
     // opacity: 0.9;
     overflow: hidden;
   }

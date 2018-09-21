@@ -45,7 +45,7 @@
       </div>
       <div class="table-bottom">
         <div class="container-table-day">
-          <el-table :data="res_getDay" border fit highlight-current-row :style="{width: tableWidth+'px'}" :max-height="tableHeight" :default-sort = "{prop: 'createDate', order: 'descending'}">
+          <el-table :data="res_getDay" border fit highlight-current-row :style="{width: tableWidth+'px'}" :max-height="tableHeight" :default-sort = "{prop: 'createDate', order: 'descending'}" size="small">
             <el-table-column fixed label="创建时间" width="105" sortable prop="createDate">
               <template slot-scope="scope">
                 <span>{{ scope.row.createDate | formatTime }}</span>
@@ -176,16 +176,27 @@ export default {
             // data: ['检查量']
           },
           xAxis: {
-            data: this._toArray_key_supper(response.data)
+            data: this._toArray_key_supper(response.data),
+            axisLabel: {
+              // fontWeight: 'bold'
+            }
           },
           yAxis: {
-            name: '检查量'
+            name: '检查量',
+            axisLine: {
+              lineStyle: {
+                color: '#193a70'
+              }
+            },
+            axisLabel: {
+              fontWeight: 'bold'
+            }
           },
           series: [{
             // name: '检查量',
             type: 'line',
             data: this._toArray_value_supper(response.data),
-            color: ['#6fa7e8']
+            color: ['#2f4554']
           }]
         })
       })
@@ -205,11 +216,20 @@ export default {
             // data: this._toArray_key(response.data)
             data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
             axisLabel: {
-              rotate: -60
+              rotate: -60,
+              fontWeight: 'bold'
             }
           },
           yAxis: {
-            name: '检查量'
+            name: '检查量',
+            axisLine: {
+              lineStyle: {
+                color: '#193a70'
+              }
+            },
+            axisLabel: {
+              fontWeight: 'bold'
+            }
           },
           series: [{
             // name: '检查量',
@@ -302,7 +322,7 @@ export default {
     _toArray_key_supper(arr) {
       let expectedArray = []
       arr.forEach(obj => {
-        expectedArray.push(obj.CREATETIME)
+        expectedArray.push(obj.CREATETIME.slice(5))
       })
       console.log(expectedArray)
       return expectedArray

@@ -1,10 +1,11 @@
 import axios from 'axios'
 import store from '@/store/index.js'
 import baseURL from './baseUrl'
+import router from '@/router/index'
 import { Message } from 'element-ui'
 
 var instance = axios.create({
-  timeout: 10000,
+  timeout: 5000,
   baseURL
 })
 
@@ -25,6 +26,15 @@ instance.interceptors.request.use(
 // 响应拦截器即异常处理
 instance.interceptors.response.use(
   response => {
+    if (response.data.code === 101) {
+      Message.warning({
+        message: '登录超时，请重新登录'
+      })
+      store.commit('LOGIN_OUT')
+      router.replace({
+        path: '/login'
+      })
+    }
     return response.data
   },
   err => {

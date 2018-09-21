@@ -51,8 +51,10 @@
           </ul>
           <div class="line"></div>
           <div class="photo">
-            <img :src="printingData.bAddr1" alt="" style="">
-            <img :src="printingData.bAddr2" alt="" style="">
+            <img :src="printingData.bAddr1" alt="" style="" id="img1">
+            <!-- <img :src="printingData.bAddr2" alt="" style=""> -->
+            <!-- <img :src="url1" alt="" style="">
+            <img :src="url2" alt="" style=""> -->
           </div>
           <div class="line"></div>
           <p class="text" ref="text">
@@ -85,7 +87,7 @@
 
 <script>
 import { printing } from '@/api/resident' // printing原有api地址
-import { crossorigin } from '@/utils/crossoriginImg' // 解决跨域，将跨域图片路径转为base64格式
+// import { crossorigin } from '@/utils/crossoriginImg' // 解决跨域，将跨域图片路径转为base64格式
 import 'print-js'
 
 export default {
@@ -123,6 +125,8 @@ export default {
         console.log(response)
         this.printingData = response.data
 
+        // crossorigin('https://devimg.xiezixiansheng.com/users/0/1/photo/20160708035328.jpeg')
+
         this._toggleResident()
         this._toggle()
         this.$nextTick(() => {
@@ -130,10 +134,8 @@ export default {
         })
       }).catch((error) => {
         console.log(error)
-      }).then((response) => {
+      }).then(() => {
         this.thisIndex = null
-        this.url1 = crossorigin(response.data.bAddr1)
-        this.url2 = crossorigin(response.data.bAddr2)
       })
     },
     print() {
@@ -213,7 +215,7 @@ export default {
       })
     },
     toPdf() {
-      this.getPdf('printing', '中华社区卫生服务中心B超报告单')
+      this.getPdf('printing', '中华社区卫生服务中心B超报告单', 'img1', this.printingData.bAddr1)
     },
     _toggleResident() {
       this.residentToggle = !this.residentToggle

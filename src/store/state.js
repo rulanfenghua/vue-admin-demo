@@ -1,9 +1,9 @@
 export default {
   get UserToken() {
-    return localStorage.getItem('token')
+    return sessionStorage.getItem('token')
   },
   set UserToken(value) {
-    localStorage.setItem('token', value)
+    sessionStorage.setItem('token', value)
   },
   crumbList: []
 }
