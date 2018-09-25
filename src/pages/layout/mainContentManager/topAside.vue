@@ -32,14 +32,14 @@
             <!-- <transition name="slide" mode="out-in"> -->
             <transition name="slide">
             <ul class="setting-item" v-show="slide">
-              <li class="setting"><router-link to="/systemSetting/users">
+              <!-- <li class="setting"><router-link to="/systemSetting/users">
               <i class="icon-file-text"></i>
               <span>用户管理</span>
             </router-link></li>
               <li class="setting"><router-link to="/systemSetting/roles">
               <i class="icon-file-text"></i>
               <span>角色管理</span>
-            </router-link></li>
+            </router-link></li> -->
               <li class="setting"><router-link to="/systemSetting/dict">
               <i class="icon-file-text"></i>
               <span>字典管理</span>
@@ -127,7 +127,6 @@ export default {
     },
     slideControl() {
       this.slide = !this.slide
-      console.log(1)
     }
   }
 }
@@ -137,13 +136,13 @@ export default {
   .container {
     width: 100%;
     .top-aside {
-      padding-top: 23px;
+      padding-top: 32px;
       height: 100px;
       // background-color: greenyellow;
       background: no-repeat center/100% url('./影像标头.png');
       .title {
         display: inline-block;
-        padding: 12px 40px 0 40px;
+        padding: 7px 40px 0 40px;
         font-weight: 575;
         font-size: 29px;
         vertical-align: top;
@@ -174,8 +173,8 @@ export default {
               }
               i {
                 display: block;
-                font-size: 27px;
-                width: 27px;
+                font-size: 30px;
+                width: 30px;
                 margin: 0 auto;
                 margin-bottom: 4px;
               }

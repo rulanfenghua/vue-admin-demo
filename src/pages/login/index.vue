@@ -23,8 +23,8 @@
                 <img width="80" height="25" :src="captchaSrc" @click="changeImg" style="cursor:pointer;vertical-align:middle;height:34px;border-radius:2px" />
               </el-form-item>
               <div class="button">
-              <el-button type="primary" style="background-color:#347ed3;" @click.native.prevent="userLogin">点击登录</el-button>
-              <el-button type="primary" style="background-color:#347ed3;" @click.native.prevent="_toggle">修改密码</el-button>
+              <el-button type="primary" style="" @click.native.prevent="userLogin">点击登录</el-button>
+              <el-button type="primary" style="" @click.native.prevent="_toggle">修改密码</el-button>
               <!-- <button style="" @click.native.prevent="userLogin">点击登录</button>
               <button style="background-color:#347ed3;" @click="_toggle">修改密码</button> -->
               </div>
@@ -61,7 +61,7 @@
             </transition>
         </div>
         <div class="login-main-resident" v-else>
-            <el-form :model="residentLoginForm" :rules="seachRules" label-position="left" class="login-input-enter" style="padding-top:30px" status-icon ref="seachForm" label-width="90px">
+            <el-form :model="residentLoginForm" :rules="seachRules" label-position="left" class="login-resident" style="padding-top:30px" status-icon ref="seachForm" label-width="90px">
               <el-form-item prop="name" label="您的名字">
                 <el-input v-model="residentLoginForm.name" placeholder="请填写您的名字" name="name" type="text" auto-complete="on" />
               </el-form-item>
@@ -79,7 +79,7 @@
                 <img width="80" height="25" :src="captchaSrc" @click="changeImg" style="cursor:pointer;vertical-align:middle;height:34px;border-radius:2px" />
               </el-form-item>
               <div class="button">
-              <el-button type="primary" style="width:90%;background-color:#347ed3" @click.native.prevent="seach">查询诊断列表</el-button>
+              <el-button type="primary" style="width:98%" @click.native.prevent="seach">查询诊断列表</el-button>
               </div>
             </el-form>
             <!-- <div class="photo"></div> -->
@@ -178,11 +178,9 @@ export default {
               console.log('权限相关————————login')
               console.log(response.data)
               console.log(response.data.levels)
-              if (response.data.levels) {
-                sessionStorage.setItem('levels', response.data.levels)
-                console.log('角色权限相关————————login')
-                console.log('levels: ' + sessionStorage.getItem('levels'))
-              }
+              sessionStorage.setItem('levels', response.data.levels)
+              console.log('角色权限相关————————login')
+              console.log('levels: ' + sessionStorage.getItem('levels'))
             } else {
               // loading.close()
               this.$message.error({
@@ -314,14 +312,25 @@ export default {
   .el-button {
     font-weight: bold;
     font-size: 14px;
+    // border: 1px solid  #347ed3;
+    // background-color: #347ed3;
   }
   .login-input-enter {
     .el-button {
-      width: 140px;
+      width: 152px;
+      border: 1px solid  #347ed3;
+      background-color: #347ed3;
+      height: 39px;
+    }
+  }
+  .login-resident {
+    .el-button {
+      border: 1px solid  #347ed3;
+      background-color: #347ed3;
+      height: 39px;
     }
   }
 }
-
 </style>
 
 <style scoped lang="scss">
@@ -465,7 +474,7 @@ export default {
         height: 200px;
         display: flex;
         // background-color: #fff;
-          .login-input-enter {
+          .login-resident {
             flex: 1;
             .name {
 

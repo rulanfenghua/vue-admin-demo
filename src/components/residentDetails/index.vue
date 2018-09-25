@@ -14,7 +14,6 @@
             <li>电话：{{personalData.tel}}</li>
             <li>家庭住址：{{personalData.homeAddr}}</li>
           </ul>
-          <!-- <h2>检查记录列表：</h2> -->
         </div>
         <ul class="mess">
           <li class="mess-item" v-for="(data,index) in personalMess" :key="index">
@@ -52,9 +51,7 @@
           <div class="line"></div>
           <div class="photo">
             <img :src="printingData.bAddr1" alt="" style="" id="img1">
-            <!-- <img :src="printingData.bAddr2" alt="" style=""> -->
-            <!-- <img :src="url1" alt="" style="">
-            <img :src="url2" alt="" style=""> -->
+            <img :src="printingData.bAddr2" alt="" style="" id="img2">
           </div>
           <div class="line"></div>
           <p class="text" ref="text">
@@ -71,7 +68,7 @@
         </div>
         <div class="footer">
           <el-button @click="print" round type="success" size="small">立即打印</el-button>
-          <el-button @click="toPdf" round type="warning" size="small">保存为PDF</el-button>
+          <el-button @click="print" round type="warning" size="small">保存为PDF</el-button>
           <el-button @click="_toggle();_toggleResident()" round type="primary" plain size="small">确定</el-button>
         </div>
       </div>
@@ -87,7 +84,8 @@
 
 <script>
 import { printing } from '@/api/resident' // printing原有api地址
-// import { crossorigin } from '@/utils/crossoriginImg' // 解决跨域，将跨域图片路径转为base64格式
+import { crossorigin } from '@/utils/crossoriginImg' // 解决跨域，将跨域图片路径转为base64格式
+import { formatTime } from '@/filters/filters' // 显式的引入时间filter
 import 'print-js'
 
 export default {
@@ -101,7 +99,9 @@ export default {
       thisIndex: null, // 判断控制按钮loading条件
 
       url1: '',
-      url2: ''
+      url2: '',
+
+      checkDate: '' // 用于记录标题需要的时间
     }
   },
   props: {
@@ -119,13 +119,15 @@ export default {
     getPrinting(id, checkDate, index) {
       console.log('checkDate: ' + checkDate)
       this.thisIndex = index
-      // this.$http.get('/resident/printing' + '/' + id + '/' + checkDate).then(response => {
       printing(id, checkDate).then(response => {
         console.log('打印数据————————print')
         console.log(response)
         this.printingData = response.data
+        this.checkDate = formatTime(checkDate)
 
+        // 用于测试服务器对图片响应正确 Access-Control-Allow-Origin 响应头
         // crossorigin('https://devimg.xiezixiansheng.com/users/0/1/photo/20160708035328.jpeg')
+        crossorigin(this.printingData.bAddr1)
 
         this._toggleResident()
         this._toggle()
@@ -139,6 +141,8 @@ export default {
       })
     },
     print() {
+      document.title = `B超报告单${this.printingData.name}${this.checkDate}`
+
       /* eslint-disable no-undef */
       printJS({
         printable: 'printing',
@@ -214,6 +218,7 @@ export default {
         // `
       })
     },
+    // 暂时弃用
     toPdf() {
       this.getPdf('printing', '中华社区卫生服务中心B超报告单', 'img1', this.printingData.bAddr1)
     },
@@ -222,6 +227,7 @@ export default {
     },
     _toggle() {
       this.printingToggle = !this.printingToggle
+      document.title = '桥西区医学影像信息管理系统'
     },
     _format(data) {
       data = data.replace(/(。)([\u4E00-\u9FA5]+：)/g, '$1<br><br>$2')

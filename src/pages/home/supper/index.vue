@@ -39,105 +39,14 @@
       </div>
     </div>
     <div class="table-container" :style="{height: clientHeight+'px'}">
-    <div class="table-top">
-      <div class="container-line-week" ref="week"></div>
-      <div class="container-bar-last" ref="last"></div>
-    </div>
-    <div class="table-bottom">
-      <div class="container-table-day">
-        <el-table
-          :data="res_getDay"
-          border
-          fit
-          size="small"
-          stripe
-          highlight-current-row
-          :default-sort = "{prop: 'createDate', order: 'descending'}"
-          :style="{width: tableWidth+'px'}"
-          :max-height="tableHeight">
-          <el-table-column
-            fixed
-            sortable
-            prop="createDate"
-            label="创建时间"
-            width="105">
-            <template slot-scope="scope">
-              <span>{{ scope.row.createDate | formatTime }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="姓名"
-            align="center"
-            width="100">
-            <template slot-scope="scope">
-              <span>{{ scope.row.name }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="身份证号"
-            align="center"
-            width="200">
-            <template slot-scope="scope">
-              <span>{{ scope.row.idCard }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="性别"
-            align="center"
-            width="100">
-            <template slot-scope="scope">
-              <span>{{ scope.row.gender }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="年龄"
-            align="center"
-            width="100">
-            <template slot-scope="scope">
-              <span>{{ scope.row.age }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="卡类型"
-            align="center"
-            width="100">
-            <template slot-scope="scope">
-              <span>{{ scope.row.idType }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="电话"
-            align="center"
-            width="165">
-            <template slot-scope="scope">
-              <span>{{ scope.row.tel }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="家庭住址"
-            width="265">
-            <template slot-scope="scope">
-              <span>{{ scope.row.homeAddr }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            fixed="right"
-            label="操作"
-            align="center"
-            width="120">
-            <template slot-scope="scope">
-              <el-button
-                @click.native.prevent="initMess(scope.row.id, scope.row.idCard)"
-                type="text"
-                size="small">
-                查看检查报告
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+      <div class="table-top">
+        <div class="container-line-week" ref="map"></div>
+        <div class="container-bar-last" ref="week"></div>
       </div>
-      <div class="container-pie-gender" ref="gender"></div>
-    </div>
+      <div class="table-bottom">
+        <div class="container-map" ref="last"></div>
+        <div class="container-pie-gender" ref="gender"></div>
+      </div>
     </div>
     <!-- 引入打印组件 -->
     <!-- <print ref="print"></print> -->
@@ -147,12 +56,22 @@
 </template>
 
 <script>
-import {index, getWeek, getDay, getGender, getLast} from '@/api/admin'
+import {
+  index,
+  getWeek,
+  getGender,
+  getLast
+} from '@/api/city'
+  // import { getMap } from '@/api/city'
 import residentDetails from '@/components/residentDetails'
 import echarts from 'echarts'
+import axios from 'axios'
+import { Message } from 'element-ui'
+import store from '@/store/index.js'
+import router from '@/router/index'
 
 export default {
-  name: 'admin',
+  name: 'supper',
   data() {
     return {
       chart: null,
@@ -196,11 +115,6 @@ export default {
         console.log('首页数据————————admin')
         console.log(response)
         this.res_index = response.data
-      })
-      getDay().then(response => {
-        console.log('表格数据————————admin')
-        console.log(response)
-        this.res_getDay = response.data
       })
     },
     initChart() {
@@ -269,6 +183,7 @@ export default {
             // data: ['上传数量']
           },
           xAxis: {
+            // data: ['站点1', '站点2', '站点3', '站点4', '站点5', '站点6', '站点7', '站点8', '站点9']
             data: this._toArray_key_supper_supper(response.data),
             axisLabel: {
               rotate: -60,
@@ -299,7 +214,6 @@ export default {
             color: function (params) {
               var colorList = ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#5c70ad', '#FDEC6D', '#44A9A8', '#8bc34a', '#ffc107',
                 '#795548', '#9e9e9e', '#607d8b']
-              // var colorList = ['#6fa7e8', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#795548', '#9e9e9e', '#607d8b', '', '', '', '', '', '', '']
               return colorList[params.dataIndex]
             }
           }]
@@ -332,19 +246,89 @@ export default {
                   // fontSize: 14
                   // lineHeight: 33
                 },
-                per: {
-                }
+                per: {}
               }
               // position: 'inner'
             },
-            data: [
-              {value: response.data.WOMAN, name: '女性居民'},
-              {value: response.data.MAN, name: '男性居民'}
+            data: [{
+              value: response.data.WOMAN,
+              name: '女性居民'
+            },
+            {
+              value: response.data.MAN,
+              name: '男性居民'
+            }
             ],
             color: ['#6fa7e8', '#2f4554']
           }]
         })
       })
+      // getMap().then(response => {
+      this._initMapChart(this.$refs.map, {
+        color: ['#3f51b5'],
+        title: {
+          text: '邢台市区域检查量概览'
+        },
+        tooltip: {
+          trigger: 'item',
+          transitionDuration: 0.2
+
+        },
+        legend: {
+          orient: 'vertical',
+          top: '30%',
+          left: 'right',
+          data: ['邢台市区域检查量']
+        },
+        visualMap: {
+          left: 'right',
+          top: '50%',
+          max: 90,
+          min: 0,
+          // text: ['检查量100', '检查量30'],
+          splitNumber: 3,
+          // calculable: false,
+          color: ['#3f51b5', '#4575b4', '#74add1']
+          // inRange: {
+          //   color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+          // }
+        },
+        toolbox: {
+          show: true,
+          // orient: 'vertical',
+          left: 'left',
+          top: '80%',
+          feature: {
+            dataView: {readOnly: false},
+            restore: {},
+            saveAsImage: {}
+          }
+        },
+        series: [{
+          name: '邢台市区域检查量',
+          type: 'map',
+          roam: true,
+          map: '邢台',
+          emphasis: {
+            label: {
+              show: true
+            }
+          },
+          label: {
+            show: true,
+            color: '#fff'
+          },
+          data: [{
+            'name': '桥东区',
+            'value': 0
+          },
+          {
+            'name': '桥西区',
+            'value': 90
+          }]
+        }]
+      })
+      // })
     },
     // 打印 调用子组件的方法
     // seach(id, checkDate) {
@@ -370,6 +354,30 @@ export default {
     _initChart(element, expectedData) {
       this.chart = echarts.init(element)
       this.chart.setOption(expectedData)
+    },
+    _initMapChart(element, expectedData) {
+      axios.interceptors.response.use(
+        response => {
+          if (response.data.code === 101) {
+            Message.warning({
+              message: '登录超时，请重新登录'
+            })
+            store.commit('LOGIN_OUT')
+            router.replace({
+              path: '/login'
+            })
+          }
+          return response
+        }
+      )
+
+      this.chart = echarts.init(element)
+      this.chart.showLoading()
+      axios.get('/static/xingtai.json').then(response => {
+        this.chart.hideLoading()
+        echarts.registerMap('邢台', response.data)
+        this.chart.setOption(expectedData)
+      })
     },
     _toArray_key(obj) {
       let expectedArray = []
@@ -419,108 +427,138 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.admin{
-  background-color: #e6e1e1;
-  overflow: hidden;
-  .panel-container {
-    width: 100%;
-    display: flex;
-    .panel-item {
-      margin-right: 7px;
-      margin-top: 7px;
-      background-color: #fff;
-      flex: 1;
-      border-radius: 1px;
-      box-shadow: 0 0 5px #b59f9f;
-      border-color: rgba(0, 0, 0, .05);
+  .admin {
+    background-color: #e6e1e1;
+    overflow: hidden;
+
+    .panel-container {
+      width: 100%;
       display: flex;
-      cursor: pointer;
-      &:first-child {
-        margin-left: 7px;
-      }
-      &:hover {
-        .button {
-          opacity: 0.7!important;
-          i {
-            color: #b59f9f;
+
+      .panel-item {
+        margin-right: 7px;
+        margin-top: 7px;
+        background-color: #fff;
+        flex: 1;
+        border-radius: 1px;
+        box-shadow: 0 0 5px #b59f9f;
+        border-color: rgba(0, 0, 0, .05);
+        display: flex;
+        cursor: pointer;
+
+        &:first-child {
+          margin-left: 7px;
+        }
+
+        &:hover {
+          .button {
+            opacity: 0.7 !important;
+
+            i {
+              color: #b59f9f;
+            }
           }
         }
-      }
-      .button {
-        flex: 1;
-        height: 100%;
-        background-color: #347bcd;
-        display: inline-block;
-        text-align: center;
-        padding-top: 9px;
-        &.amount {
-          background-color: rgb(30,159,255);
+
+        .button {
+          flex: 1;
+          height: 100%;
+          background-color: #347bcd;
+          display: inline-block;
+          text-align: center;
+          padding-top: 9px;
+
+          &.amount {
+            background-color: rgb(30, 159, 255);
+          }
+
+          &.day {
+            background-color: rgb(0, 150, 136);
+          }
+
+          &.week {
+            background-color: rgb(255, 87, 34);
+          }
+
+          &.mouth {
+            background-color: rgb(255, 184, 0);
+          }
+
+          i {
+            color: #fff;
+            font-size: 24px;
+          }
         }
-        &.day {
-          background-color: rgb(0,150,136);
+
+        .count {
+          flex: 1;
+          height: 40px;
+          display: inline-block;
+          vertical-align: top;
+          text-align: center;
+          font-family: 'simHei', serif;
+          line-height: 20px;
         }
-        &.week {
-          background-color: rgb(255,87,34);
-        }
-        &.mouth {
-          background-color: rgb(255,184,0);
-        }
-        i {
-          color: #fff;
-          font-size: 24px;
-        }
-      }
-      .count {
-        flex: 1;
-        height: 40px;
-        display: inline-block;
-        vertical-align: top;
-        text-align: center;
-        font-family: 'simHei',serif;
-        line-height: 20px;
       }
     }
-  }
-  .table-container {
-    width: 100%;
-    display: flex;
-    flex-flow: column;
-    .container-line-week,.container-bar-last,.container-table-day,.container-pie-gender {
-      margin-top: 7px;
-      margin-right: 7px;
-      border-radius: 1px;
-      box-shadow: 0 0 1px #b59f9f;
-    }
-    .table-top {
-      flex: 1;
-      display: flex;
+
+    .table-container {
       width: 100%;
-      .container-line-week {
-        background-color: #fff;
-        flex: 1;
-        margin-left: 7px;
-      }
-      .container-bar-last {
-        background-color: #fff;
-        flex: 1;
-      }
-    }
-    .table-bottom {
-      flex: 1;
       display: flex;
-      width: 100%;
-      .container-table-day {
-        background-color: #fff;
-        flex: 2;
-        margin-left: 7px;
-        margin-bottom: 7px;
-      }
+      flex-flow: column;
+
+      .container-line-week,
+      .container-bar-last,
+      .container-map,
       .container-pie-gender {
-        background-color: #fff;
+        margin-top: 7px;
+        margin-right: 7px;
+        border-radius: 1px;
+        box-shadow: 0 0 1px #b59f9f;
+      }
+
+      .table-top {
         flex: 1;
-        margin-bottom: 7px;
+        display: flex;
+        width: 100%;
+
+        .container-line-week {
+          background-color: #fff;
+          flex: 1;
+          margin-left: 7px;
+        }
+
+        .container-bar-last {
+          background-color: #fff;
+          flex: 1;
+        }
+      }
+
+      .table-bottom {
+        flex: 1;
+        display: flex;
+        width: 100%;
+
+        // .container-table-day {
+        //   background-color: #fff;
+        //   flex: 2;
+        //   margin-left: 7px;
+        //   margin-bottom: 7px;
+        // }
+
+        .container-map {
+          background-color: #fff;
+          flex: 2;
+          margin-left: 7px;
+          margin-bottom: 7px;
+        }
+
+        .container-pie-gender {
+          background-color: #fff;
+          flex: 1;
+          margin-bottom: 7px;
+        }
       }
     }
   }
-}
 </style>

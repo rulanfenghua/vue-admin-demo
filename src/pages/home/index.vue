@@ -7,12 +7,14 @@
 <script>
 import admin from './admin'
 import manager from './manager'
+import supper from './supper'
 
 export default {
   name: 'home',
   components: {
     admin,
-    manager
+    manager,
+    supper
   },
   data() {
     return {
@@ -25,6 +27,10 @@ export default {
       console.log('角色权限————————home')
       console.log('levels: ' + sessionStorage.getItem('levels'))
       this.currentRole = 'manager'
+    } else if (sessionStorage.getItem('levels') == 0) {
+      console.log('角色权限————————home')
+      console.log('levels: ' + sessionStorage.getItem('levels'))
+      this.currentRole = 'supper'
     }
   }
 }

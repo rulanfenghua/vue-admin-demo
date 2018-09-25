@@ -12,7 +12,7 @@
               <span>首页</span>
             </router-link>
           </li>
-          <li class="tab-item">
+          <li class="tab-item" v-show="showSupper">
             <router-link to="/residents">
               <i class="icon-address-book"></i>
               <span>居民列表</span>
@@ -109,6 +109,15 @@ export default {
       } else {
         return '晚上好'
       }
+    },
+    // 判断显示市级权限的计算属性
+    showSupper() {
+      /* eslint-disable eqeqeq */
+      if (sessionStorage.getItem('levels') == 0) {
+        console.log('显示权限————————topAside')
+        console.log('levels: ' + sessionStorage.getItem('levels'))
+        return false
+      }
     }
   },
   created() {
@@ -127,7 +136,6 @@ export default {
     },
     slideControl() {
       this.slide = !this.slide
-      console.log(1)
     }
   }
 }
@@ -137,13 +145,13 @@ export default {
   .container {
     width: 100%;
     .top-aside {
-      padding-top: 23px;
+      padding-top: 32px;
       height: 100px;
       // background-color: greenyellow;
       background: no-repeat center/100% url('./影像标头.png');
       .title {
         display: inline-block;
-        padding: 12px 40px 0 40px;
+        padding: 7px 40px 0 40px;
         font-weight: 575;
         font-size: 29px;
         vertical-align: top;
@@ -174,8 +182,8 @@ export default {
               }
               i {
                 display: block;
-                font-size: 27px;
-                width: 27px;
+                font-size: 30px;
+                width: 30px;
                 margin: 0 auto;
                 margin-bottom: 4px;
               }

@@ -189,6 +189,11 @@ export default {
               }
             },
             axisLabel: {
+              formatter(value, index) {
+                if (value % 1 === 0) {
+                  return value
+                }
+              },
               fontWeight: 'bold'
             }
           },
@@ -228,6 +233,11 @@ export default {
               }
             },
             axisLabel: {
+              formatter(value, index) {
+                if (value % 1 === 0) {
+                  return value
+                }
+              },
               fontWeight: 'bold'
             }
           },
@@ -236,7 +246,8 @@ export default {
             type: 'bar',
             data: this._toArray_value(response.data),
             color: function (params) {
-              var colorList = ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#112853', '#FDEC6D', '#44A9A8', '#2D8CF0']
+              var colorList = ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#5c70ad', '#FDEC6D', '#44A9A8', '#8bc34a', '#ffc107',
+                '#795548', '#9e9e9e', '#607d8b']
               return colorList[params.dataIndex]
             }
           }]

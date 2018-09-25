@@ -1,0 +1,52 @@
+{
+	"type": "FeatureCollection",
+	"features": [
+		{
+			"type": "Feature",
+			"id": "130502",
+			"properties": {
+				"name": "桥东区",
+				"cp": [
+					114.548161,
+					37.064269
+				],
+				"childNum": 1
+			},
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					"@@@CACFA@CC@ACBA@AC@E@@C@CC@@CD@@KB@AE@AE@@A@@K@AF@BM@AB@H@BBB@FBDBBDB@B@@DB@AJ@AB@F@@@@@@A@B@@BAD@BA@@@@@@BEL@BAB@BCF@B@FB@BF@@@@CB@AG@@D@D@D@BE@@B@D@@@@@H@@@B@BBFBH@@@BBHBB@B@DBB@DBDBF@@@@@DBH@@BH@B@BB@@@@B@BH@@@@D@@E@@FBDD@BBB@F@@B@@@@BBA@@@@B@@B@@A@@@CBB@CA@BA@CC@@@@AA@@@B@@CEB@@@A@AL@BC@@D@B@@@@BD@@DH@@BB@DDH@@@BA@@@@@BBF@@@@@A@E@@@@AOBA@@B@TFF@@@D@BE@CAK@IBADA@@J@BCLA@KH@F@D@L@BD@@R@@EB@@@F@B@@CF@@@@G@E@@@EI@AGAACCEAE@BFQ@E@BFI@@CA@@@AB@BA@ABA@@BEB@BA@AG@@B@@A@CF@@AG@@AE@@BA@A@C@C@@DC@@DI@C@AAACAAA@@A@A@A@@CA@ACAE@@AJ@@A@@@A@EGA@ABAF@@ENAB@@A@AE@G@O@G@A@CA@A@A"
+				],
+				"encodeOffsets": [[
+						117263,
+						37910
+					]
+				]
+			}
+		}, 
+		{
+			"type": "Feature",
+			"id": "130503",
+			"properties": {
+				"name": "桥西区",
+				"cp": [
+					114.4550250000,
+					37.0889150000
+				],
+				"childNum": 1
+			},
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					"@@CAAAI]CBAA@AG@@@CQACEBA@C@@@@BAB@LABA@A@AAAC@G@AABGBGBIBG@C@BD@BF@@AB@D@@DDHJHBFAB@HBBCBEDE@A@ARBBL@DDDDBBDBB@BLHX@B@@BFDDHD@EHBHF@B@B@@@@A@@RAB@D@@A@A@@DD@AB@@A@@AA@@BABAD@DDB@HAD@BA@CFE@I@EDAFDDDDB@F@JDD@HBB@HL@@@B@DA@E@EBGFCD@HCLA@EBIBE@EBKBEDAJ@LF@@BBHDBB@DBB@LDJ@HBBBNCBADC@A@GBAFID@AFHBF@L@LDJ@BB@BB@F@@DDA@AJA@ABAB@F@@D@BA@ABBD@BBBLAFCBA@A@A@GI@ACDI@@FEBABKH@@AJ@@EF@@@@C@@G@@A@A@@A@@A@AAG@@AG@C@@@@AEAC@CAA@C@AAAAG@A@@AGAE@A@A@@@G@@@@@C@AF@@A@C@C@CH@@BDA@@@@AEA@@E@ADE@ABA@AFK@A@@@@B@@ABC@AA@B@@@@@@@@EBAI@@BCA@@@ACAAAAC@EAA@A@G@AAACEG@GC@A@@A@C@CAC@@B@@@@A@E@@HBDBD@DA@C@AAAA@AECG@A@K@C@A@ACCEEC"
+				],
+				"encodeOffsets": [[
+						117192,
+						37877
+					]
+				]
+			}
+		}
+	],
+	"UTF8Encoding": true
+}

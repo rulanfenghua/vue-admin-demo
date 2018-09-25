@@ -391,6 +391,8 @@ export default {
 
 <style lang='scss'>
 .container {
+  font-size: 15px;
+  font-weight: bold;
   .el-header,
   .el-footer {
       background-color: transparent;

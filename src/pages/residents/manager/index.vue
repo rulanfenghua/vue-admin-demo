@@ -239,6 +239,8 @@ export default {
 
 <style scoped lang="scss">
 .residents-manager {
+  font-size: 15px;
+  font-weight: bold;
   height: 100%;
   // width: 100%;
   margin: 0 30px 17px;

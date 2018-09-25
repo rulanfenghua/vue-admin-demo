@@ -262,8 +262,23 @@ export default {
 }
 </script>
 
+<style lang="scss">
+.residents-admin {
+  .el-table td {
+    height: 35px;
+  }
+
+.el-table th {
+  padding: 8px 0 !important;
+    text-align: center;
+  }
+}
+</style>
+
 <style scoped lang="scss">
 .residents-admin {
+  font-size: 15px;
+  font-weight: bold;
   height: 100%;
   // width: 100%;
   margin: 0 30px 17px;
