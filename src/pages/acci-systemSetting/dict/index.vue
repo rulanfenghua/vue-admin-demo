@@ -251,6 +251,8 @@ export default {
         .then(response => {
           let respData = response
           if (respData.code === 0) {
+            console.log('树形结构————————sys-dict')
+            console.log(respData)
             this.dictList = transTreeData(respData.data)
             sessionStorage.setItem('resp', JSON.stringify(respData.data))
             this.nodeclicked()

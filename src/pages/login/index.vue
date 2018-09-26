@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrapper">
     <div class="login">
-      <h1 class="title">桥西区医学影像信息管理系统</h1>
+      <h1 class="title">区域医学影像管理系统（桥西区）</h1>
       <div class="login-content">
         <div class="login-tab">
           <div class="tab-resident" @click="transResident" :class="{'active': userToggle === 'manager'}">居民查询入口</div>
@@ -160,12 +160,12 @@ export default {
     userLogin() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          // const loading = this.$loading({
-          //   lock: true,
-          //   text: '登录中',
-          //   spinner: 'el-icon-loading',
-          //   background: 'rgba(0, 0, 0, 0.7)'
-          // })
+          const loading = this.$loading({
+            lock: true,
+            text: '登录中',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+          })
           login(this.loginForm.username, this.loginForm.password, this.loginForm.captcha).then(response => {
             if (response.code === 0) {
               this.$message({
@@ -182,7 +182,7 @@ export default {
               console.log('角色权限相关————————login')
               console.log('levels: ' + sessionStorage.getItem('levels'))
             } else {
-              // loading.close()
+              loading.close()
               this.$message.error({
                 message: response.msg
               })
@@ -190,11 +190,11 @@ export default {
               this.captchaSrc = baseURL + '/common/captcha?t=' + Math.random()
             }
           }).catch(error => {
-            // loading.close()
+            loading.close()
             console.log('错误————————login')
             console.log(error)
           }).then(() => {
-            // loading.close()
+            loading.close()
             this.loginForm.captcha = ''
             this.captchaSrc = baseURL + '/common/captcha?t=' + Math.random()
           })
@@ -243,12 +243,12 @@ export default {
     seach() {
       this.$refs.seachForm.validate((valid) => {
         if (valid) {
-          // const loading = this.$loading({
-          //   lock: true,
-          //   text: '正在加载居民数据',
-          //   spinner: 'el-icon-loading',
-          //   background: 'rgba(0, 0, 0, 0.7)'
-          // })
+          const loading = this.$loading({
+            lock: true,
+            text: '正在加载居民数据',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+          })
           loginResident(this.residentLoginForm.name, this.residentLoginForm.idcard, this.residentLoginForm.captcha).then(response => {
             if (response.code === 0) {
               console.log('居民登录————————seach')
@@ -258,7 +258,7 @@ export default {
               this._initMess()
               this.$refs.resident._toggleResident()
             } else {
-              // loading.close()
+              loading.close()
               this.$message.error({
                 message: response.msg
               })
@@ -266,11 +266,11 @@ export default {
               this.captchaSrc = baseURL + '/common/captcha?t=' + Math.random()
             }
           }).catch(error => {
-            // loading.close()
+            loading.close()
             console.log('错误————————seach')
             console.log(error)
           }).then(() => {
-            // loading.close()
+            loading.close()
             this.residentLoginForm.captcha = ''
             this.captchaSrc = baseURL + '/common/captcha?t=' + Math.random()
           })

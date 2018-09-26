@@ -50,8 +50,8 @@
           </ul>
           <div class="line"></div>
           <div class="photo">
-            <img :src="printingData.bAddr1" alt="" style="" id="img1">
-            <img :src="printingData.bAddr2" alt="" style="" id="img2">
+            <img :src="printingData.bAddr1" alt="" id="img1" :class="{'scale': isScale1}" @click="isScale1 = !isScale1">
+            <img :src="printingData.bAddr2" alt="" id="img2" :class="{'scale': isScale2}" @click="isScale2 = !isScale2">
           </div>
           <div class="line"></div>
           <p class="text" ref="text">
@@ -101,7 +101,10 @@ export default {
       url1: '',
       url2: '',
 
-      checkDate: '' // 用于记录标题需要的时间
+      checkDate: '', // 用于记录标题需要的时间
+
+      isScale1: false,
+      isScale2: false
     }
   },
   props: {
@@ -227,7 +230,7 @@ export default {
     },
     _toggle() {
       this.printingToggle = !this.printingToggle
-      document.title = '桥西区医学影像信息管理系统'
+      document.title = '区域医学影像管理系统（桥西区）'
     },
     _format(data) {
       data = data.replace(/(。)([\u4E00-\u9FA5]+：)/g, '$1<br><br>$2')
@@ -254,7 +257,7 @@ export default {
 </style>
 <style scoped lang="scss">
   .resident-details-wrapper {
-
+    font-weight: normal!important;
     .dialog {
       .resident-details {
         .details-wrapper {
@@ -520,6 +523,13 @@ export default {
       &.fade-leave-to {
         opacity: 0;
       }
+    }
+    img {
+      transform: scale(1);
+      transition: all ease 0.2s;
+    }
+    img.scale {
+      transform: scale(4);
     }
   }
 </style>

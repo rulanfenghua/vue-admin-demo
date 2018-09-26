@@ -60,9 +60,10 @@ import {
   index,
   getWeek,
   getGender,
-  getLast
+  getLast,
+  getMap
 } from '@/api/city'
-  // import { getMap } from '@/api/city'
+// import { getMap } from '@/api/city'
 import residentDetails from '@/components/residentDetails'
 import echarts from 'echarts'
 import axios from 'axios'
@@ -71,7 +72,7 @@ import store from '@/store/index.js'
 import router from '@/router/index'
 
 export default {
-  name: 'supper',
+  name: 'super',
   data() {
     return {
       chart: null,
@@ -136,7 +137,7 @@ export default {
             show: false
           },
           xAxis: {
-            data: this._toArray_key_supper(response.data),
+            data: this._toArray_key_super(response.data),
             axisTick: {
               alignWithLabel: true
             },
@@ -164,7 +165,7 @@ export default {
           series: [{
             // name: '检查量',
             type: 'line',
-            data: this._toArray_value_supper(response.data),
+            data: this._toArray_value_super(response.data),
             color: ['#2f4554']
           }]
         })
@@ -184,7 +185,7 @@ export default {
           },
           xAxis: {
             // data: ['站点1', '站点2', '站点3', '站点4', '站点5', '站点6', '站点7', '站点8', '站点9']
-            data: this._toArray_key_supper_supper(response.data),
+            data: this._toArray_key_super_super(response.data),
             axisLabel: {
               rotate: -60,
               fontWeight: 'bold'
@@ -210,7 +211,7 @@ export default {
           series: [{
             // name: '上传数量',
             type: 'bar',
-            data: this._toArray_value_supper_supper(response.data),
+            data: this._toArray_value_super_super(response.data),
             color: function (params) {
               var colorList = ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#5c70ad', '#FDEC6D', '#44A9A8', '#8bc34a', '#ffc107',
                 '#795548', '#9e9e9e', '#607d8b']
@@ -263,72 +264,74 @@ export default {
           }]
         })
       })
-      // getMap().then(response => {
-      this._initMapChart(this.$refs.map, {
-        color: ['#3f51b5'],
-        title: {
-          text: '邢台市区域检查量概览'
-        },
-        tooltip: {
-          trigger: 'item',
-          transitionDuration: 0.2
+      getMap().then(response => {
+        console.log('地图数据————————super')
+        console.log(response)
+        this._initMapChart(this.$refs.map, {
+          color: ['#3f51b5'],
+          title: {
+            text: '邢台市区域检查量概览'
+          },
+          tooltip: {
+            trigger: 'item',
+            transitionDuration: 0.2
 
-        },
-        legend: {
-          orient: 'vertical',
-          top: '30%',
-          left: 'right',
-          data: ['邢台市区域检查量']
-        },
-        visualMap: {
-          left: 'right',
-          top: '50%',
-          max: 90,
-          min: 0,
-          // text: ['检查量100', '检查量30'],
-          splitNumber: 3,
-          // calculable: false,
-          color: ['#3f51b5', '#4575b4', '#74add1']
+          },
+          legend: {
+            orient: 'vertical',
+            top: '30%',
+            left: 'right',
+            data: ['邢台市区域检查量']
+          },
+          visualMap: {
+            left: 'right',
+            top: '50%',
+            max: 90,
+            min: 0,
+            // text: ['检查量100', '检查量30'],
+            splitNumber: 3,
+            // calculable: false,
+            color: ['#3f51b5', '#4575b4', '#74add1']
           // inRange: {
           //   color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
           // }
-        },
-        toolbox: {
-          show: true,
-          // orient: 'vertical',
-          left: 'left',
-          top: '80%',
-          feature: {
-            dataView: {readOnly: false},
-            restore: {},
-            saveAsImage: {}
-          }
-        },
-        series: [{
-          name: '邢台市区域检查量',
-          type: 'map',
-          roam: true,
-          map: '邢台',
-          emphasis: {
-            label: {
-              show: true
+          },
+          toolbox: {
+            show: true,
+            // orient: 'vertical',
+            left: 'left',
+            top: '80%',
+            feature: {
+              dataView: {readOnly: false},
+              restore: {},
+              saveAsImage: {}
             }
           },
-          label: {
-            show: true,
-            color: '#fff'
-          },
-          data: [{
-            'name': '桥东区',
-            'value': 0
-          },
-          {
-            'name': '桥西区',
-            'value': 90
+          series: [{
+            name: '邢台市区域检查量',
+            type: 'map',
+            roam: true,
+            map: '邢台',
+            emphasis: {
+              label: {
+                show: true
+              }
+            },
+            label: {
+              show: true,
+              color: '#fff'
+            },
+            data: [{
+              'name': '桥东区',
+              'value': 0
+            },
+            {
+              'name': '桥西区',
+              'value': 90
+            }]
           }]
-        }]
+        })
       })
-      // })
     },
     // 打印 调用子组件的方法
     // seach(id, checkDate) {
@@ -393,21 +396,21 @@ export default {
       }
       return expectedArray
     },
-    _toArray_key_supper(arr) {
+    _toArray_key_super(arr) {
       let expectedArray = []
       arr.forEach(obj => {
         expectedArray.push(obj.CREATETIME.slice(5))
       })
       return expectedArray
     },
-    _toArray_value_supper(arr) {
+    _toArray_value_super(arr) {
       let expectedArray = []
       arr.forEach(obj => {
         expectedArray.push(obj.COUNT)
       })
       return expectedArray
     },
-    _toArray_key_supper_supper(arr) {
+    _toArray_key_super_super(arr) {
       let expectedArray = []
       arr.forEach(obj => {
         var subIndex = obj.STATION_NAME.indexOf('卫生')
@@ -415,7 +418,7 @@ export default {
       })
       return expectedArray
     },
-    _toArray_value_supper_supper(arr) {
+    _toArray_value_super_super(arr) {
       let expectedArray = []
       arr.forEach(obj => {
         expectedArray.push(obj.NUM)

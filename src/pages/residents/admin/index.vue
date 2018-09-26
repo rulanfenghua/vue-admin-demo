@@ -8,8 +8,14 @@
       <div class="idcard-picker">
         <el-input v-model="idcard" placeholder="输入身份证号查询"></el-input>
       </div>
-      <div class="station-picker">
+      <!-- <div class="station-picker">
         <el-input v-model="station" placeholder="输入站点查询"></el-input>
+      </div> -->
+      <div class="station-picker">
+        <el-select v-model="station" @change="getStation" placeholder="选择站点查询" clearable>
+          <el-option v-for="item in stationOptions" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
       </div>
       <!-- <el-button @click="init" type="primary">点击查询</el-button> -->
     </div>
@@ -89,6 +95,13 @@
           </template>
         </el-table-column>
         <el-table-column
+          label="服务站名"
+          width="245">
+          <template slot-scope="scope">
+            <span>{{ scope.row.stationName }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
           label="电话"
           align="center"
           width="200">
@@ -160,6 +173,43 @@ export default {
 
       id: '',
 
+      stationOptions: [{
+        value: '330965C6BAEE4DD58513D4DC229FF1A0',
+        label: '达活泉社区卫生服务中心'
+      },
+      {
+        value: 'BD1C87F41CF242DAA8EFDE55180FE046',
+        label: '钢铁社区卫生服务中心'
+      },
+      {
+        value: 'EA7AE1EC32AA4FDF96D13170968BB3D3',
+        label: '金牛社区卫生服务中心'
+      },
+      {
+        value: '30CC1115738341849095662F07175E86',
+        label: '李村镇卫生院'
+      },
+      {
+        value: '923850FB526B489F846A5BDD76E3DA6D',
+        label: '南大郭社区卫生服务中心'
+      },
+      {
+        value: 'A42A97E3BAEF46CDB8908E276BA5EF3E',
+        label: '泉西社区卫生服务中心'
+      },
+      {
+        value: '96EF5D14B5334F7E8EA7E03140F1900C',
+        label: '张宽社区卫生服务中心'
+      },
+      {
+        value: '263220606F0D4E4A966572A630192FAD',
+        label: '中华社区卫生服务中心'
+      },
+      {
+        value: '44DD49650F864BF5A1DE2FE6C8008937',
+        label: '中兴社区卫生服务中心'
+      }],
+
       pickerOptions: {
         shortcuts: [{
           text: '最近一周',
@@ -208,9 +258,11 @@ export default {
       //   }
       // }
       this.loading = true
-      console.log('起止日期——————admin')
+      console.log('起止日期————————admin')
       console.log(this.date)
       console.log(this.date[0])
+      console.log('服务站————————admin')
+      console.log(this.station)
       getPersonList(this.page, this.limit, this.name, this.idcard, this.station, this.date).then(response => {
         console.log('居民列表————————admin')
         console.log(response)
@@ -250,6 +302,9 @@ export default {
         console.log(response.data)
       })
     },
+    getStation(value) {
+      this.station = value || ''
+    },
     handleSizeChange(value) {
       this.limit = value
       this.init()
@@ -270,7 +325,6 @@ export default {
 
 .el-table th {
   padding: 8px 0 !important;
-    text-align: center;
   }
 }
 </style>

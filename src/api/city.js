@@ -2,7 +2,7 @@ import request from '@/config/httpConfig'
 
 export function getMap() {
   return request({
-    url: '/station/getDayData',
+    url: '/superConservator/getMap',
     method: 'post'
   })
 }

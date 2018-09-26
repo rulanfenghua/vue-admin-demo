@@ -176,7 +176,7 @@ export default {
             // data: ['检查量']
           },
           xAxis: {
-            data: this._toArray_key_supper(response.data),
+            data: this._toArray_key_super(response.data),
             axisLabel: {
               // fontWeight: 'bold'
             }
@@ -200,7 +200,7 @@ export default {
           series: [{
             // name: '检查量',
             type: 'line',
-            data: this._toArray_value_supper(response.data),
+            data: this._toArray_value_super(response.data),
             color: ['#2f4554']
           }]
         })
@@ -330,7 +330,7 @@ export default {
       }
       return expectedArray
     },
-    _toArray_key_supper(arr) {
+    _toArray_key_super(arr) {
       let expectedArray = []
       arr.forEach(obj => {
         expectedArray.push(obj.CREATETIME.slice(5))
@@ -338,7 +338,7 @@ export default {
       console.log(expectedArray)
       return expectedArray
     },
-    _toArray_value_supper(arr) {
+    _toArray_value_super(arr) {
       let expectedArray = []
       arr.forEach(obj => {
         expectedArray.push(obj.COUNT)

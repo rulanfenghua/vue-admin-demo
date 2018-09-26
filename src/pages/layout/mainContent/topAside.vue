@@ -12,7 +12,7 @@
               <span>首页</span>
             </router-link>
           </li>
-          <li class="tab-item" v-show="showSupper">
+          <li class="tab-item" v-show="showSuper">
             <router-link to="/residents">
               <i class="icon-address-book"></i>
               <span>居民列表</span>
@@ -111,12 +111,14 @@ export default {
       }
     },
     // 判断显示市级权限的计算属性
-    showSupper() {
+    showSuper() {
       /* eslint-disable eqeqeq */
       if (sessionStorage.getItem('levels') == 0) {
         console.log('显示权限————————topAside')
         console.log('levels: ' + sessionStorage.getItem('levels'))
         return false
+      } else {
+        return true
       }
     }
   },

@@ -16,7 +16,6 @@
           <el-button type="success" @click="queryBtn">搜索</el-button>
         </div>
       </el-row>
-
     </el-header>
     <el-main>
       <el-table :data="tableData" stripe :height="tableHeight" @row-dblclick="rowDbclick" highlight-current-row style="width: 100%">
@@ -146,6 +145,30 @@
               <el-form-item label="备注" :label-width="formLabelWidth" prop="remark">
                 <el-input v-model="form.remark" auto-complete="off"></el-input>
               </el-form-item>
+              <el-form-item label="权限等级" :label-width="formLabelWidth" prop="levels" v-show="showSuper==='super'">
+                <el-select v-model="form.levels" @change="getLevels" placeholder="用户权限">
+                  <el-option v-for="item in levelsOptions" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="权限等级" :label-width="formLabelWidth" prop="levels" v-show="showSuper==='admin'">
+                <el-select v-model="form.levels" @change="getLevels" placeholder="用户权限">
+                  <el-option v-for="item in levelsOptionsAdmin" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="所属区域" :label-width="formLabelWidth" prop="state" v-show="form.levels==2">
+                <el-select v-model="form.state" @change="getState" placeholder="区域">
+                  <el-option v-for="item in stateOptions" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="选择区域" :label-width="formLabelWidth" prop="state" v-show="form.levels==1">
+                <el-select v-model="form.state" @change="getState" placeholder="区域">
+                  <el-option v-for="item in stateOptions" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
               <!-- <el-form-item label="所属机构" :label-width="formLabelWidth" prop="organId">
                 <el-select v-model="form.organId" @change="getorganIdStatus" placeholder="所属机构">
                   <el-option v-for="item in organIdOptions" :key="item.value" :label="item.label" :value="item.value">
@@ -223,7 +246,9 @@ export default {
         organId: '',
         deptId: '',
         roleIdList: [],
-        id: ''
+        id: '',
+        levels: '',
+        state: ''
       },
       rules: {
         userName: [{
@@ -277,6 +302,34 @@ export default {
         value: '1',
         label: '禁用'
       }],
+      levelsOptions: [{
+        value: '0',
+        label: '邢台市'
+      },
+      {
+        value: '1',
+        label: '区域'
+      },
+      {
+        value: '2',
+        label: '站点'
+      }],
+      levelsOptionsAdmin: [{
+        value: '1',
+        label: '区域'
+      },
+      {
+        value: '2',
+        label: '站点'
+      }],
+      stateOptions: [{
+        value: '0',
+        label: '桥西区'
+      },
+      {
+        value: '1',
+        label: '桥东区'
+      }],
       organIdOptions: [],
       deptIdOptions: [],
       statusQueryOptions: [{
@@ -320,6 +373,19 @@ export default {
       },
       vFlag: false
       /* query结束 */
+    }
+  },
+  computed: {
+    // 判断显示市级权限的计算属性
+    showSuper() {
+      /* eslint-disable eqeqeq */
+      if (sessionStorage.getItem('levels') == 0) {
+        // console.log('显示权限————————sys-users')
+        // console.log('levels: ' + sessionStorage.getItem('levels'))
+        return 'super'
+      } else {
+        return 'admin'
+      }
     }
   },
   mounted() {
@@ -368,8 +434,8 @@ export default {
       let _this = this
       this.$http.post('/sysUser/list', aesdata)
         .then(response => {
-          console.log('用户列表————————sys')
-          console.log(response)
+          // console.log('用户列表————————sys')
+          // console.log(response)
           loading.close()
 
           let respData = response
@@ -390,7 +456,7 @@ export default {
     },
     rowDbclick: function(row, event) {
       this.dialogGetDetail = true
-      console.log('row.id: ' + row.id)
+      // console.log('row.id: ' + row.id)
       this.$http.get('/sysUser/detail/' + row.id)
         .then(response => {
           let respData = response
@@ -406,6 +472,8 @@ export default {
             this.form.deptId = respData.data.deptId
             this.form.createDate = respData.data.createDate
             this.form.updateDate = respData.data.updateDate
+            this.form.levels = respData.data.levels
+            this.form.state = respData.data.state
           } else if (respData.code === -1) {
             this.$message({
               type: 'info',
@@ -421,6 +489,15 @@ export default {
     /* status下拉框 */
     getStatus: function(val) {
       this.form.status = val || ''
+    },
+    getLevels: function(val) {
+      this.form.levels = val || ''
+      if (val === '0') {
+        this.form.state = '00'
+      }
+    },
+    getState: function(val) {
+      this.form.state = val || ''
     },
     // getorganIdStatus: function (val) {
     //   this.vFlag = true
@@ -469,7 +546,7 @@ export default {
     // 页码变更
     handleCurrentChange: function(val) {
       this.currentPage = val
-      console.log('this.currentPage  ' + this.currentPage)
+      // console.log('this.currentPage  ' + this.currentPage)
 
       this.loadData(this.query, this.currentPage, this.pagesize)
     },
@@ -539,7 +616,7 @@ export default {
       }
       // this.form.roleIdList = this.$refs.tree.getCheckedKeys()
       if (this.form.id) {
-        console.log('有ID')
+        // console.log('有ID')
         let data = {
           id: this.form.id,
           userName: this.form.userName,
@@ -551,7 +628,9 @@ export default {
           remark: this.form.remark,
           organId: this.form.organId,
           deptId: this.form.deptId,
-          roleIdList: this.form.roleIdList
+          roleIdList: this.form.roleIdList,
+          levels: this.form.levels,
+          state: this.form.state
         }
         let aesData = data
         this.$http.post('/sysUser/update', aesData)
@@ -570,14 +649,13 @@ export default {
                 message: respData.msg
               })
             }
-            console.log('respData================' + respData.code)
           })
           .catch(response => {
             console.log('进入catch')
             console.log(response)
           })
       } else {
-        console.log('么有ID')
+        // console.log('么有ID')
         let data = {
           userName: this.form.userName,
           loginName: this.form.loginName,
@@ -588,7 +666,9 @@ export default {
           remark: this.form.remark,
           organId: this.form.organId,
           deptId: this.form.deptId,
-          roleIdList: this.form.roleIdList
+          roleIdList: this.form.roleIdList,
+          levels: this.form.levels,
+          state: this.form.state
         }
         let aesData = data
         this.$http.post('/sysUser/add', aesData)
@@ -668,11 +748,11 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log('删除了')
+        // console.log('删除了')
         this.$http.get('/sysUser/delete/' + row.id)
           .then(response => {
-            console.log('删除————————sys')
-            console.log(response)
+            // console.log('删除————————sys')
+            // console.log(response)
             let respData = response
             if (respData.code === 0) {
               this.$message({
@@ -700,12 +780,12 @@ export default {
     },
     /* 初始化角色列表 */
     initPermissionList: function() {
-      console.log('跳转了')
+      // console.log('跳转了')
       this.$http.get('/sysRole/listAll')
         .then(response => {
           let permissionArr = []
-          console.log('角色列表————————sys')
-          console.log(response)
+          // console.log('角色列表————————sys')
+          // console.log(response)
           let respData = response
           if (respData.code === 0) {
             for (let i = 0; i < respData.data.length; i++) {

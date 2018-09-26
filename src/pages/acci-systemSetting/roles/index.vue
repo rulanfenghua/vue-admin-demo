@@ -34,6 +34,30 @@
           <el-form-item label="备注" :label-width="formLabelWidth" prop="remark">
             <el-input v-model="form.remark" auto-complete="off"></el-input>
           </el-form-item>
+          <el-form-item label="权限" :label-width="formLabelWidth" prop="levels" v-show="showSuper==='super'">
+            <el-select v-model="form.levels" @change="getLevels" placeholder="用户权限">
+              <el-option v-for="item in levelsOptions" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="权限" :label-width="formLabelWidth" prop="levels" v-show="showSuper==='admin'">
+            <el-select v-model="form.levels" @change="getLevels" placeholder="用户权限">
+              <el-option v-for="item in levelsOptionsAdmin" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="所属区域" :label-width="formLabelWidth" prop="state" v-show="form.levels==2">
+            <el-select v-model="form.state" @change="getState" placeholder="区域">
+              <el-option v-for="item in stateOptions" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="选择区域" :label-width="formLabelWidth" prop="state" v-show="form.levels==1">
+            <el-select v-model="form.state" @change="getState" placeholder="区域">
+              <el-option v-for="item in stateOptions" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
           <!-- <el-form-item label="权限选择" :label-width="formLabelWidth" prop="permissionChoose">
             <el-radio-group v-model="radios" size="mini" @change="handleCheckAllChange">
               <el-radio-button name="allCheck" label="全选"></el-radio-button>
@@ -157,7 +181,9 @@ export default {
         status: '',
         remark: '',
         permissions: [],
-        id: ''
+        id: '',
+        levels: '',
+        state: ''
       },
       rules: {
         roleName: [{
@@ -194,6 +220,34 @@ export default {
       }, {
         value: '1',
         label: '禁用'
+      }],
+      levelsOptions: [{
+        value: '0',
+        label: '邢台市'
+      },
+      {
+        value: '1',
+        label: '区域'
+      },
+      {
+        value: '2',
+        label: '站点'
+      }],
+      levelsOptionsAdmin: [{
+        value: '1',
+        label: '区域'
+      },
+      {
+        value: '2',
+        label: '站点'
+      }],
+      stateOptions: [{
+        value: '0',
+        label: '桥西区'
+      },
+      {
+        value: '1',
+        label: '桥东区'
       }],
       /* status下拉框结束 */
       /* table开始 */
@@ -478,6 +532,19 @@ export default {
       /* 搜索结束 */
     }
   },
+  computed: {
+    // 判断显示市级权限的计算属性
+    showSuper() {
+      /* eslint-disable eqeqeq */
+      if (sessionStorage.getItem('levels') == 0) {
+        // console.log('显示权限————————sys-users')
+        // console.log('levels: ' + sessionStorage.getItem('levels'))
+        return 'super'
+      } else if (sessionStorage.getItem('levels') == 1) {
+        return 'admin'
+      }
+    }
+  },
   mounted() {
     this.loadData(this.input, this.currentPage, this.pagesize)
   },
@@ -553,8 +620,8 @@ export default {
       let _this = this
       this.$http.post('/sysStation/list', aesdata)
         .then(response => {
-          console.log('列表————————roles')
-          console.log(response)
+          // console.log('列表————————roles')
+          // console.log(response)
           loading.close()
 
           let respData = response
@@ -569,8 +636,8 @@ export default {
           }
         })
         .catch(response => {
-          console.log('进入catch')
-          console.log(response)
+          // console.log('进入catch')
+          // console.log(response)
         })
     },
     rowDbclick: function(row, event) {
@@ -584,6 +651,8 @@ export default {
             this.form.roleDescription = respData.data.roleDescription
             this.form.status = respData.data.status
             this.form.remark = respData.data.remark
+            this.form.levels = respData.data.levels
+            this.form.state = respData.data.state
           }
           this.$store.commit('CODE', respData.code)
           if (respData.code === '101') {
@@ -591,8 +660,8 @@ export default {
           }
         })
         .catch(response => {
-          console.log('进入catch')
-          console.log(response)
+          // console.log('进入catch')
+          // console.log(response)
         })
       this.form.roleName = row.roleName
       this.form.roleKey = row.roleKey
@@ -612,6 +681,15 @@ export default {
     getStatus: function(val) {
       // this.form.status = val.toString() ? val.toString() : ''
     },
+    getLevels: function(val) {
+      this.form.levels = val || ''
+      if (val === '0') {
+        this.form.state = '00'
+      }
+    },
+    getState: function(val) {
+      this.form.state = val || ''
+    },
     /* 分页器 */
     // 每页显示数据量变更
     handleSizeChange: function(val) {
@@ -622,8 +700,7 @@ export default {
     // 页码变更
     handleCurrentChange: function(val) {
       this.currentPage = val
-      console.log('this.currentPage  ' + this.currentPage)
-
+      // console.log('this.currentPage  ' + this.currentPage)
       this.loadData(this.input, this.currentPage, this.pagesize)
     },
     inputBtn: function() {
@@ -666,14 +743,16 @@ export default {
       //   return
       // }
       if (this.form.id) {
-        console.log('有ID')
+        // console.log('有ID')
         let data = {
           id: this.form.id,
           stationName: this.form.roleName,
           stationCode: this.form.roleKey,
           tel: this.form.roleDescription,
           // status: this.form.status.toString(),
-          remark: this.form.remark
+          remark: this.form.remark,
+          levels: this.form.levels,
+          state: this.form.state
           // permissions: this.form.permissions
         }
         let aesData = data
@@ -699,13 +778,15 @@ export default {
             console.log(response)
           })
       } else {
-        console.log('么有ID')
+        // console.log('么有ID')
         let data = {
           stationName: this.form.roleName,
           stationCode: this.form.roleKey,
           tel: this.form.roleDescription,
           // status: this.form.status.toString(),
-          remark: this.form.remark
+          remark: this.form.remark,
+          levels: this.form.levels,
+          state: this.form.state
           // permissions: this.form.permissions
         }
         let aesData = data
