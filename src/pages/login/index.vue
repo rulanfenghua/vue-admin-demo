@@ -250,13 +250,32 @@ export default {
             background: 'rgba(0, 0, 0, 0.7)'
           })
           loginResident(this.residentLoginForm.name, this.residentLoginForm.idcard, this.residentLoginForm.captcha).then(response => {
+            // if (response.code === 0) {
+            //   console.log('居民登录————————seach')
+            //   console.log(response)
+            //   this.personalData = response.data
+            //   this.id = response.data.id
+            //   this._initMess()
+            //   this.$refs.resident._toggleResident()
+            // } else {
+            //   loading.close()
+            //   this.$message.error({
+            //     message: response.msg
+            //   })
+            //   this.residentLoginForm.captcha = ''
+            //   this.captchaSrc = baseURL + '/common/captcha?t=' + Math.random()
+            // }
             if (response.code === 0) {
               console.log('居民登录————————seach')
               console.log(response)
-              this.personalData = response.data
-              this.id = response.data.id
-              this._initMess()
-              this.$refs.resident._toggleResident()
+              this.$message({
+                message: '查询成功，欢迎 ' + response.data.name,
+                type: 'success'
+              })
+              sessionStorage.setItem('name', response.data.name)
+              sessionStorage.setItem('residentId', response.data.id)
+              sessionStorage.setItem('residentIdcard', response.data.idCard)
+              this.$router.replace('/seach')
             } else {
               loading.close()
               this.$message.error({
@@ -287,6 +306,7 @@ export default {
     },
     _initMess() {
       this.$http.get('/resident/getPersonalDateList' + '/' + this.id).then(response => {
+      // getPersonalMess(this.id).then(response => {
         console.log('居民列表数据————————login')
         console.log(response)
         this.personalMess = response.data

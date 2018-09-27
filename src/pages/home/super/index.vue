@@ -323,11 +323,11 @@ export default {
             },
             data: [{
               'name': '桥东区',
-              'value': 0
+              'value': response.data.QIAODONG
             },
             {
               'name': '桥西区',
-              'value': 90
+              'value': response.data.QIAOXI
             }]
           }]
         })

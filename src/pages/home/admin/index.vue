@@ -149,6 +149,7 @@
 <script>
 import {index, getWeek, getDay, getGender, getLast} from '@/api/admin'
 import residentDetails from '@/components/residentDetails'
+// import {getPersonalMess, getPersonalData} from '@/api/resident'
 import echarts from 'echarts'
 
 export default {
@@ -357,9 +358,11 @@ export default {
     // },
     initMess(id, idCard) {
       this.$http.get('/resident/getPersonalMess' + '/' + idCard).then(response => {
+      // getPersonalData(this.idCard).then(response => {
         this.personalData = response.data
       })
       this.$http.get('/resident/getPersonalDateList' + '/' + id).then(response => {
+      // getPersonalMess(this.id).then(response => {
         this.personalMess = response.data
         this.id = id
         this.$refs.resident._toggleResident()

@@ -1,9 +1,10 @@
 import request from '@/config/httpConfig'
 
-export function loginResident(name, idCard) {
+export function loginResident(name, idCard, captcha) {
   const data = {
     name: name,
-    idCard: idCard
+    idCard: idCard,
+    captcha: captcha
   }
   return request({
     url: '/resident/login',
@@ -12,9 +13,18 @@ export function loginResident(name, idCard) {
   })
 }
 
-export function getPersonalMess() {
+export function getPersonalMess(id) {
+  const url = '/resident/getPersonalDateList' + '/' + id
   return request({
-    url: '/resident/getPersonalDateList',
+    url,
+    method: 'get'
+  })
+}
+
+export function getPersonalData(idCard) {
+  const url = '/resident/getPersonalMess' + '/' + idCard
+  return request({
+    url,
     method: 'get'
   })
 }
@@ -28,24 +38,5 @@ export function printing(id, checkDate) {
     url: '/resident/printing',
     method: 'post',
     data
-  })
-}
-
-export function stationPrinting(id, checkDate) {
-  const data = {
-    id: id,
-    checkDate: checkDate
-  }
-  return request({
-    url: '/station/getPersonalDate',
-    method: 'post',
-    data
-  })
-}
-
-export function getPersonalDate() {
-  return request({
-    url: '/resident/getPersonalMess',
-    method: 'get'
   })
 }

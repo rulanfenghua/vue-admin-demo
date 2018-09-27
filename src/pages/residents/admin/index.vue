@@ -143,7 +143,7 @@
 
 <script>
 import {getPersonList} from '@/api/admin'
-// import {getPersonalMess} from '@/api/resident' // getPersonalDateList原有的api地址
+// import {getPersonalMess, getPersonalData} from '@/api/resident' // getPersonalDateList原有的api地址
 import residentDetails from '@/components/residentDetails'
 
 export default {
@@ -276,14 +276,10 @@ export default {
       })
     },
     initMess(id, idCard) {
-      // getPersonalDateList原有的api封装
-      // getPersonalMess().then(response => {
-      //   this.$refs.resident._toggleResident()
-      //   this.personalMess = response.data
-      // })
       // this.loadingMess = true
       // let symbol = false
       this.$http.get('/resident/getPersonalMess' + '/' + idCard).then(response => {
+      // getPersonalData(this.idCard).then(response => {
         this.personalData = response.data
         // symbol = !symbol
         // if (symbol === false) {
@@ -291,6 +287,7 @@ export default {
         // }
       })
       this.$http.get('/resident/getPersonalDateList' + '/' + id).then(response => {
+      // getPersonalMess(this.id).then(response => {
         this.personalMess = response.data
         this.id = id
         this.$refs.resident._toggleResident()

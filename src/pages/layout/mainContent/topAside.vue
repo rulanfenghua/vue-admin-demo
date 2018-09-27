@@ -3,7 +3,7 @@
   <div class="container">
     <!-- 顶部tab栏 -->
     <div class="top-aside">
-      <h1 class="title">桥西区医学影像信息管理系统</h1>
+      <h1 class="title">区域医学影像管理系统（桥西区）</h1>
       <div class="tab-container">
         <ul class="tab">
           <li class="tab-item">

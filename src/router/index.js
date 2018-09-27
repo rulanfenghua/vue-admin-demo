@@ -11,6 +11,11 @@ export default new Router({
     {
       path: '/login',
       component: () => import('@/pages/login')
+    },
+    {
+      path: '/seach',
+      component: () =>
+        import('@/pages/seach')
     }
   ]
 })
