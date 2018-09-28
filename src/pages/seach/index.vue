@@ -209,7 +209,7 @@ export default {
     width: 100%;
     flex: 1;
     display: flex;
-    background-color: #e6e1e1;
+    background-color: #f1eded;
     .left, .right {
       position: relative;
       // background: rgba(8, 22, 57, 0.2);
@@ -227,12 +227,12 @@ export default {
       }
     }
     .left {
-      flex: 0 0 300px;
+      flex: 0 0 275px;
       background-color: #fff;
       margin-right: 0;
       font-size: 16px;
       font-family: serif;
-      background: no-repeat bottom/100% url('./background.jpg');
+      background: no-repeat bottom/100% url('./background.png');
       &::after {
         display: block;
         position: absolute;
@@ -241,7 +241,7 @@ export default {
         content: '';
         width: 1px;
         background: no-repeat url('./xian.png');
-        // background-size: auto 100%;
+        background-size: auto 100%;
         height: 100%;
         opacity: 0.7;
       }

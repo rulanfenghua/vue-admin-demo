@@ -405,8 +405,8 @@ export default {
     _toArray_key_super_super(arr) {
       let expectedArray = []
       arr.forEach(obj => {
-        var subIndex = obj.STATION_NAME.indexOf('卫生')
-        expectedArray.push(obj.STATION_NAME.slice(0, subIndex))
+        var subIndex = obj.STATIONNAME.indexOf('卫生')
+        expectedArray.push(obj.STATIONNAME.slice(0, subIndex))
       })
       return expectedArray
     },

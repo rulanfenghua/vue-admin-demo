@@ -6,13 +6,13 @@
 
 <script>
 import admin from './admin'
-import manager from './manager'
+import superadmin from './super'
 
 export default {
   name: 'users',
   components: {
     admin,
-    manager
+    superadmin
   },
   data() {
     return {
@@ -21,10 +21,10 @@ export default {
   },
   created() {
     /* eslint-disable eqeqeq */
-    if (sessionStorage.getItem('levels') == 2) {
+    if (sessionStorage.getItem('levels') == 0) {
       console.log('角色权限————————users')
       console.log('levels: ' + sessionStorage.getItem('levels'))
-      this.currentRole = 'manager'
+      this.currentRole = 'superadmin'
     }
   }
 }

@@ -1,186 +1,190 @@
 <template>
   <div class="container">
     <el-col :span="4" :style="{height: leftHeight+'px'}">
+      <!-- <el-tree :data="roleList" node-key="id" ref="tree" accordion check-strictly highlight-current :props="defaultProps" :default-expanded-keys="defaultExpanded" @node-click="nodeclicked">
+      </el-tree> -->
       <el-tree :data="roleList" node-key="id" ref="tree" accordion check-strictly highlight-current :props="defaultProps" :default-expanded-keys="defaultExpanded" @node-click="nodeclicked" default-expand-all>
       </el-tree>
     </el-col>
     <el-col :span="20">
-    <el-header>
-      <el-row :model="query" :gutter="20">
-        <el-col :span="13">
-          <el-button type="success" v-on:click="dialogFormVisible = true;form.id = ''">添加</el-button>
-          <span style="margin-left: 20px;">用户状态：</span>
-          <el-select style="width: 120px;" v-model="query.status" @change="getQueryStatus" placeholder="全部">
-            <el-option v-for="item in statusQueryOptions" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </el-col>
-        <div class="rightTop">
-          <el-button type="success" @click="queryBtnSuper">显示全部</el-button>
-          <el-input v-model="query.input" placeholder="请输入姓名"></el-input>
-          <el-button type="success" @click="queryBtn">搜索</el-button>
+    <!-- <el-container> -->
+      <el-header>
+        <el-row :model="query" :gutter="20">
+          <el-col :span="13">
+            <el-button type="success" v-on:click="dialogFormVisible = true;form.id = ''">添加</el-button>
+            <span style="margin-left: 20px;">用户状态：</span>
+            <el-select style="width: 120px;" v-model="query.status" @change="getQueryStatus" placeholder="全部">
+              <el-option v-for="item in statusQueryOptions" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </el-col>
+          <div class="rightTop">
+            <el-button type="success" @click="queryBtnSuper">显示全部</el-button>
+            <el-input v-model="query.input" placeholder="请输入姓名"></el-input>
+            <el-button type="success" @click="queryBtn">搜索</el-button>
+          </div>
+        </el-row>
+      </el-header>
+      <el-main>
+        <el-table :data="tableData" stripe :height="tableHeight" @row-dblclick="rowDbclick" highlight-current-row style="width: 100%">
+          <el-table-column type="index" width="50">
+          </el-table-column>
+          <el-table-column label="姓名" width="150">
+            <template slot-scope="scope">
+              <span>{{ scope.row.userName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="账号" width="120">
+            <template slot-scope="scope">
+              <span>{{ scope.row.loginName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="状态" width="120">
+            <template slot-scope="scope">
+              <span>{{ scope.row.status | formatStatus}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="电话" width="120">
+            <template slot-scope="scope">
+              <span>{{ scope.row.phone }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="邮箱" width="180">
+            <template slot-scope="scope">
+              <span>{{ scope.row.email }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="用户注册时间" width="180">
+            <template slot-scope="scope">
+              <span>{{ scope.row.createDate }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="用户修改时间" width="180">
+            <template slot-scope="scope">
+              <span>{{ scope.row.updateDate }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" fixed="right" width="200">
+            <template slot-scope="scope">
+              <el-button size="mini" type="success" @click="handleEdit(scope.$index, scope.row);dialogFormVisible = true;form.id = scope.row.id">编辑</el-button>
+              <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="pagination">
+          <span class="dbtips">*双击行以查看详情</span>
+          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 40]" :page-size="pagesize" layout="total, sizes, prev, pager, next, jumper"
+            :total="totalCount">
+          </el-pagination>
         </div>
-      </el-row>
-    </el-header>
-    <el-main>
-      <el-table :data="tableData" stripe :height="tableHeight" @row-dblclick="rowDbclick" highlight-current-row style="width: 100%">
-        <el-table-column type="index" width="50">
-        </el-table-column>
-        <el-table-column label="姓名" width="150">
-          <template slot-scope="scope">
-            <span>{{ scope.row.userName }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="账号" width="120">
-          <template slot-scope="scope">
-            <span>{{ scope.row.loginName }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="状态" width="120">
-          <template slot-scope="scope">
-            <span>{{ scope.row.status | formatStatus}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="电话" width="120">
-          <template slot-scope="scope">
-            <span>{{ scope.row.phone }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="邮箱" width="180">
-          <template slot-scope="scope">
-            <span>{{ scope.row.email }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="用户注册时间" width="180">
-          <template slot-scope="scope">
-            <span>{{ scope.row.createDate }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="用户修改时间" width="180">
-          <template slot-scope="scope">
-            <span>{{ scope.row.updateDate }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" fixed="right" width="200">
-          <template slot-scope="scope">
-            <el-button size="mini" type="success" @click="handleEdit(scope.$index, scope.row);dialogFormVisible = true;form.id = scope.row.id">编辑</el-button>
-            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="pagination">
-        <span class="dbtips">*双击行以查看详情</span>
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
-          :page-sizes="[10, 20, 30, 40]" :page-size="pagesize" layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
-        </el-pagination>
-      </div>
-      <el-dialog class="userDialog" title="用户详情" :visible.sync="dialogGetDetail" @close="resetForm" width="850px">
-        <el-form :model="form">
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="用户姓名：" :label-width="formLabelWidth">
-                <el-input :readonly="true" v-model="form.userName" auto-complete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="登陆账户：" :label-width="formLabelWidth">
-                <el-input :readonly="true" v-model="form.loginName" auto-complete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="状态：" :label-width="formLabelWidth">
-                <el-select :disabled="true" v-model="form.status" @change="getStatus" placeholder="用户状态">
-                  <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="手机号：" :label-width="formLabelWidth">
-                <el-input :readonly="true" v-model="form.phone" auto-complete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="注册时间：" :label-width="formLabelWidth">
-                <el-input :readonly="true" v-model="form.createDate" auto-complete="off"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="邮箱：" :label-width="formLabelWidth">
-                <el-input :readonly="true" v-model="form.email" auto-complete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="备注：" :label-width="formLabelWidth">
-                <el-input :readonly="true" v-model="form.remark" auto-complete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="所属机构：" :label-width="formLabelWidth">
-                <el-input :readonly="true" v-model="form.organId" auto-complete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="所属部门：" :label-width="formLabelWidth">
-                <el-input :readonly="true" v-model="form.deptId" auto-complete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="修改时间：" :label-width="formLabelWidth">
-                <el-input :readonly="true" v-model="form.updateDate" auto-complete="off"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="success" @click="dialogGetDetail = false">确定</el-button>
-        </div>
-      </el-dialog>
-      <el-dialog title="用户信息" :visible.sync="dialogFormVisible" @open="initPermissionList" @close="resetForm" width="850px">
-        <el-form :model="form" :rules="rules" ref="form">
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="用户姓名" :label-width="formLabelWidth" prop="userName">
-                <el-input v-model="form.userName" auto-complete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="登陆账户" :label-width="formLabelWidth" prop="loginName">
-                <el-input v-model="form.loginName" auto-complete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="密码" v-show='isShow' :label-width="formLabelWidth" prop="password">
-                <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="状态" :label-width="formLabelWidth" prop="status">
-                <el-select v-model="form.status" @change="getStatus" placeholder="用户状态">
-                  <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="电话" :label-width="formLabelWidth" prop="phone">
-                <el-input v-model="form.phone" auto-complete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email">
-                <el-input v-model="form.email" auto-complete="off"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="备注" :label-width="formLabelWidth" prop="remark">
-                <el-input v-model="form.remark" auto-complete="off"></el-input>
-              </el-form-item>
-              <!-- <el-form-item label="权限等级" :label-width="formLabelWidth" prop="levels" v-show="showSuper==='super'">
-                <el-select v-model="form.levels" @change="getLevels" placeholder="用户权限">
-                  <el-option v-for="item in levelsOptions" :key="item.value" :label="item.label" :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="权限等级" :label-width="formLabelWidth" prop="levels" v-show="showSuper==='admin'">
-                <el-select v-model="form.levels" @change="getLevels" placeholder="用户权限">
-                  <el-option v-for="item in levelsOptionsAdmin" :key="item.value" :label="item.label" :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item> -->
-              <el-form-item label="权限等级" :label-width="formLabelWidth" prop="levels">
-                <el-select v-model="form.levels" @change="getLevels" placeholder="用户权限">
-                  <el-option v-for="item in levelsOptionsAdmin" :key="item.value" :label="item.label" :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="所属区域" :label-width="formLabelWidth" prop="state" v-show="form.levels==2">
-                <el-select v-model="form.state" @change="getState" placeholder="区域">
-                  <el-option v-for="item in stateOptions" :key="item.value" :label="item.label" :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="选择区域" :label-width="formLabelWidth" prop="state" v-show="form.levels==1">
-                <el-select v-model="form.state" @change="getState" placeholder="区域">
-                  <el-option v-for="item in stateOptions" :key="item.value" :label="item.label" :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <!-- <el-form-item label="所属机构" :label-width="formLabelWidth" prop="organId">
+        <el-dialog class="userDialog" title="用户详情" :visible.sync="dialogGetDetail" @close="resetForm" width="850px">
+          <el-form :model="form">
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="用户姓名：" :label-width="formLabelWidth">
+                  <el-input :readonly="true" v-model="form.userName" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="登陆账户：" :label-width="formLabelWidth">
+                  <el-input :readonly="true" v-model="form.loginName" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="状态：" :label-width="formLabelWidth">
+                  <el-select :disabled="true" v-model="form.status" @change="getStatus" placeholder="用户状态">
+                    <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="手机号：" :label-width="formLabelWidth">
+                  <el-input :readonly="true" v-model="form.phone" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="注册时间：" :label-width="formLabelWidth">
+                  <el-input :readonly="true" v-model="form.createDate" auto-complete="off"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="邮箱：" :label-width="formLabelWidth">
+                  <el-input :readonly="true" v-model="form.email" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="备注：" :label-width="formLabelWidth">
+                  <el-input :readonly="true" v-model="form.remark" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="所属机构：" :label-width="formLabelWidth">
+                  <el-input :readonly="true" v-model="form.organId" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="所属部门：" :label-width="formLabelWidth">
+                  <el-input :readonly="true" v-model="form.deptId" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="修改时间：" :label-width="formLabelWidth">
+                  <el-input :readonly="true" v-model="form.updateDate" auto-complete="off"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button type="success" @click="dialogGetDetail = false">确定</el-button>
+          </div>
+        </el-dialog>
+        <el-dialog title="用户信息" :visible.sync="dialogFormVisible" @open="initPermissionList" @close="resetForm" width="850px">
+          <el-form :model="form" :rules="rules" ref="form">
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="用户姓名" :label-width="formLabelWidth" prop="userName">
+                  <el-input v-model="form.userName" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="登陆账户" :label-width="formLabelWidth" prop="loginName">
+                  <el-input v-model="form.loginName" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="密码" v-show='isShow' :label-width="formLabelWidth" prop="password">
+                  <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="状态" :label-width="formLabelWidth" prop="status">
+                  <el-select v-model="form.status" @change="getStatus" placeholder="用户状态">
+                    <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="电话" :label-width="formLabelWidth" prop="phone">
+                  <el-input v-model="form.phone" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email">
+                  <el-input v-model="form.email" auto-complete="off"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="备注" :label-width="formLabelWidth" prop="remark">
+                  <el-input v-model="form.remark" auto-complete="off"></el-input>
+                </el-form-item>
+                <!-- <el-form-item label="权限等级" :label-width="formLabelWidth" prop="levels" v-show="showSuper==='super'">
+                  <el-select v-model="form.levels" @change="getLevels" placeholder="用户权限">
+                    <el-option v-for="item in levelsOptions" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="权限等级" :label-width="formLabelWidth" prop="levels" v-show="showSuper==='admin'">
+                  <el-select v-model="form.levels" @change="getLevels" placeholder="用户权限">
+                    <el-option v-for="item in levelsOptionsAdmin" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item> -->
+                <el-form-item label="权限等级" :label-width="formLabelWidth" prop="levels">
+                  <el-select v-model="form.levels" @change="getLevels" placeholder="用户权限">
+                    <el-option v-for="item in levelsOptions" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="所属区域" :label-width="formLabelWidth" prop="state" v-show="form.levels==2">
+                  <el-select v-model="form.state" @change="getState" placeholder="区域">
+                    <el-option v-for="item in stateOptions" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="选择区域" :label-width="formLabelWidth" prop="state" v-show="form.levels==1">
+                  <el-select v-model="form.state" @change="getState" placeholder="区域">
+                    <el-option v-for="item in stateOptions" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <!-- <el-form-item label="所属机构" :label-width="formLabelWidth" prop="organId">
                 <el-select v-model="form.organId" @change="getorganIdStatus" placeholder="所属机构">
                   <el-option v-for="item in organIdOptions" :key="item.value" :label="item.label" :value="item.value">
                   </el-option>
@@ -201,28 +205,24 @@
                   highlight-current check-on-click-node :props="defaultProps" :default-expanded-keys="defaultExpanded">
                 </el-tree>
               </el-form-item> -->
-            </el-col>
-          </el-row>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="success" @click="addEditUsers">确 定</el-button>
-        </div>
-      </el-dialog>
-    </el-main>
+              </el-col>
+            </el-row>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="success" @click="addEditUsers">确 定</el-button>
+          </div>
+        </el-dialog>
+      </el-main>
+    <!-- </el-container> -->
     </el-col>
   </div>
 </template>
 
 <script>
-import {treeListSys} from '@/api/systemSetting'
+import {superTreeList} from '@/api/systemSetting'
 
 export default {
-  computed: {
-    leftHeight() {
-      return ((document.documentElement.clientHeight || document.body.clientHeight) - 194)
-    }
-  },
   data() {
     var validatePWD = (rule, value, callback) => {
       var pass = /^[a-z0-9A-Z]{6,16}$/
@@ -401,19 +401,22 @@ export default {
       /* query结束 */
     }
   },
-  // computed: {
-  //   // 判断显示市级权限的计算属性
-  //   showSuper() {
-  //     /* eslint-disable eqeqeq */
-  //     if (sessionStorage.getItem('levels') == 0) {
-  //       // console.log('显示权限————————sys-users')
-  //       // console.log('levels: ' + sessionStorage.getItem('levels'))
-  //       return 'super'
-  //     } else {
-  //       return 'admin'
-  //     }
-  //   }
-  // },
+  computed: {
+    // 判断显示市级权限的计算属性
+    showSuper() {
+      /* eslint-disable eqeqeq */
+      if (sessionStorage.getItem('levels') == 0) {
+        // console.log('显示权限————————sys-users')
+        // console.log('levels: ' + sessionStorage.getItem('levels'))
+        return 'super'
+      } else {
+        return 'admin'
+      }
+    },
+    leftHeight() {
+      return ((document.documentElement.clientHeight || document.body.clientHeight) - 194)
+    }
+  },
   mounted() {
     this.loadData(this.query, this.currentPage, this.pagesize)
     this.initTreeList()
@@ -428,19 +431,19 @@ export default {
   },
   /* table数据格式化 */
   filters: {
-    formatStatus: function(val) {
+    formatStatus: function (val) {
       return val === 1 ? '禁用' : '正常'
     }
   },
   methods: {
     /* 判断按钮是否显示 */
-    contens: function(arg) {
+    contens: function (arg) {
       let btnData = sessionStorage.getItem('permissionArr')
       let permissionArr = btnData.split(',')
       return permissionArr.indexOf(arg) !== -1
     },
     /* 初始化执行/请求用户列表 */
-    loadData: function(query, pageNum, pageSize) {
+    loadData: function (query, pageNum, pageSize) {
       const loading = this.$loading({
         lock: true,
         text: '数据加载中...',
@@ -482,8 +485,8 @@ export default {
         })
     },
     initTreeList() {
-      treeListSys().then(response => {
-        console.log('树形结构————————adminSys')
+      superTreeList().then(response => {
+        console.log('树形结构————————super')
         console.log(response)
         this.roleList = this._transTreeData(response.data)
       }).catch(error => {
@@ -496,7 +499,7 @@ export default {
       if (items.length > 0) {
         var curPid = null // 默认最上层节点id为null
         var parent = this._findChild(curPid, items)
-        console.log('parent——————————adminSys')
+        console.log('parent——————————super')
         console.log(parent)
         return parent
       } else {
@@ -528,7 +531,7 @@ export default {
       this.query.input = data.label
       this.loadData(this.query, this.currentPage, this.pagesize)
     },
-    rowDbclick: function(row, event) {
+    rowDbclick: function (row, event) {
       this.dialogGetDetail = true
       // console.log('row.id: ' + row.id)
       this.$http.get('/sysUser/detail/' + row.id)
@@ -561,16 +564,16 @@ export default {
         })
     },
     /* status下拉框 */
-    getStatus: function(val) {
+    getStatus: function (val) {
       this.form.status = val || ''
     },
-    getLevels: function(val) {
+    getLevels: function (val) {
       this.form.levels = val || ''
       if (val === '0') {
         this.form.state = '00'
       }
     },
-    getState: function(val) {
+    getState: function (val) {
       this.form.state = val || ''
     },
     // getorganIdStatus: function (val) {
@@ -603,22 +606,22 @@ export default {
     //       console.log(response)
     //     })
     // },
-    getdeptIdStatus: function(val) {
+    getdeptIdStatus: function (val) {
       this.form.deptId = val || ''
     },
-    getQueryStatus: function(val) {
+    getQueryStatus: function (val) {
       this.query.status = val || ''
       this.loadData(this.query, this.currentPage, this.pagesize)
     },
     /* 分页器 */
     // 每页显示数据量变更
-    handleSizeChange: function(val) {
+    handleSizeChange: function (val) {
       this.pagesize = val
       this.loadData(this.query, this.currentPage, this.pagesize)
     },
 
     // 页码变更
-    handleCurrentChange: function(val) {
+    handleCurrentChange: function (val) {
       this.currentPage = val
       // console.log('this.currentPage  ' + this.currentPage)
 
@@ -643,7 +646,7 @@ export default {
     // },
 
     /* 请求添加用户接口 */
-    addEditUsers: function() {
+    addEditUsers: function () {
       // if (!this.$refs.tree.getCheckedKeys().length) {
       //   this.$message({
       //     type: 'warning',
@@ -769,7 +772,7 @@ export default {
       }
     },
     /* 编辑 */
-    handleEdit: function(index, row) {
+    handleEdit: function (index, row) {
       this.isShow = false
       this.deptIdOptions = []
       // this.$http.get('/dept/getByOrgId/' + row.organId)
@@ -816,7 +819,7 @@ export default {
       // }, 500)
     },
     /* 删除 */
-    handleDelete: function(index, row) {
+    handleDelete: function (index, row) {
       this.$confirm('是否删除?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -853,7 +856,7 @@ export default {
       })
     },
     /* 初始化角色列表 */
-    initPermissionList: function() {
+    initPermissionList: function () {
       // console.log('跳转了')
       this.$http.get('/sysRole/listAll')
         .then(response => {
@@ -908,7 +911,7 @@ export default {
       //   })
     },
     /* 清空form */
-    resetForm: function() {
+    resetForm: function () {
       this.isShow = true
       this.form.userName = ''
       this.form.loginName = ''
@@ -929,7 +932,7 @@ export default {
       // }
       // this.$refs.tree.setCheckedKeys([])
     },
-    queryBtn: function() {
+    queryBtn: function () {
       this.loadData(this.query, this.currentPage, this.pagesize)
     },
     queryBtnSuper: function () {
@@ -1003,97 +1006,114 @@ export default {
 </style>
 
 <style lang='scss'>
-.container{
-  font-size: 15px;
-  font-weight: bold;
-  .el-header,
-  .el-footer {
+  .container {
+    font-size: 15px;
+    font-weight: bold;
+
+    .el-header,
+    .el-footer {
       background-color: transparent;
       color: #333;
       text-align: center;
       height: 60px;
       line-height: 60px;
-  }
-  .el-header .el-col{
+    }
+
+    .el-header .el-col {
       text-align: left;
-  }
-  .rightTop{
-          width: 100%;
-          height: 60px;
-          line-height: 60px;
-          text-align: right;
-          padding-right: 10px;
-      }
-      .rightTop .el-input{
-          width: 180px;
-      }
-  .el-dialog .el-input{
-          width: 200px;
-      }
-  .el-main {
+    }
+
+    .rightTop {
+      width: 100%;
+      height: 60px;
+      line-height: 60px;
+      text-align: right;
+      padding-right: 10px;
+    }
+
+    .rightTop .el-input {
+      width: 180px;
+    }
+
+    .el-dialog .el-input {
+      width: 200px;
+    }
+
+    .el-main {
       background-color: transparent;
       color: #333;
       text-align: center;
       height: 100%;
-  }
-  .el-main .el-form {
+    }
+
+    .el-main .el-form {
       text-align: left;
-  }
-  .el-main .el-table{
+    }
+
+    .el-main .el-table {
       height: 100%;
       line-height: 100%;
-  }
-  .el-main .el-table td{
+    }
+
+    .el-main .el-table td {
       height: 35px;
-  }
-  .el-main .el-table th{
-      padding: 8px 0!important;
+    }
+
+    .el-main .el-table th {
+      padding: 8px 0 !important;
       text-align: center;
-  }
-  .el-main .pagination{
+    }
+
+    .el-main .pagination {
       height: 30px;
       line-height: 30px;
       position: relative;
       text-align: right;
       width: 80%;
       margin-top: 20px;
-  }
-  .el-main .pagination2{
+    }
+
+    .el-main .pagination2 {
       height: 30px;
       line-height: 30px;
       margin-top: 20px;
-  }
+    }
 
-  .el-main .pagination .dbtips{
-      float: left;color: goldenrod;font-size: 14px;
-  }
-  .el-main .dialog-footer {
+    .el-main .pagination .dbtips {
+      float: left;
+      color: goldenrod;
+      font-size: 14px;
+    }
+
+    .el-main .dialog-footer {
       text-align: center;
-  }
-  .el-button--success{
-      color: #fff;
-      background-color: #1E9FFF!important;
-      border-color: #1E9FFF!important;
-  }
-  .el-button--danger{
-      color: #fff;
-      background-color: #FFB800!important;
-      border-color: #FFB800!important;
-  }
-  ::-webkit-scrollbar-corner,
-  ::-webkit-scrollbar-track {
-      background-color: #e2e2e2;
-  }
+    }
 
-  ::-webkit-scrollbar-thumb {
+    .el-button--success {
+      color: #fff;
+      background-color: #1E9FFF !important;
+      border-color: #1E9FFF !important;
+    }
+
+    .el-button--danger {
+      color: #fff;
+      background-color: #FFB800 !important;
+      border-color: #FFB800 !important;
+    }
+
+    ::-webkit-scrollbar-corner,
+    ::-webkit-scrollbar-track {
+      background-color: #e2e2e2;
+    }
+
+    ::-webkit-scrollbar-thumb {
       border-radius: 0;
       background-color: rgba(0, 0, 0, .3);
-  }
+    }
 
-  ::-webkit-scrollbar {
+    ::-webkit-scrollbar {
       width: 10px;
       height: 10px;
+    }
   }
-}
-
 </style>

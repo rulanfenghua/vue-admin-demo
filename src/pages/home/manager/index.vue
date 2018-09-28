@@ -171,12 +171,20 @@ export default {
             text: '一周检查量变化趋势',
             left: '30%'
           },
-          tooltip: {},
+          tooltip: {
+            trigger: 'axis'
+            // axisPointer: {
+            //   type: 'cross'
+            // }
+          },
           legend: {
             // data: ['检查量']
           },
           xAxis: {
             data: this._toArray_key_super(response.data),
+            axisTick: {
+              alignWithLabel: true
+            },
             axisLabel: {
               // fontWeight: 'bold'
             }

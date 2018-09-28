@@ -1,5 +1,12 @@
 <template>
   <div class="residents-admin">
+    <el-col :span="4" :style="{height: leftHeight+'px'}">
+      <!-- <el-tree :data="roleList" node-key="id" ref="tree" accordion check-strictly highlight-current :props="defaultProps" :default-expanded-keys="defaultExpanded" @node-click="nodeclicked">
+      </el-tree> -->
+      <el-tree :data="roleList" node-key="id" ref="tree" accordion check-strictly highlight-current :props="defaultProps" :default-expanded-keys="defaultExpanded" @node-click="nodeclicked" default-expand-all>
+      </el-tree>
+    </el-col>
+    <el-col :span="20">
     <div class="filter-container">
       输入查询条件查询：
       <div class="name-picker">
@@ -31,7 +38,7 @@
           end-placeholder="结束日期"
           value-format="yyyy-MM-dd HH:mm:ss"
           :picker-options="pickerOptions"
-          style="width:390px"
+          style="width:384px"
         >
         </el-date-picker>
       </div>
@@ -43,8 +50,8 @@
     >
       <el-table
         :data="res_getPersonList"
-        border
         fit
+        stripe
         highlight-current-row
         style="width: 100%"
         :max-height="tableHeight"
@@ -136,6 +143,7 @@
     <div class="pagination-container">
       <el-pagination :current-page="page" :page-sizes="[10,20,30]" :page-size="limit" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
     </div>
+    </el-col>
     <!-- 引入residentDetails组件 -->
     <resident-details :personalMess="personalMess" :id="id" :personalData="personalData" ref="resident"></resident-details>
   </div>
@@ -145,6 +153,7 @@
 import {getPersonList} from '@/api/admin'
 // import {getPersonalMess, getPersonalData} from '@/api/resident' // getPersonalDateList原有的api地址
 import residentDetails from '@/components/residentDetails'
+import {treeList} from '@/api/systemSetting'
 
 export default {
   name: 'admin',
@@ -154,10 +163,20 @@ export default {
   computed: {
     tableHeight() {
       return ((document.documentElement.clientHeight || document.body.clientHeight) - 284)
+    },
+    leftHeight() {
+      return ((document.documentElement.clientHeight || document.body.clientHeight) - 194)
     }
   },
   data() {
     return {
+      roleList: [],
+      defaultProps: {
+        children: 'children',
+        label: 'label'
+      },
+      defaultExpanded: [],
+
       res_getPersonList: [],
       personalMess: [],
       personalData: {},
@@ -243,6 +262,7 @@ export default {
   },
   created() {
     this.init()
+    this.initTreeList()
   },
   methods: {
     init() {
@@ -258,11 +278,6 @@ export default {
       //   }
       // }
       this.loading = true
-      console.log('起止日期————————admin')
-      console.log(this.date)
-      console.log(this.date[0])
-      console.log('服务站————————admin')
-      console.log(this.station)
       getPersonList(this.page, this.limit, this.name, this.idcard, this.station, this.date).then(response => {
         console.log('居民列表————————admin')
         console.log(response)
@@ -273,6 +288,17 @@ export default {
         console.log(error)
       }).then(() => {
         this.loading = false
+      })
+    },
+    initTreeList() {
+      treeList().then(response => {
+        console.log('树形结构————————admin')
+        console.log(response)
+        this.roleList = this._transTreeData(response.data)
+      }).catch(error => {
+        console.log(error)
+      }).then(() => {
+
       })
     },
     initMess(id, idCard) {
@@ -309,10 +335,112 @@ export default {
     handleCurrentChange(value) {
       this.page = value
       this.init()
+    },
+    nodeclicked(data) {
+      let expectedArray = []
+      this.stationOptions.forEach(obj => {
+        expectedArray.push(obj.value)
+      })
+      if (expectedArray.indexOf(data.id) !== -1) {
+        console.log(data.id)
+        this.station = data.id
+      } else {
+        this.station = null
+      }
+      this.init()
+    },
+    _transTreeData(items) {
+      if (items.length > 0) {
+        var curPid = null // 默认最上层节点id为null
+        var parent = this._findChild(curPid, items)
+        console.log('parent——————————admin')
+        console.log(parent)
+        return parent
+      } else {
+        return []
+      }
+    },
+    _findChild(curPid, items) {
+      var _arr = []
+      var length = items.length
+
+      for (var i = 0; i < length; i++) {
+        if (items[i].parentId === curPid) {
+          var _obj = {
+            id: '',
+            label: ''
+          }
+          _obj.id = items[i].id
+          _obj.label = items[i].stationName
+          _obj.children = this._findChild(_obj.id, items)
+          if (items[i].type === 1) {
+            return
+          }
+          _arr.push(_obj)
+        }
+      }
+      return _arr
     }
   }
 }
 </script>
+
+<style lang="scss">
+.residents-admin {
+  .el-input {
+    width: 138px;
+  }
+  .el-select {
+    width: 138px;
+  }
+  .el-tree {
+    background-color: transparent;
+    margin-top: 10px;
+    height: 100%;
+    &::after {
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      content: '';
+      width: 1px;
+      background: no-repeat center url('./xian.png');
+      background-size: auto 100%;
+      height: 100%;
+      opacity: 0.7;
+    }
+  }
+
+  .el-tree-node__expand-icon+span::before {
+    display: inline-block;
+    vertical-align: bottom;
+    margin-bottom: 10px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .el-tree-node__content .el-tree-node__expand-icon+span::before {
+    content: url(./7.png);
+  }
+
+  .el-tree-node__children .el-tree-node__expand-icon+span::before {
+    content: url(./8.png);
+  }
+
+  .el-tree-node__children .el-tree-node__children .el-tree-node__expand-icon+span::before {
+    content: url(./8.png);
+  }
+
+  .el-tree-node__children .el-tree-node__children .el-tree-node__children .el-tree-node__expand-icon+span::before {
+    content: url(./1.png);
+  }
+
+  .el-tree-node__content {
+    height: 35px;
+    line-height: 35px;
+  }
+}
+</style>
 
 <style lang="scss">
 .residents-admin {
@@ -332,12 +460,12 @@ export default {
   font-weight: bold;
   height: 100%;
   // width: 100%;
-  margin: 0 30px 17px;
+  margin: 0 30px 17px 10px;
   overflow: hidden;
   .filter-container {
     display: inline-block;
     margin-top: 19px;
-    margin-left: 33px;
+    margin-left: 19px;
     font-size: 15px;
     font-weight: bold;
     .name-picker {
@@ -354,7 +482,7 @@ export default {
     display: inline-block;
     margin-top: 19px;
     margin-bottom: 30px;
-    margin-left: 33px;
+    margin-left: 19px;
     font-size: 15px;
     font-weight: bold;
     .date-picker {
@@ -363,6 +491,11 @@ export default {
   }
   .table-container {
     margin-bottom: 17px;
+    margin-left: 19px;
+  }
+  .pagination-container {
+    margin-left: 19px;
+    // text-align: center;
   }
 }
 </style>

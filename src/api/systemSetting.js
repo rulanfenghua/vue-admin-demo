@@ -1,30 +1,22 @@
 import request from '@/config/httpConfig'
 
-export function list(pageNum, pageSize, name) {
-  const data = {
-    pageNum,
-    pageSize,
-    name
-  }
+export function treeList() {
   return request({
-    url: '/sysUser/list',
-    method: 'post',
-    data
+    url: '/sysStation/treeList',
+    method: 'post'
   })
 }
 
-export function add(userName, loginName, password, status, phone, email) {
-  const data = {
-    userName,
-    loginName,
-    password,
-    status,
-    phone,
-    email
-  }
+export function treeListSys() {
   return request({
-    url: '/sysUser/list',
-    method: 'post',
-    data
+    url: '/sysStation/treeUserList',
+    method: 'post'
+  })
+}
+
+export function superTreeList() {
+  return request({
+    url: '/superConservator/treeList',
+    method: 'post'
   })
 }
