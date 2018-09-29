@@ -113,7 +113,7 @@ export default {
     },
     _toggle() {
       this.printingToggle = !this.printingToggle
-      document.title = '区域医学影像管理系统（桥西区）'
+      document.title = '区域医学影像管理系统（邢台市桥西区）'
     },
     _toggleResident() {
       this.$emit('residentToggle')

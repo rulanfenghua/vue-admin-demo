@@ -37,7 +37,7 @@
             </el-col>
           </el-row>
           <!--show-summary-->
-          <el-table :data="tableData" border :height="tableHeight" style="width: 98%; margin-top: 20px">
+          <el-table :data="tableData" border :height="tableHeight" style="width: 98%; margin-top: 20px" fit>
             <el-table-column type="index" width="50">
             </el-table-column>
             <el-table-column label="用户名称" width="150">
@@ -45,7 +45,7 @@
                 <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
-            <el-table-column width="200" prop="interfaceTime" label="调用时间">
+            <el-table-column width="154" prop="interfaceTime" label="调用时间">
               <template slot-scope="scope">
                 <span>{{ scope.row.createDate | formatTime }}</span>
               </template>
@@ -63,7 +63,7 @@
                 <span>{{ scope.row.operateResult | formatResultStatus }}</span>
               </template>
             </el-table-column>
-            <el-table-column width="320" prop="remark" label="调用结果内容">
+            <el-table-column width="" prop="remark" label="调用结果内容">
             </el-table-column>
             <!-- <el-table-column width="150" prop="interfaceOrgName" label="调用机构名称">
             </el-table-column> -->
@@ -292,7 +292,7 @@ export default {
           'startDate': '',
           'endDate': '',
           'name': this.name,
-          'operateResult': 1,
+          'operateResult': this.query.result,
           'stationId': this.stationId
         }
       } else {
@@ -301,7 +301,7 @@ export default {
           'startDate': moment(this.dateValue[0]).format('YYYY-MM-DD HH:mm:ss'),
           'endDate': moment(this.dateValue[1]).format('YYYY-MM-DD HH:mm:ss'),
           'name': this.name,
-          'operateResult': 1,
+          'operateResult': this.query.result,
           'stationId': this.stationId
         }
       }
@@ -420,6 +420,7 @@ export default {
       this.nodeclicked()
     },
     clicked(data) {
+      console.log('传入的stationId————————logging')
       console.log(data.id)
       this.stationId = data.id
       this.nodeclicked()

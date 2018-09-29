@@ -3,7 +3,7 @@
   <div class="container">
     <!-- 顶部tab栏 -->
     <div class="top-aside">
-      <h1 class="title">区域医学影像管理系统（桥西区）</h1>
+      <h1 class="title">区域医学影像管理系统（邢台市桥西区）</h1>
       <div class="tab-container">
         <ul class="tab">
           <li class="tab-item">
@@ -155,14 +155,14 @@ export default {
         display: inline-block;
         padding: 7px 40px 0 40px;
         font-weight: 575;
-        font-size: 29px;
+        font-size: 27px;
         vertical-align: top;
         color: #fff;
       }
       .tab-container {
         height: 100px;
         display: inline-block;
-        margin-left: 134px;
+        margin-left: 70px;
         margin-top: 9px;
         .tab {
           padding: 0 10px;

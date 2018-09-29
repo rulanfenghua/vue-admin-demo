@@ -184,7 +184,6 @@ export default {
             // data: ['上传数量']
           },
           xAxis: {
-            // data: ['站点1', '站点2', '站点3', '站点4', '站点5', '站点6', '站点7', '站点8', '站点9']
             data: this._toArray_key_super_super(response.data),
             axisLabel: {
               rotate: -60,
@@ -413,8 +412,8 @@ export default {
     _toArray_key_super_super(arr) {
       let expectedArray = []
       arr.forEach(obj => {
-        var subIndex = obj.STATION_NAME.indexOf('卫生')
-        expectedArray.push(obj.STATION_NAME.slice(0, subIndex))
+        var subIndex = obj.STATIONNAME.indexOf('卫生')
+        expectedArray.push(obj.STATIONNAME.slice(0, subIndex))
       })
       return expectedArray
     },

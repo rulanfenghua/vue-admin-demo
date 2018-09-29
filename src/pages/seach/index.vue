@@ -3,7 +3,7 @@
     <div class="container">
       <!-- 顶部tab栏 -->
       <div class="top-aside">
-        <h1 class="title">区域医学影像管理系统（桥西区）</h1>
+        <h1 class="title">区域医学影像管理系统（邢台市桥西区）</h1>
         <!-- 退出登陆部分 -->
         <div class="top-right">
           <span class="user-name">{{currentDate}}：{{name}}</span>

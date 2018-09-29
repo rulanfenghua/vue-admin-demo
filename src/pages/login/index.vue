@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrapper">
     <div class="login">
-      <h1 class="title">区域医学影像管理系统（桥西区）</h1>
+      <h1 class="title">区域医学影像管理系统（邢台市桥西区）</h1>
       <div class="login-content">
         <div class="login-tab">
           <div class="tab-resident" @click="transResident" :class="{'active': userToggle === 'manager'}">居民查询入口</div>
@@ -19,7 +19,7 @@
               </el-form-item>
               <el-form-item prop="captcha" label="验证码">
                 <el-input type="text" v-model.trim="loginForm.captcha" placeholder="请输入验证码" name="captcha"
-                  auto-complete="off" @keyup.enter.native="seach" style="width:132px;" />
+                  auto-complete="off" @keyup.enter.native="userLogin" style="width:132px;" />
                 <img width="80" height="25" :src="captchaSrc" @click="changeImg" style="cursor:pointer;vertical-align:middle;height:34px;border-radius:2px" />
               </el-form-item>
               <div class="button">
@@ -367,10 +367,10 @@ export default {
     .title {
       display: block;
       // position: absolute;
-      width: 600px;
+      width: 700px;
       font-weight: 900;
       text-align: center;
-      font-size: 35px;
+      font-size: 32px;
       line-height: 54px;
       color: #fff;
       font-family: Helvetica,Arial,"Hiragino Sans GB","Microsoft Yahei","黑体",sans-serif!important;

@@ -1,17 +1,21 @@
 <template>
 <div class="container">
   <el-container>
+    <el-col :span="4" :style="{height: leftHeight+'px'}">
+      <tree-list ref="tree" @clicked="nodeclicked"></tree-list>
+    </el-col>
+    <el-col :span="20">
     <el-header>
       <el-row :gutter="20">
         <el-col :span="16">
           <el-button type="success" v-on:click="dialogFormVisible = true;form.id = ''">添加</el-button>
         </el-col>
         <div class="rightTop">
+          <el-button type="success" @click="queryBtnSuper">显示全部</el-button>
           <el-input v-model="input" placeholder="请输入角色名称"></el-input>
           <el-button type="success" @click="inputBtn">搜索</el-button>
         </div>
       </el-row>
-
     </el-header>
     <el-main>
       <el-dialog title="角色信息" @close="resetForm" :visible.sync="dialogFormVisible" width="450px">
@@ -162,13 +166,35 @@
         </el-pagination>
       </div>
     </el-main>
+    </el-col>
   </el-container>
 </div>
 </template>
 
 <script>
 import moment from 'moment'
+import treeList from '@/components/treeList'
+
 export default {
+  components: {
+    treeList
+  },
+  computed: {
+    // 判断显示市级权限的计算属性
+    showSuper() {
+      /* eslint-disable eqeqeq */
+      if (sessionStorage.getItem('levels') == 0) {
+        // console.log('显示权限————————sys-users')
+        // console.log('levels: ' + sessionStorage.getItem('levels'))
+        return 'super'
+      } else {
+        return 'admin'
+      }
+    },
+    leftHeight() {
+      return ((document.documentElement.clientHeight || document.body.clientHeight) - 194)
+    }
+  },
   data() {
     return {
       /* form开始 */
@@ -532,21 +558,9 @@ export default {
       /* 搜索结束 */
     }
   },
-  computed: {
-    // 判断显示市级权限的计算属性
-    showSuper() {
-      /* eslint-disable eqeqeq */
-      if (sessionStorage.getItem('levels') == 0) {
-        // console.log('显示权限————————sys-users')
-        // console.log('levels: ' + sessionStorage.getItem('levels'))
-        return 'super'
-      } else if (sessionStorage.getItem('levels') == 1) {
-        return 'admin'
-      }
-    }
-  },
   mounted() {
     this.loadData(this.input, this.currentPage, this.pagesize)
+    this.getTreeList()
   },
   created() {
     let height = document.body.clientHeight
@@ -639,6 +653,15 @@ export default {
           // console.log('进入catch')
           // console.log(response)
         })
+    },
+    getTreeList() {
+      this.$nextTick(() => {
+        this.$refs.tree.initTreeList()
+      })
+    },
+    nodeclicked(data) {
+      this.input = data.label
+      this.loadData(this.input, this.currentPage, this.pagesize)
     },
     rowDbclick: function(row, event) {
       this.dialogGetDetail = true
@@ -876,8 +899,12 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    queryBtnSuper: function () {
+      this.input = ''
+      this.currentPage = 1
+      this.loadData(this.input, this.currentPage, this.pagesize)
     }
-
   }
 }
 </script>
@@ -914,7 +941,6 @@ export default {
       background-color: transparent;
       color: #333;
       text-align: center;
-      height: 100%;
   }
   .el-main .el-form {
       text-align: left;
