@@ -70,5 +70,14 @@
       }
     }
   }
+}
 
+.el-table {
+  th {
+    font-weight: bold;
+  }
+  tr {
+    font-weight: normal;
+    // color: #909399;
+  }
 }

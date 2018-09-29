@@ -899,66 +899,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
-  .container {
-    .el-input {
-      width: 138px;
-    }
-
-    .el-select {
-      width: 138px;
-    }
-
-    .el-tree {
-      background-color: transparent;
-      margin-top: 10px;
-      height: 100%;
-
-      &::after {
-        display: block;
-        position: absolute;
-        top: 0;
-        right: 0;
-        content: '';
-        width: 1px;
-        background: no-repeat center url('./xian.png');
-        background-size: auto 100%;
-        height: 100%;
-        opacity: 0.7;
-      }
-    }
-
-    .el-tree-node__expand-icon+span::before {
-      display: inline-block;
-      vertical-align: bottom;
-      margin-bottom: 10px;
-      width: 20px;
-      height: 20px;
-    }
-
-    .el-tree-node__content .el-tree-node__expand-icon+span::before {
-      content: url(./7.png);
-    }
-
-    .el-tree-node__children .el-tree-node__expand-icon+span::before {
-      content: url(./8.png);
-    }
-
-    .el-tree-node__children .el-tree-node__children .el-tree-node__expand-icon+span::before {
-      content: url(./8.png);
-    }
-
-    .el-tree-node__children .el-tree-node__children .el-tree-node__children .el-tree-node__expand-icon+span::before {
-      content: url(./1.png);
-    }
-
-    .el-tree-node__content {
-      height: 35px;
-      line-height: 35px;
-    }
-  }
-</style>
-
 <style lang='scss'>
   .container {
     font-size: 15px;

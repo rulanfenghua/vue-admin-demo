@@ -7,10 +7,10 @@
       <div class="filter-container">
         输入查询条件查询：
         <div class="name-picker">
-          <el-input v-model="name" placeholder="输入姓名查询"></el-input>
+          <el-input v-model="name" placeholder="输入姓名查询" clearable></el-input>
         </div>
         <div class="idcard-picker">
-          <el-input v-model="idcard" placeholder="输入身份证号查询"></el-input>
+          <el-input v-model="idcard" placeholder="身份证号查询" clearable></el-input>
         </div>
         <!-- <div class="station-picker">
         <el-input v-model="station" placeholder="输入站点查询"></el-input>
@@ -27,46 +27,51 @@
         <div class="date-picker">
           <el-date-picker v-model="date" type="daterange" align="right" unlink-panels range-separator="至"
             start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd HH:mm:ss" :picker-options="pickerOptions"
-            style="width:384px">
+            style="width:360px">
           </el-date-picker>
         </div>
         <el-button @click="init" type="primary">点击查询</el-button>
       </div>
       <div class="table-container" v-loading="loading" element-loading-text="正在加载居民列表" element-loading-spinner="el-icon-loading">
-        <el-table :data="res_getPersonList" fit stripe highlight-current-row style="width: 100%" :max-height="tableHeight">
+        <el-table :data="res_getPersonList" fit stripe highlight-current-row style="width: 100%" :max-height="tableHeight" border>
           <el-table-column type="index" align="center">
           </el-table-column>
-          <el-table-column label="姓名" align="center" width="125">
+          <el-table-column label="姓名" align="center" width="94">
             <template slot-scope="scope">
               <span>{{ scope.row.name }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="身份证号" align="center" width="245">
+          <el-table-column label="创建时间" align="center" width="200">
+            <template slot-scope="scope">
+              <span>{{ scope.row.createDate | formatTime }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="身份证号" align="center" width="200">
             <template slot-scope="scope">
               <span>{{ scope.row.idCard }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="性别" align="center" width="125">
+          <el-table-column label="性别" align="center" width="94">
             <template slot-scope="scope">
               <span>{{ scope.row.gender }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="年龄" align="center" width="125">
+          <el-table-column label="年龄" align="center" width="94">
             <template slot-scope="scope">
               <span>{{ scope.row.age }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="卡类型" align="center" width="125">
+          <el-table-column label="卡类型" align="center" width="94">
             <template slot-scope="scope">
               <span>{{ scope.row.idType }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="服务站名" width="245">
+          <el-table-column label="服务站名" width="200">
             <template slot-scope="scope">
               <span>{{ scope.row.stationName }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="电话" align="center" width="200">
+          <el-table-column label="电话" width="145">
             <template slot-scope="scope">
               <span>{{ scope.row.tel }}</span>
             </template>
@@ -76,7 +81,7 @@
               <span>{{ scope.row.homeAddr }}</span>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" label="操作" align="left" width="200">
+          <el-table-column fixed="right" label="操作" align="left" width="175">
             <template slot-scope="scope">
               <el-button @click.native.prevent="initMess(scope.row.id,scope.row.idCard)" type="text" size="small">
                 查看检查记录清单
@@ -291,68 +296,17 @@ export default {
 
 <style lang="scss">
   .residents-admin {
-    .el-input {
-      width: 138px;
-    }
-
-    .el-select {
-      width: 138px;
-    }
-
-    .el-tree {
-      background-color: transparent;
-      margin-top: 10px;
-      height: 100%;
-
-      &::after {
-        display: block;
-        position: absolute;
-        top: 0;
-        right: 0;
-        content: '';
-        width: 1px;
-        background: no-repeat center url('./xian.png');
-        background-size: auto 100%;
-        height: 100%;
-        opacity: 0.7;
+    .filter-container {
+      .el-input {
+        width: 154px;
       }
     }
-
-    .el-tree-node__expand-icon+span::before {
-      display: inline-block;
-      vertical-align: bottom;
-      margin-bottom: 10px;
-      width: 20px;
-      height: 20px;
+    .el-table {
+      // padding: 4px;
     }
-
-    .el-tree-node__content .el-tree-node__expand-icon+span::before {
-      content: url(./7.png);
-    }
-
-    .el-tree-node__children .el-tree-node__expand-icon+span::before {
-      content: url(./8.png);
-    }
-
-    .el-tree-node__children .el-tree-node__children .el-tree-node__expand-icon+span::before {
-      content: url(./8.png);
-    }
-
-    .el-tree-node__children .el-tree-node__children .el-tree-node__children .el-tree-node__expand-icon+span::before {
-      content: url(./1.png);
-    }
-
-    .el-tree-node__content {
-      height: 35px;
-      line-height: 35px;
-    }
-  }
-</style>
-
-<style lang="scss">
-  .residents-admin {
     .el-table td {
       height: 35px;
+      padding: 7.5px 0;
     }
 
     .el-table th {
@@ -391,12 +345,13 @@ export default {
     }
 
     .date-container {
-      display: inline-block;
+      // display: inline-block;
       margin-top: 19px;
-      margin-bottom: 30px;
-      margin-left: 19px;
-      font-size: 15px;
-      font-weight: bold;
+      margin-bottom: 20px;
+      // margin-left: 19px;
+      // font-size: 15px;
+      // font-weight: bold;
+      float: right;
 
       .date-picker {
         display: inline-block;

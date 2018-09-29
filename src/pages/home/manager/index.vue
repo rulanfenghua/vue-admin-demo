@@ -358,6 +358,21 @@ export default {
 }
 </script>
 
+<style lang="scss">
+  .manager {
+    .el-table {
+      th {
+        font-weight: normal;
+      }
+
+      tr {
+        font-weight: bold;
+        // color: #909399;
+      }
+    }
+  }
+</style>
+
 <style scoped lang="scss">
   .manager {
     background-color: #e6e1e1;

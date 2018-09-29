@@ -37,6 +37,14 @@
           </template>
         </el-table-column>
         <el-table-column
+          label="创建时间"
+          align="center"
+          width="245">
+          <template slot-scope="scope">
+            <span>{{ scope.row.createDate | formatTime }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
           label="身份证号"
           align="center"
           width="245">
