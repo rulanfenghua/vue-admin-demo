@@ -6,13 +6,10 @@
 </template>
 
 <script>
+import {treeList} from '@/api/systemSetting'
+
 export default {
   name: 'tree',
-  props: {
-    treeData: {
-      type: Array
-    }
-  },
   data() {
     return {
       roleList: [],
@@ -23,13 +20,17 @@ export default {
       defaultExpanded: []
     }
   },
-  created() {
-    this.init()
-  },
   methods: {
-    init() {
-      console.log(this.treeData)
-      this.roleList = this._transTreeData(this.treeData)
+    initTreeList() {
+      treeList().then(response => {
+        console.log('树形结构————————tree')
+        console.log(response)
+        this.roleList = this._transTreeData(response.data)
+      }).catch(error => {
+        console.log(error)
+      }).then(() => {
+
+      })
     },
     nodeclicked(data) {
       // let expectedArray = []
@@ -43,6 +44,8 @@ export default {
       //   this.station = null
       // }
       // this.init()
+      this.$emit('clicked', data)
+      console.log('树形结构返回————————tree')
       console.log(data)
     },
     _transTreeData(items) {
@@ -67,7 +70,7 @@ export default {
             label: ''
           }
           _obj.id = items[i].id
-          _obj.label = items[i].stationName
+          _obj.label = items[i].stationName || items[i].userName
           _obj.children = this._findChild(_obj.id, items)
           if (items[i].type === 1) {
             return

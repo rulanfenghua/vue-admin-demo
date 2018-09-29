@@ -1,8 +1,7 @@
 <template>
   <div class="container">
     <el-col :span="4" :style="{height: leftHeight+'px'}">
-      <el-tree :data="roleList" node-key="id" ref="tree" accordion check-strictly highlight-current :props="defaultProps" :default-expanded-keys="defaultExpanded" @node-click="nodeclicked" default-expand-all>
-      </el-tree>
+      <tree-list ref="tree" @clicked="nodeclicked"></tree-list>
     </el-col>
     <el-col :span="20">
     <el-header>
@@ -215,13 +214,11 @@
 </template>
 
 <script>
-import {treeListSys} from '@/api/systemSetting'
+import treeList from '@/components/treeList'
 
 export default {
-  computed: {
-    leftHeight() {
-      return ((document.documentElement.clientHeight || document.body.clientHeight) - 194)
-    }
+  components: {
+    treeList
   },
   data() {
     var validatePWD = (rule, value, callback) => {
@@ -249,14 +246,6 @@ export default {
       }
     }
     return {
-      roleList: [],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      },
-      defaultExpanded: [],
-      res_getPersonList: [],
-
       /* form开始 */
       isShow: true,
       dialogFormVisible: false,
@@ -401,22 +390,25 @@ export default {
       /* query结束 */
     }
   },
-  // computed: {
-  //   // 判断显示市级权限的计算属性
-  //   showSuper() {
-  //     /* eslint-disable eqeqeq */
-  //     if (sessionStorage.getItem('levels') == 0) {
-  //       // console.log('显示权限————————sys-users')
-  //       // console.log('levels: ' + sessionStorage.getItem('levels'))
-  //       return 'super'
-  //     } else {
-  //       return 'admin'
-  //     }
-  //   }
-  // },
+  computed: {
+    // 判断显示市级权限的计算属性
+    showSuper() {
+      /* eslint-disable eqeqeq */
+      if (sessionStorage.getItem('levels') == 0) {
+        // console.log('显示权限————————sys-users')
+        // console.log('levels: ' + sessionStorage.getItem('levels'))
+        return 'super'
+      } else {
+        return 'admin'
+      }
+    },
+    leftHeight() {
+      return ((document.documentElement.clientHeight || document.body.clientHeight) - 194)
+    }
+  },
   mounted() {
     this.loadData(this.query, this.currentPage, this.pagesize)
-    this.initTreeList()
+    this.getTreeList()
   },
   created() {
     let height = document.body.clientHeight
@@ -481,48 +473,10 @@ export default {
           console.log(response)
         })
     },
-    initTreeList() {
-      treeListSys().then(response => {
-        console.log('树形结构————————adminSys')
-        console.log(response)
-        this.roleList = this._transTreeData(response.data)
-      }).catch(error => {
-        console.log(error)
-      }).then(() => {
-
+    getTreeList() {
+      this.$nextTick(() => {
+        this.$refs.tree.initTreeList()
       })
-    },
-    _transTreeData(items) {
-      if (items.length > 0) {
-        var curPid = null // 默认最上层节点id为null
-        var parent = this._findChild(curPid, items)
-        console.log('parent——————————adminSys')
-        console.log(parent)
-        return parent
-      } else {
-        return []
-      }
-    },
-    _findChild(curPid, items) {
-      var _arr = []
-      var length = items.length
-
-      for (var i = 0; i < length; i++) {
-        if (items[i].parentId === curPid) {
-          var _obj = {
-            id: '',
-            label: ''
-          }
-          _obj.id = items[i].id
-          _obj.label = items[i].userName
-          _obj.children = this._findChild(_obj.id, items)
-          if (items[i].type === 1) {
-            return
-          }
-          _arr.push(_obj)
-        }
-      }
-      return _arr
     },
     nodeclicked(data) {
       this.query.input = data.label

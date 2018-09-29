@@ -1,6 +1,10 @@
 <template>
 <div class="container">
   <el-container>
+    <el-col :span="4" :style="{height: leftHeight+'px'}">
+      <tree-list ref="tree" @clicked="clicked"></tree-list>
+    </el-col>
+    <el-col :span="20">
     <el-main>
       <el-row :gutter="20">
         <!-- <el-col :span="4">
@@ -88,13 +92,34 @@
         </el-col>
       </el-row>
     </el-main>
+    </el-col>
   </el-container>
 </div>
 </template>
 <script>
 import moment from 'moment'
+import treeList from '@/components/treeList'
 
 export default {
+  components: {
+    treeList
+  },
+  computed: {
+    // 判断显示市级权限的计算属性
+    showSuper() {
+      /* eslint-disable eqeqeq */
+      if (sessionStorage.getItem('levels') == 0) {
+        // console.log('显示权限————————sys-users')
+        // console.log('levels: ' + sessionStorage.getItem('levels'))
+        return 'super'
+      } else {
+        return 'admin'
+      }
+    },
+    leftHeight() {
+      return ((document.documentElement.clientHeight || document.body.clientHeight) - 194)
+    }
+  },
   data() {
     return {
       interfaceList: [],
@@ -134,12 +159,15 @@ export default {
       flag: true,
       sucessCount: 0,
       failCount: 0,
-      allCount: 0
+      allCount: 0,
+
+      stationId: '' // 新加入的用于树形结构查询的字段
     }
   },
   mounted() {
     // this.loadData()
     this.nodeclicked()
+    this.getTreeList()
     // this.initOrgList()
   },
   created() {
@@ -229,6 +257,11 @@ export default {
     //       console.log(response)
     //     })
     // },
+    getTreeList() {
+      this.$nextTick(() => {
+        this.$refs.tree.initTreeList()
+      })
+    },
     nodeclicked: function() {
       const loading = this.$loading({
         lock: true,
@@ -259,7 +292,8 @@ export default {
           'startDate': '',
           'endDate': '',
           'name': this.name,
-          'operateResult': 1
+          'operateResult': 1,
+          'stationId': this.stationId
         }
       } else {
         console.log(this.dateValue)
@@ -267,9 +301,9 @@ export default {
           'startDate': moment(this.dateValue[0]).format('YYYY-MM-DD HH:mm:ss'),
           'endDate': moment(this.dateValue[1]).format('YYYY-MM-DD HH:mm:ss'),
           'name': this.name,
-          'operateResult': 1
+          'operateResult': 1,
+          'stationId': this.stationId
         }
-        console.log(condition)
       }
       let reqdata = {
         'pageNum': this.currentPage,
@@ -383,6 +417,11 @@ export default {
     },
     getDate: function() {
       this.flag = false
+      this.nodeclicked()
+    },
+    clicked(data) {
+      console.log(data.id)
+      this.stationId = data.id
       this.nodeclicked()
     }
   }
