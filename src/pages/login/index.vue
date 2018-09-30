@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrapper">
     <div class="login">
-      <h1 class="title">区域医学影像管理系统（邢台市桥西区）</h1>
+      <h1 class="title">时代电子区域医学影像管理系统</h1>
       <div class="login-content">
         <div class="login-tab">
           <div class="tab-resident" @click="transResident" :class="{'active': userToggle === 'manager'}">居民查询入口</div>
@@ -376,7 +376,7 @@ export default {
       font-family: Helvetica,Arial,"Hiragino Sans GB","Microsoft Yahei","黑体",sans-serif!important;
       letter-spacing: 5px;
       margin-bottom: 50px;
-      margin-left: -134px;
+      margin-left: -170px;
     }
     .login-content {
       // background-color: #fff;

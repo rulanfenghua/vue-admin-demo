@@ -3,7 +3,7 @@
   <div class="container">
     <!-- 顶部tab栏 -->
     <div class="top-aside">
-      <h1 class="title">区域医学影像管理系统（邢台市桥西区）</h1>
+      <h1 class="title">时代电子区域医学影像管理系统</h1>
       <div class="tab-container">
         <ul class="tab">
           <li class="tab-item">

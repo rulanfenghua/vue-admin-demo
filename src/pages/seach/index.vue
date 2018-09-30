@@ -3,7 +3,7 @@
     <div class="container">
       <!-- 顶部tab栏 -->
       <div class="top-aside">
-        <h1 class="title">区域医学影像管理系统（邢台市桥西区）</h1>
+        <h1 class="title">时代电子区域医学影像管理系统</h1>
         <!-- 退出登陆部分 -->
         <div class="top-right">
           <span class="user-name">{{currentDate}}：{{name}}</span>
@@ -32,14 +32,17 @@
         <el-collapse v-model="activeNames">
           <el-collapse-item v-for="(data,index) in personalMess" :key="index" :name="index">
             <template slot="title">
-              <span class="text">诊断时间：</span>
-              <span class="date">{{data.checkDate | formatTimeSuper}}</span>
-              <span>诊断状态：诊断完成</span>
+              <div class="title">
+              <span class="title-left">诊断时间：</span>
+              <span class="date title-text">{{data.checkDate | formatTimeSuper}}</span>
+              <span class="title-left">诊断状态：</span>
+              <span class="title-text">诊断完成</span>
               <el-button @click.stop.prevent="seach(id,data.checkDate,index)" type="warning" plain size="small" :loading="index===thisIndex">查看详细报告单</el-button>
+              </div>
             </template>
             <div class="right-content">
-              <h2 class="title">诊断内容：</h2>
-              <p class="text">{{data.remark}}</p>
+              <h2 class="content-title">诊断内容：</h2>
+              <p class="content-text">{{data.remark}}</p>
             </div>
           </el-collapse-item>
         </el-collapse>
@@ -232,7 +235,8 @@ export default {
       margin-right: 0;
       font-size: 16px;
       font-family: serif;
-      background: no-repeat bottom/100% url('./background.png');
+      background: no-repeat left bottom url('./background副本.png');
+      background-size: 100% 60%;
       &::after {
         display: block;
         position: absolute;
@@ -252,9 +256,26 @@ export default {
         margin-bottom: 9px;
       }
       .details {
-        padding-left: 14px;
+        padding-left: 23px;
         li {
-          margin-bottom: 4px;
+          margin-bottom: 7px;
+          font-size: 14px;
+          position: relative;
+          &::after {
+            display: block;
+            position: absolute;
+            top: 0px;
+            left: -9px;
+            content: '';
+            width: 2px;
+            background-color: #000;
+            height: 100%;
+            opacity: 0.7;
+          }
+          span {
+            font-family: 'SimHei';
+            font-size: 16px;
+          }
         }
       }
       // background-color: red;
@@ -275,26 +296,29 @@ export default {
           margin-bottom: 0;
         }
 
-        .text {
+        .title {
+          .title-left {
 
-        }
-
-        .date {
-          margin-right: 40px;
-        }
-
-        .el-button {
-          position: absolute;
-          top: 7px;
-          right: 44px;
+          }
+          .title-text {
+            font-family: 'Microsoft yahei';
+          }
+          .date {
+            margin-right: 40px;
+          }
+          .el-button {
+            position: absolute;
+            top: 7px;
+            right: 44px;
+          }
         }
 
         .right-content {
-          .title {
+          .content-title {
             font-size: 15px;
             font-weight: bold;
           }
-          .text {
+          .content-text {
 
           }
         }

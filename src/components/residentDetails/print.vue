@@ -20,9 +20,9 @@
             </li>
           </ul>
           <div class="line"></div>
-          <div class="photo" v-enlarge>
-            <img :src="printingData.bAddr1" alt="" id="img1">
-            <img :src="printingData.bAddr2" alt="" id="img2">
+          <div class="photo">
+            <img :src="printingData.bAddr1" alt="B超图像" id="img1" title="点击预览图像" preview="0">
+            <img :src="printingData.bAddr2" alt="B超图像" id="img2" title="点击预览图像" preview="0">
           </div>
           <div class="line"></div>
           <p class="text" ref="text">
@@ -113,7 +113,7 @@ export default {
     },
     _toggle() {
       this.printingToggle = !this.printingToggle
-      document.title = '区域医学影像管理系统（邢台市桥西区）'
+      document.title = '时代电子区域医学影像管理系统'
     },
     _toggleResident() {
       this.$emit('residentToggle')
