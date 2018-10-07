@@ -143,7 +143,7 @@ export default {
     left: calc(50% - 397px);
     border-radius: 3px;
     box-shadow: 0 0 6px #ddd;
-    z-index: 3000;
+    z-index: 99;
     // padding: 4px 40px;
     overflow: auto;
     background-color: #fff;
@@ -223,7 +223,7 @@ export default {
           display: inline-block;
           height: 184px;
           width: 246px;
-
+          cursor: pointer;
           &:first-child {
             margin-right: 90px;
           }

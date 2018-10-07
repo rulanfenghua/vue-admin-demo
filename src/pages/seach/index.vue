@@ -261,17 +261,17 @@ export default {
           margin-bottom: 7px;
           font-size: 14px;
           position: relative;
-          &::after {
-            display: block;
-            position: absolute;
-            top: 0px;
-            left: -9px;
-            content: '';
-            width: 2px;
-            background-color: #000;
-            height: 100%;
-            opacity: 0.7;
-          }
+          // &::after {
+          //   display: block;
+          //   position: absolute;
+          //   top: 0px;
+          //   left: -9px;
+          //   content: '';
+          //   width: 2px;
+          //   background-color: #000;
+          //   height: 100%;
+          //   opacity: 0.7;
+          // }
           span {
             font-family: 'SimHei';
             font-size: 16px;
