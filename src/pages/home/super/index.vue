@@ -76,13 +76,16 @@ export default {
   data() {
     return {
       chart: null,
+      mapChart: null, // 地图
       res_index: {},
       res_getDay: [],
 
       personalMess: [],
       personalData: {},
 
-      id: ''
+      id: '',
+
+      state: '00' // 地图切换
     }
   },
   components: {
@@ -99,9 +102,24 @@ export default {
       return (document.documentElement.clientWidth || document.body.clientWidth) / 3 * 2
     }
   },
-  mounted() {
+  created() {
+    axios.interceptors.response.use(
+      response => {
+        if (response.data.code === 101) {
+          Message.warning({
+            message: '登录超时，请重新登录'
+          })
+          store.commit('LOGIN_OUT')
+          router.replace({
+            path: '/login'
+          })
+        }
+        return response
+      }
+    )
     this.init()
     this.initChart()
+    this.initMapChart()
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -113,13 +131,16 @@ export default {
   methods: {
     init() {
       index().then(response => {
-        console.log('首页数据————————admin')
+        console.log('首页数据————————super')
         console.log(response)
         this.res_index = response.data
       })
     },
     initChart() {
-      getWeek().then(response => {
+      getWeek(this.state).then(response => {
+        console.log('一周趋势————————supper')
+        console.log(this.state)
+        console.log(response)
         this._initChart(this.$refs.week, {
           color: ['#6fa7e8'],
           title: {
@@ -134,7 +155,8 @@ export default {
           },
           legend: {
             data: ['检查量'],
-            show: false
+            right: 0,
+            top: '5%'
           },
           xAxis: {
             data: this._toArray_key_super(response.data),
@@ -147,6 +169,9 @@ export default {
           },
           yAxis: {
             name: '检查量',
+            nameTextStyle: {
+              fontWeight: 'bold'
+            },
             type: 'value',
             axisLine: {
               lineStyle: {
@@ -158,68 +183,19 @@ export default {
                 if (value % 1 === 0) {
                   return value
                 }
-              },
-              fontWeight: 'bold'
+              }
+              // fontWeight: 'bold'
             }
           },
           series: [{
-            // name: '检查量',
+            name: '检查量',
             type: 'line',
             data: this._toArray_value_super(response.data),
             color: ['#2f4554']
           }]
         })
       })
-      getLast().then(response => {
-        console.log('各站点————————admin')
-        console.log(response)
-        this._initChart(this.$refs.last, {
-          color: ['#6fa7e8'],
-          title: {
-            text: '各站点上传统计',
-            left: '30%'
-          },
-          tooltip: {},
-          legend: {
-            // data: ['上传数量']
-          },
-          xAxis: {
-            data: this._toArray_key_super_super(response.data),
-            axisLabel: {
-              rotate: -60,
-              fontWeight: 'bold'
-            }
-            // name: '服务站'
-          },
-          yAxis: {
-            name: '上传数量',
-            axisLine: {
-              lineStyle: {
-                color: '#193a70'
-              }
-            },
-            axisLabel: {
-              formatter(value, index) {
-                if (value % 1 === 0) {
-                  return value
-                }
-              },
-              fontWeight: 'bold'
-            }
-          },
-          series: [{
-            // name: '上传数量',
-            type: 'bar',
-            data: this._toArray_value_super_super(response.data),
-            color: function (params) {
-              var colorList = ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#5c70ad', '#FDEC6D', '#44A9A8', '#8bc34a', '#ffc107',
-                '#795548', '#9e9e9e', '#607d8b']
-              return colorList[params.dataIndex]
-            }
-          }]
-        })
-      })
-      getGender().then(response => {
+      getGender(this.state).then(response => {
         this._initChart(this.$refs.gender, {
           title: {
             text: '居民男女比例'
@@ -263,6 +239,8 @@ export default {
           }]
         })
       })
+    },
+    initMapChart() {
       getMap().then(response => {
         console.log('地图数据————————super')
         console.log(response)
@@ -274,11 +252,10 @@ export default {
           tooltip: {
             trigger: 'item',
             transitionDuration: 0.2
-
           },
           legend: {
             orient: 'vertical',
-            top: '30%',
+            top: '37%',
             left: 'right',
             data: ['邢台市区域检查量']
           },
@@ -287,29 +264,24 @@ export default {
             top: '50%',
             max: 90,
             min: 0,
-            // text: ['检查量100', '检查量30'],
             splitNumber: 3,
             // calculable: false,
             color: ['#3f51b5', '#4575b4', '#74add1']
-          // inRange: {
-          //   color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
-          // }
           },
           toolbox: {
             show: true,
             // orient: 'vertical',
             left: 'left',
-            top: '80%',
+            bottom: 13,
             feature: {
-              dataView: {readOnly: false},
-              restore: {},
-              saveAsImage: {}
+              dataView: {readOnly: false}
             }
           },
           series: [{
             name: '邢台市区域检查量',
             type: 'map',
             roam: true,
+            selectedMode: 'single',
             map: '邢台',
             emphasis: {
               label: {
@@ -328,6 +300,76 @@ export default {
               'name': '桥西区',
               'value': response.data.QIAOXI
             }]
+          }]
+        })
+      })
+      getLast().then(response => {
+        console.log('各站点————————supper')
+        console.log(response)
+        this._initChart(this.$refs.last, {
+          color: ['#6fa7e8'],
+          title: {
+            text: '各站点上传统计',
+            left: '30%'
+          },
+          grid: {
+            right: 170,
+            left: '7%'
+          },
+          tooltip: {},
+          legend: {
+            // data: ['上传数量']
+          },
+          visualMap: [
+            {
+              right: 27,
+              top: '5%',
+              bottom: 0,
+              align: 'left',
+              itemSymbol: 'pin',
+              itemGap: 7,
+              // itemHeight: 10,
+              categories: this._toArray_key_super_super(response.data),
+              color: ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#5c70ad', '#FDEC6D', '#44A9A8', '#8bc34a', '#ffc107', '#795548', '#9e9e9e', '#607d8b'].reverse(),
+              outOfRange: {}
+            }
+          ],
+          xAxis: {
+            data: this._toArray_key_super_super(response.data),
+            axisLabel: {
+              rotate: -60,
+              fontWeight: 'bold'
+            }
+            // name: '服务站'
+          },
+          yAxis: {
+            name: '上传数量',
+            nameTextStyle: {
+              fontWeight: 'bold'
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#193a70'
+              }
+            },
+            axisLabel: {
+              formatter(value, index) {
+                if (value % 1 === 0) {
+                  return value
+                }
+              }
+              // fontWeight: 'bold'
+            }
+          },
+          series: [{
+            // name: '上传数量',
+            type: 'bar',
+            data: this._toArray_value_super_super(response.data),
+            color: function (params) {
+              var colorList = ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#5c70ad', '#FDEC6D', '#44A9A8', '#8bc34a', '#ffc107',
+                '#795548', '#9e9e9e', '#607d8b']
+              return colorList[params.dataIndex]
+            }
           }]
         })
       })
@@ -358,28 +400,30 @@ export default {
       this.chart.setOption(expectedData)
     },
     _initMapChart(element, expectedData) {
-      axios.interceptors.response.use(
-        response => {
-          if (response.data.code === 101) {
-            Message.warning({
-              message: '登录超时，请重新登录'
-            })
-            store.commit('LOGIN_OUT')
-            router.replace({
-              path: '/login'
-            })
-          }
-          return response
-        }
-      )
-
-      this.chart = echarts.init(element)
-      this.chart.showLoading()
+      this.mapChart = echarts.init(element)
+      this.mapChart.showLoading()
       axios.get('/static/xingtai.json').then(response => {
-        this.chart.hideLoading()
+        this.mapChart.hideLoading()
         echarts.registerMap('邢台', response.data)
-        this.chart.setOption(expectedData)
+        this.mapChart.setOption(expectedData)
       })
+      this.mapChart.on('click', params => {
+        console.log('点击地图数据————————super')
+        console.log(params)
+        if (this._params(params.name) !== this.state) {
+          this.state = this._params(params.name)
+          this.initChart()
+        } else if (this._params(params.name) === this.state) {
+          this.state = '00'
+          this.initChart()
+        }
+      })
+    },
+    _params(name) {
+      switch (name) {
+      case '桥西区': return '0'
+      case '桥东区': return '1'
+      }
     },
     _toArray_key(obj) {
       let expectedArray = []
@@ -498,8 +542,11 @@ export default {
           display: inline-block;
           vertical-align: top;
           text-align: center;
-          font-family: 'simHei', serif;
           line-height: 20px;
+          font-family: 'simHei', serif;
+          .text {
+            font-weight: bold;
+          }
         }
       }
     }

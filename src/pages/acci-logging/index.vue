@@ -461,7 +461,6 @@ export default {
       background-color: transparent;
       color: #333;
       text-align: center;
-      height: 100%;
   }
   .el-main .el-form {
       text-align: left;

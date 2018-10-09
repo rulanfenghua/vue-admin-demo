@@ -14,17 +14,25 @@ export function index() {
   })
 }
 
-export function getGender() {
+export function getGender(state) {
+  const data = {
+    state: state
+  }
   return request({
     url: '/superConservator/getByManWomanNum',
-    method: 'post'
+    method: 'post',
+    data
   })
 }
 
-export function getWeek() {
+export function getWeek(state) {
+  const data = {
+    state: state
+  }
   return request({
     url: '/superConservator/getSevenDay',
-    method: 'post'
+    method: 'post',
+    data
   })
 }
 

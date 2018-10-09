@@ -178,7 +178,9 @@ export default {
             // }
           },
           legend: {
-            // data: ['检查量']
+            data: ['检查量'],
+            right: 0,
+            top: '5%'
           },
           xAxis: {
             data: this._toArray_key_super(response.data),
@@ -191,6 +193,9 @@ export default {
           },
           yAxis: {
             name: '检查量',
+            nameTextStyle: {
+              fontWeight: 'bold'
+            },
             axisLine: {
               lineStyle: {
                 color: '#193a70'
@@ -201,12 +206,12 @@ export default {
                 if (value % 1 === 0) {
                   return value
                 }
-              },
-              fontWeight: 'bold'
+              }
+              // fontWeight: 'bold'
             }
           },
           series: [{
-            // name: '检查量',
+            name: '检查量',
             type: 'line',
             data: this._toArray_value_super(response.data),
             color: ['#2f4554']
@@ -223,7 +228,9 @@ export default {
           },
           tooltip: {},
           legend: {
-            // data: ['检查量']
+            data: ['检查量'],
+            right: 0,
+            top: '5%'
           },
           xAxis: {
             // data: this._toArray_key(response.data)
@@ -235,6 +242,9 @@ export default {
           },
           yAxis: {
             name: '检查量',
+            nameTextStyle: {
+              fontWeight: 'bold'
+            },
             axisLine: {
               lineStyle: {
                 color: '#193a70'
@@ -245,14 +255,14 @@ export default {
                 if (value % 1 === 0) {
                   return value
                 }
-              },
-              fontWeight: 'bold'
+              }
+              // fontWeight: 'bold'
             }
           },
           series: [{
-            // name: '检查量',
+            name: '检查量',
             type: 'bar',
-            data: this._toArray_value(response.data),
+            data: this._toArray_value_sort(response.data),
             color: function (params) {
               var colorList = ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#5c70ad', '#FDEC6D', '#44A9A8', '#8bc34a', '#ffc107',
                 '#795548', '#9e9e9e', '#607d8b']
@@ -289,7 +299,7 @@ export default {
               }
             },
             data: [{
-              value: response.data.WOMEN,
+              value: response.data.WOMAN,
               name: '女性居民'
             },
             {
@@ -338,12 +348,29 @@ export default {
       }
       return expectedArray
     },
+    // 月份排序
+    _toArray_value_sort(obj) {
+      let array = []
+      let expectedArray = []
+      for (var key in obj) {
+        array.push([key, obj[key]])
+      }
+      array.sort((a, b) => {
+        if (a[0] < b[0]) {
+          return -1
+        }
+        if (a[0] > b[0]) {
+          return 1
+        }
+      })
+      array.forEach(element => expectedArray.push(element[1]))
+      return expectedArray
+    },
     _toArray_key_super(arr) {
       let expectedArray = []
       arr.forEach(obj => {
         expectedArray.push(obj.CREATETIME.slice(5))
       })
-      console.log(expectedArray)
       return expectedArray
     },
     _toArray_value_super(arr) {
@@ -351,7 +378,6 @@ export default {
       arr.forEach(obj => {
         expectedArray.push(obj.COUNT)
       })
-      console.log(expectedArray)
       return expectedArray
     }
   }
@@ -433,6 +459,9 @@ export default {
           vertical-align: top;
           font-family: 'simHei',serif;
           line-height: 20px;
+          .text {
+            font-weight: bold;
+          }
         }
       }
     }

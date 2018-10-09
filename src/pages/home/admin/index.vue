@@ -220,7 +220,8 @@ export default {
           },
           legend: {
             data: ['检查量'],
-            show: false
+            right: 0,
+            top: '5%'
           },
           xAxis: {
             data: this._toArray_key_super(response.data),
@@ -233,6 +234,9 @@ export default {
           },
           yAxis: {
             name: '检查量',
+            nameTextStyle: {
+              fontWeight: 'bold'
+            },
             type: 'value',
             axisLine: {
               lineStyle: {
@@ -244,12 +248,12 @@ export default {
                 if (value % 1 === 0) {
                   return value
                 }
-              },
-              fontWeight: 'bold'
+              }
+              // fontWeight: 'bold'
             }
           },
           series: [{
-            // name: '检查量',
+            name: '检查量',
             type: 'line',
             data: this._toArray_value_super(response.data),
             color: ['#2f4554']
@@ -260,15 +264,25 @@ export default {
         console.log('各站点————————admin')
         console.log(response)
         this._initChart(this.$refs.last, {
-          color: ['#6fa7e8'],
+          color: ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#5c70ad', '#FDEC6D', '#44A9A8', '#8bc34a', '#ffc107', '#795548', '#9e9e9e', '#607d8b'],
           title: {
             text: '各站点上传统计',
             left: '30%'
           },
           tooltip: {},
           legend: {
-            // data: ['上传数量']
+            data: ['上传数量'],
+            right: 0,
+            top: '5%'
           },
+          // visualMap: [
+          //   {
+          //     right: 0,
+          //     categories: this._toArray_key_super_super(response.data),
+          //     color: ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#5c70ad', '#FDEC6D', '#44A9A8', '#8bc34a', '#ffc107', '#795548', '#9e9e9e', '#607d8b'],
+          //     outOfRange: {}
+          //   }
+          // ],
           xAxis: {
             data: this._toArray_key_super_super(response.data),
             axisLabel: {
@@ -279,6 +293,9 @@ export default {
           },
           yAxis: {
             name: '上传数量',
+            nameTextStyle: {
+              fontWeight: 'bold'
+            },
             axisLine: {
               lineStyle: {
                 color: '#193a70'
@@ -289,18 +306,16 @@ export default {
                 if (value % 1 === 0) {
                   return value
                 }
-              },
-              fontWeight: 'bold'
+              }
+              // fontWeight: 'bold'
             }
           },
           series: [{
-            // name: '上传数量',
+            name: '上传数量',
             type: 'bar',
             data: this._toArray_value_super_super(response.data),
             color: function (params) {
-              var colorList = ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#5c70ad', '#FDEC6D', '#44A9A8', '#8bc34a', '#ffc107',
-                '#795548', '#9e9e9e', '#607d8b']
-              // var colorList = ['#6fa7e8', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#795548', '#9e9e9e', '#607d8b', '', '', '', '', '', '', '']
+              var colorList = ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#5c70ad', '#FDEC6D', '#44A9A8', '#8bc34a', '#ffc107', '#795548', '#9e9e9e', '#607d8b']
               return colorList[params.dataIndex]
             }
           }]
@@ -495,6 +510,9 @@ export default {
         text-align: center;
         font-family: 'simHei',serif;
         line-height: 20px;
+        .text {
+          font-weight: bold;
+        }
       }
     }
   }
