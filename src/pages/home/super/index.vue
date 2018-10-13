@@ -327,15 +327,22 @@ export default {
               bottom: 0,
               align: 'left',
               itemSymbol: 'pin',
+              dimension: 2,
               itemGap: 7,
               // itemHeight: 10,
               categories: this._toArray_key_super_super(response.data),
-              color: ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#5c70ad', '#FDEC6D', '#44A9A8', '#8bc34a', '#ffc107', '#795548', '#9e9e9e', '#607d8b'].reverse(),
-              outOfRange: {}
+              // color: ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#5c70ad', '#FDEC6D', '#44A9A8', '#8bc34a', '#ffc107', '#795548', '#9e9e9e', '#607d8b'].reverse(),
+              // outOfRange: {
+              //   color: ['#ffffff00', '#ffffff00', '#ffffff00', '#ffffff00', '#ffffff00', '#ffffff00', '#ffffff00', '#ffffff00', '#ffffff00', '#ffffff00', '#ffffff00', '#ffffff00']
+              // },
+              inRange: {
+                color: ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#5c70ad', '#FDEC6D', '#44A9A8', '#8bc34a', '#ffc107', '#795548', '#9e9e9e', '#607d8b'].reverse()
+              }
             }
           ],
           xAxis: {
-            data: this._toArray_key_super_super(response.data),
+            // data: this._toArray_key_super_super(response.data),
+            type: 'category',
             axisLabel: {
               rotate: -60,
               fontWeight: 'bold'
@@ -344,6 +351,7 @@ export default {
           },
           yAxis: {
             name: '上传数量',
+            type: 'value',
             nameTextStyle: {
               fontWeight: 'bold'
             },
@@ -364,12 +372,12 @@ export default {
           series: [{
             // name: '上传数量',
             type: 'bar',
-            data: this._toArray_value_super_super(response.data),
-            color: function (params) {
-              var colorList = ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#5c70ad', '#FDEC6D', '#44A9A8', '#8bc34a', '#ffc107',
-                '#795548', '#9e9e9e', '#607d8b']
-              return colorList[params.dataIndex]
-            }
+            data: this._toArray_value_super_super_super(response.data)
+            // color: function (params) {
+            //   var colorList = ['#6fa7e8', '#FFBC75', '#AAFFFA', '#999EFF', '#5c70ad', '#FDEC6D', '#44A9A8', '#8bc34a', '#ffc107',
+            //     '#795548', '#9e9e9e', '#607d8b']
+            //   return colorList[params.dataIndex]
+            // }
           }]
         })
       })
@@ -461,11 +469,14 @@ export default {
       })
       return expectedArray
     },
-    _toArray_value_super_super(arr) {
+    // 用于visualMap的站点数据
+    _toArray_value_super_super_super(arr) {
       let expectedArray = []
       arr.forEach(obj => {
-        expectedArray.push(obj.NUM)
+        var subIndex = obj.STATIONNAME.indexOf('卫生')
+        expectedArray.push([obj.STATIONNAME.slice(0, subIndex), obj.NUM, obj.STATIONNAME.slice(0, subIndex)])
       })
+      console.log(expectedArray)
       return expectedArray
     }
   }
