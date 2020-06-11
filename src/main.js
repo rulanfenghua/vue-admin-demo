@@ -12,7 +12,8 @@ import htmlToPdf from '@/utils/htmlToPdf'
 import * as globalFilter from './filters/filters'
 
 // 引入图片查看插件
-import preview from './photoSwipe'
+import preview from 'vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
 
 Vue.use(preview)
 
