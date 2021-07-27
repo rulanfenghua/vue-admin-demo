@@ -15,6 +15,9 @@ import * as globalFilter from './filters/filters'
 import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
 
+// 引入mock
+import './mock'
+
 Vue.use(preview)
 
 Vue.prototype.$http = axios

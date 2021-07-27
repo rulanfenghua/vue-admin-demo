@@ -1,10 +1,16 @@
 import request from '@/config/httpConfig'
+import axios from 'axios'
+import useMock from './store.js'
 
 export function login(account, password, captcha) {
   const data = {
     userName: account,
     password: password,
     captcha: captcha
+  }
+
+  if (useMock) {
+    return axios.post('/login', data)
   }
   return request({
     url: '/login',

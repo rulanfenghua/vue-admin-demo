@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrapper">
     <div class="login">
-      <h1 class="title">时代电子区域医学影像管理系统</h1>
+      <h1 class="title">区域医学影像管理系统</h1>
       <div class="login-content">
         <div class="login-tab">
           <div class="tab-resident" @click="transResident" :class="{'active': userToggle === 'manager'}">居民查询入口</div>
@@ -167,6 +167,8 @@ export default {
             background: 'rgba(0, 0, 0, 0.7)'
           })
           login(this.loginForm.username, this.loginForm.password, this.loginForm.captcha).then(response => {
+            console.log(response)
+            response = response.data
             if (response.code === 0) {
               this.$message({
                 message: '登录成功，欢迎 ' + response.data.userName,
